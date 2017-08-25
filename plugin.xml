@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-navitia-sdk-ux" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>NavitiaSDKUX</name>
+    <js-module name="NavitiaSDKUX" src="www/NavitiaSDKUX.js">
+        <clobbers target="NavitiaSDKUX" />
+    </js-module>
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="NavitiaSDKUX">
+                <param name="ios-package" value="CDVNavitiaSDKUX" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/CDVNavitiaSDKUX.h" />
+        <source-file src="src/ios/CDVNavitiaSDKUX.m" />
+        <pods-config ios-min-version="9.0" use-frameworks="true" />
+        <pod name="NavitiaSDKUX" version="0.1.0" />
+    </platform>
+    <platform name="android">
+        <config-file target="config.xml" parent="/*">
+            <feature name="NavitiaSDKUX">
+                <param name="android-package" value="org.kisio.CDVNavitiaSDKUX.CDVNavitiaSDKUX"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/org/kisio/CDVNavitiaSDKUX/CDVNavitiaSDKUX.java" target-dir="src/org/kisio/CDVNavitiaSDKUX" />
+    </platform>
+</plugin>
