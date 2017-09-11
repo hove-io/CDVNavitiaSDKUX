@@ -1,13 +1,26 @@
-package org.kisio.CDVNavitiaSDK;
+package org.kisio.CDVNavitiaSDKUX;
 
-import org.apache.cordova.CordovaPlugin;
+import android.content.Context;
+import android.content.Intent;
+
 import org.apache.cordova.CallbackContext;
-
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.kisio.NavitiaSDKUX.Config.Configuration;
+import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity;
 import org.kisio.NavitiaSDKUX.NavitiaSDKUX;
 
-public class CDVNavitiaSDK extends CordovaPlugin {
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-    private NavitiaSDKUX navitiaSDK;
+
+public class CDVNavitiaSDKUX extends CordovaPlugin {
+
+    private NavitiaSDKUX navitiaSDKUX;
+    private Map<String, Action> actions = new HashMap<String, Action>();
 
     private interface IAction {
         void doAction(JSONObject params, CallbackContext callbackContext);
@@ -18,7 +31,7 @@ public class CDVNavitiaSDK extends CordovaPlugin {
         public abstract void doAction(JSONObject params, CallbackContext callbackContext);
     }
 
-    public CDVNavitiaSDK() {
+    public CDVNavitiaSDKUX() {
         actions.put("init", new Action() {
             @Override
             public void doAction(JSONObject config, CallbackContext callbackContext) {
@@ -33,6 +46,7 @@ public class CDVNavitiaSDK extends CordovaPlugin {
         });
     }
 
+    @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (actions.containsKey(action)) {
             actions.get(action).doAction(args.getJSONObject(0), callbackContext);
@@ -43,15 +57,32 @@ public class CDVNavitiaSDK extends CordovaPlugin {
     }
 
     private void init(JSONObject config, CallbackContext callbackContext) {
-        if (!config.has("token")) {
+        final String token = config.optString("token");
+        if (token.isEmpty()) {
             callbackContext.error("No token specified");
             return;
         }
-        this.navitiaSDK = new NavitiaSDKUX();
+
+        Configuration.token = token;
+        callbackContext.success();
     }
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
-        // here, invoke journey result screen
-        // NavitiaSDKUX......
+        final Context context = this.cordova.getActivity().getApplicationContext();
+        final Intent intent = new Intent(context, JourneySolutionsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        final Iterator<String> iterator = params.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                intent.putExtra(key, params.getString(key));
+            } catch (JSONException e) {
+                callbackContext.error(e.getMessage());
+            }
+        }
+
+        context.startActivity(intent);
+        callbackContext.success();
     }
 }

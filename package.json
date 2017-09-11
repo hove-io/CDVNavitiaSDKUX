@@ -1,0 +1,26 @@
+{
+  "name": "cordova-navitia-sdk-ux",
+  "version": "0.2.0",
+  "description": "Cordova plugin for NavitiaSDKUX iOs & Android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CanalTP/CDVNavitiaSDKUX.git"
+  },
+  "keywords": [
+    "phonegap",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "navitia"
+  ],
+  "author": "Kisio Digital",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/CanalTP/CDVNavitiaSDKUX/issues"
+  },
+  "homepage": "https://github.com/CanalTP/CDVNavitiaSDKUX#readme"
+}

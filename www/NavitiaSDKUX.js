@@ -1,23 +1,22 @@
 var exec = require('cordova/exec');
 
 module.exports = {
-    init: function() {
+    init: function(config, successCallback, errorCallback) {
         exec(
-            function(success) { },
-            function(error) { },
+            successCallback,
+            errorCallback,
             'NavitiaSDKUX',
             'init',
-            []
+            [config]
         )
-    }
-
-    invokeJourneyResults: function() {
+    },
+    invokeJourneyResults: function(params, successCallback, errorCallback) {
         exec(
-            function(success) { },
-            function(error) { },
+            successCallback,
+            errorCallback,
             'NavitiaSDKUX',
             'invokeJourneyResults',
-            []
+            [params]
         )
     }
-}
+};
