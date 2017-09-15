@@ -2,6 +2,7 @@
 <plugin id="cordova-plugin-navitia-sdk-ux" version="0.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUX</name>
 
+    <dependency id="cordova-plugin-cocoapod-support" url="https://github.com/blakgeek/cordova-plugin-cocoapods-support" commit="v1.3.0"/>
     <dependency id="cordova-plugin-navitia-sdk" url="https://github.com/CanalTP/CDVNavitiaSDK"/>
 
     <js-module name="NavitiaSDKUX" src="www/NavitiaSDKUX.js">
@@ -16,8 +17,8 @@
         </config-file>
         <header-file src="src/ios/CDVNavitiaSDKUX.h" />
         <source-file src="src/ios/CDVNavitiaSDKUX.m" />
-        <pods-config ios-min-version="9.0" use-frameworks="true" />
-        <pod name="NavitiaSDKUX" version="0.1.0" />
+        <pods-config ios-min-version="10.0" use-frameworks="true" />
+        <pod name="NavitiaSDKUX" version="0.2.0" />
     </platform>
 
     <platform name="android">

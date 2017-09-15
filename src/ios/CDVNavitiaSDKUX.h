@@ -5,8 +5,6 @@
 
 @interface CDVNavitiaSDKUX : CDVPlugin
 
-@property (nonatomic, strong) NavitiaSDKUX *sdk;
-
 - (void)init:(CDVInvokedUrlCommand*)command;
 - (void)invokeJourneyResults:(CDVInvokedUrlCommand*)command;
 

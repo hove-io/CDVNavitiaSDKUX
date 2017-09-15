@@ -4,13 +4,6 @@ Cordova plugin for using Navitia SDK UX
 
 ## Installation
 
-### iOS
-
-    cordova plugin add cordova-plugin-cocoapod-support
-    cordova plugin add cordova-plugin-navitia-sdk-ux
-
-### Android
-
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
 ## Usage
