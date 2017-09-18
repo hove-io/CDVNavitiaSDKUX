@@ -15,8 +15,12 @@
                 <param name="ios-package" value="CDVNavitiaSDKUX" />
             </feature>
         </config-file>
+        <config-file platform="ios" target="*-Info.plist" parent="UIMainStoryboardFile">
+            <string>Main</string>
+        </config-file>
         <header-file src="src/ios/CDVNavitiaSDKUX.h" />
         <source-file src="src/ios/CDVNavitiaSDKUX.m" />
+        <resource-file src="src/ios/Main.storyboard" />
         <pods-config ios-min-version="10.0" use-frameworks="true" />
         <pod name="NavitiaSDKUX" version="0.2.0" />
     </platform>

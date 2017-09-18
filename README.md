@@ -6,6 +6,20 @@ Cordova plugin for using Navitia SDK UX
 
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
+### ios
+
+In file `platforms/ios/HelloWorld/Classes/AppDelegate.m`
+Disable default Cordova Screen to use internal storyboard with NavigationController
+
+    - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+    {
+        /*
+        self.viewController = [[MainViewController alloc] init];
+        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+        */
+        return YES;
+    }
+
 ## Usage
 
 ### NavitiaSDKUX.init(config, success, failure)
