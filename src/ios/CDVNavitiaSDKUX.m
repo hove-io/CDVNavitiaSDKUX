@@ -27,7 +27,7 @@
     if (self.viewController.navigationController) {
         NSDictionary* params = [command.arguments objectAtIndex:0];
         
-        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.cocoapods.NavitiaSDKUX"];
+        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.kisio.NavitiaSDKUX"];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Journey" bundle: bundle];
         JourneySolutionsController *vc = [storyboard instantiateInitialViewController];
         [vc setPropsWithOriginId:[params objectForKey:@"initOriginId"] destinationId:[params objectForKey:@"initDestinationId"] origin:[params objectForKey:@"initOrigin"] destination:[params objectForKey:@"initDestination"]];

@@ -1,0 +1,6 @@
+github "Alamofire/Alamofire" "4.5.1"
+github "Hearst-DD/ObjectMapper" "2.2.9"
+github "alexdrone/Render" "4.9.1"
+github "ooga/NavitiaSDKUX_ios" "54df227d8c45442538cea661b3517573fa6a9afd"
+github "ooga/NavitiaSDK_ios" "04f3b1de5c32b49169c9384e7545b3d6c600d117"
+github "tristanhimmelman/AlamofireObjectMapper" "4.1.0"

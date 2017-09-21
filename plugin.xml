@@ -2,7 +2,7 @@
 <plugin id="cordova-plugin-navitia-sdk-ux" version="0.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUX</name>
 
-    <dependency id="cordova-plugin-cocoapod-support" url="https://github.com/blakgeek/cordova-plugin-cocoapods-support" commit="v1.3.0"/>
+    <dependency id="cordova-plugin-add-swift-support" version="1.6.1"/>
     <dependency id="cordova-plugin-navitia-sdk" url="https://github.com/CanalTP/CDVNavitiaSDK"/>
 
     <js-module name="NavitiaSDKUX" src="www/NavitiaSDKUX.js">
@@ -10,19 +10,28 @@
     </js-module>
 
     <platform name="ios">
+        <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
+
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUX">
                 <param name="ios-package" value="CDVNavitiaSDKUX" />
             </feature>
         </config-file>
+
         <config-file platform="ios" target="*-Info.plist" parent="UIMainStoryboardFile">
             <string>Main</string>
         </config-file>
+        <resource-file src="src/ios/Main.storyboard" />
+
         <header-file src="src/ios/CDVNavitiaSDKUX.h" />
         <source-file src="src/ios/CDVNavitiaSDKUX.m" />
-        <resource-file src="src/ios/Main.storyboard" />
-        <pods-config ios-min-version="10.0" use-frameworks="true" />
-        <pod name="NavitiaSDKUX" version="0.2.0" />
+
+        <framework src="Carthage/Build/iOS/Alamofire.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/AlamofireObjectMapper.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/NavitiaSDK.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/NavitiaSDKUX.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/ObjectMapper.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/Render.framework" custom="true" embed="true" />
     </platform>
 
     <platform name="android">
