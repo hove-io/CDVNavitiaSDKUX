@@ -6,7 +6,7 @@ Cordova plugin for using Navitia SDK UX
 
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
-### ios
+### iOS
 
 In file `platforms/ios/HelloWorld/Classes/AppDelegate.m`
 Disable default Cordova Screen to use internal storyboard with NavigationController
@@ -47,7 +47,7 @@ Disable default Cordova Screen to use internal storyboard with NavigationControl
 
     var config = {
         token: 'my-token',
-    }
+    };
 
     NavitiaSDKUX.init(config, function() {}, function(error) {
         console.log(error);
@@ -62,3 +62,8 @@ Disable default Cordova Screen to use internal storyboard with NavigationControl
     NavitiaSDKUX.invokeJourneyResults(journeyParams, function() {}, function(error) {
         console.log(error);
     });
+
+## Known issues
+
+- Color configuration not available yet (but soon!)
+- iOS: Cannot use the default Cordova view controller (see above), the navigation bar is still present for now
