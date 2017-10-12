@@ -2,7 +2,6 @@
 <plugin id="cordova-plugin-navitia-sdk-ux" version="0.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUX</name>
 
-    <dependency id="cordova-plugin-add-swift-support" version="1.6.1"/>
     <dependency id="cordova-plugin-navitia-sdk" url="https://github.com/CanalTP/CDVNavitiaSDK"/>
 
     <js-module name="NavitiaSDKUX" src="www/NavitiaSDKUX.js">
@@ -10,6 +9,8 @@
     </js-module>
 
     <platform name="ios">
+        <dependency id="cordova-plugin-add-swift-support" version="1.6.1"/>
+        
         <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
 
         <config-file target="config.xml" parent="/*">
