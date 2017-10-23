@@ -19,11 +19,6 @@
             </feature>
         </config-file>
 
-        <config-file platform="ios" target="*-Info.plist" parent="UIMainStoryboardFile">
-            <string>Main</string>
-        </config-file>
-        <resource-file src="src/ios/Main.storyboard" />
-
         <header-file src="src/ios/CDVNavitiaSDKUX.h" />
         <source-file src="src/ios/CDVNavitiaSDKUX.m" />
 

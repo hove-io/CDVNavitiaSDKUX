@@ -22,23 +22,17 @@
 
 - (void)invokeJourneyResults:(CDVInvokedUrlCommand*)command;
 {
-    CDVPluginResult* pluginResult = nil;
-    
-    if (self.viewController.navigationController) {
-        NSDictionary* params = [command.arguments objectAtIndex:0];
-        
-        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.kisio.NavitiaSDKUX"];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Journey" bundle: bundle];
-        JourneySolutionsController *vc = [storyboard instantiateInitialViewController];
-        [vc setPropsWithOriginId:[params objectForKey:@"initOriginId"] destinationId:[params objectForKey:@"initDestinationId"] origin:[params objectForKey:@"initOrigin"] destination:[params objectForKey:@"initDestination"]];
-        self.viewController.navigationController.navigationBar.hidden = NO;
-        [self.viewController.navigationController pushViewController:vc animated:YES];
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"A navigation controller must be added to your project"];
-    }
+    NSDictionary* params = [command.arguments objectAtIndex:0];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"org.kisio.NavitiaSDKUX"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Journey" bundle: bundle];
+    JourneySolutionsController *vc = [storyboard instantiateInitialViewController];
+    [vc setPropsWithOriginId:[params objectForKey:@"initOriginId"] destinationId:[params objectForKey:@"initDestinationId"] origin:[params objectForKey:@"initOrigin"] destination:[params objectForKey:@"initDestination"]];
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self.viewController presentViewController:navigationController animated:YES completion:nil];
+
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""] callbackId:command.callbackId];
 }
 
 @end
