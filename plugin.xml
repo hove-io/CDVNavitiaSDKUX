@@ -10,7 +10,7 @@
 
     <platform name="ios">
         <dependency id="cordova-plugin-add-swift-support" version="1.6.1"/>
-        
+
         <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
 
         <config-file target="config.xml" parent="/*">
@@ -37,9 +37,18 @@
             </feature>
         </config-file>
 
-        <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
-            <application android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        </edit-config>
+        <!-- Until https://issues.apache.org/jira/browse/CB-13474 is fixed, we need to apply theme on every activity-->
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity" android:theme="@style/NavitiaSDKUXTheme" />
+            <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionRoadmapActivity" android:theme="@style/NavitiaSDKUXTheme" />
+        </config-file>
+
+        <preference name="ANDROID_PRIMARY_COLOR" default="#000000" />
+        <source-file src="src/android/styles.xml" target-dir="res/values" />
+        <config-file target="res/values/styles.xml" parent="/resources/style">
+            <item name="colorPrimary">$ANDROID_PRIMARY_COLOR</item>
+            <item name="colorPrimaryDark">$ANDROID_PRIMARY_COLOR</item>
+        </config-file>
 
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 
