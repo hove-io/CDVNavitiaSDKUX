@@ -15,5 +15,5 @@ ext {
 
 dependencies {
     compile 'org.kisio.sdk:navitia-sdk-ux:0.2.0'
-    compile 'com.android.support:appcompat-v7:26+'
+    compile 'com.android.support:appcompat-v7:+'
 }
