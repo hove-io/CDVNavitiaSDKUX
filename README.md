@@ -22,10 +22,12 @@ Cordova plugin for using Navitia SDK UX
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | params | Object | ✓ | Parameters of the screen | |
-| params.initOrigin | String | ✗ | Origin label, if not set the address will be display | Home |
-| params.initOriginId | String | ✓ | Origin coordinates, following the format `lon;lat` | 2.3665844;48.8465337 |
-| params.initDestination | String | ✗ | Destination label, if not set the address will be display | Work |
-| params.initDestinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
+| params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | Home |
+| params.originId | String | ✓ | Origin coordinates, following the format `lon;lat` | 2.3665844;48.8465337 |
+| params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
+| params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
+| params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
+| params.datetimeRepresents | String | ✗ | Can be `departure` (journeys after datetime) or `arrival` (journeys before datetime). | departure |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -40,9 +42,9 @@ Cordova plugin for using Navitia SDK UX
     });
 
     var journeyParams = {
-        initOrigin: 'My Home',
-        initOriginId: '2.3665844;48.8465337',
-        initDestinationId: '2.2979169;48.8848719',
+        originLabel: 'My Home',
+        originId: '2.3665844;48.8465337',
+        destinationId: '2.2979169;48.8848719',
     };
 
     NavitiaSDKUX.invokeJourneyResults(journeyParams, function() {}, function(error) {

@@ -7,7 +7,7 @@ module.exports = {
             errorCallback,
             'NavitiaSDKUX',
             'init',
-            [config]
+            [config],
         )
     },
     invokeJourneyResults: function(params, successCallback, errorCallback) {
@@ -16,7 +16,17 @@ module.exports = {
             errorCallback,
             'NavitiaSDKUX',
             'invokeJourneyResults',
-            [params]
+            [params],
         )
-    }
+    },
+    datetimeRepresents: {
+        DEPARTURE: 'departure',
+        ARRIVAL: 'arrival',
+    },
+    sectionMode: {
+        WALKING: 'walking',
+        BIKE: 'bike',
+        CAR: 'car',
+        BSS: 'bss',
+    },
 };
