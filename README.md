@@ -28,6 +28,12 @@ Cordova plugin for using Navitia SDK UX
 | params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
 | params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
 | params.datetimeRepresents | String | ✗ | Can be `departure` (journeys after datetime) or `arrival` (journeys before datetime). | departure |
+| params.forbiddenUris | [String] | ✗ | List of navitia uris | ['commercial_mode:Bus', 'line:1'] |
+| params.firstSectionModes | [String] | ✗ | List of modes to use at the begining of the journey | ['car'] |
+| params.lastSectionModes | [String] | ✗ | List of modes to use at the end of the journey | ['bike', 'bss'] |
+| params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
+| params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
+| params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
