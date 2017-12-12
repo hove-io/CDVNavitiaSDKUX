@@ -1,8 +1,13 @@
-# CDVNavitiaSDK
+# NavitiaSDK UX for Cordova
 
-Cordova plugin for using Navitia SDK UX
+Cordova plugin for using NavitiaSDK UX
 
 ## Installation
+
+This plugin uses Carthage to build dependencies for iOS, please install it first:
+https://github.com/Carthage/Carthage
+
+Then use this command to install the plugin
 
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
@@ -22,15 +27,15 @@ Cordova plugin for using Navitia SDK UX
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | params | Object | ✓ | Parameters of the screen | |
-| params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | Home |
 | params.originId | String | ✓ | Origin coordinates, following the format `lon;lat` | 2.3665844;48.8465337 |
-| params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
 | params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
+| params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | Home |
+| params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
 | params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
-| params.datetimeRepresents | String | ✗ | Can be `departure` (journeys after datetime) or `arrival` (journeys before datetime). | departure |
+| params.datetimeRepresents | NavitiaSDKUX.DatetimeRepresents | ✗ | Can be `NavitiaSDKUX.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUX.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUX.DatetimeRepresents.DEPARTURE |
 | params.forbiddenUris | [String] | ✗ | List of navitia uris | ['commercial_mode:Bus', 'line:1'] |
-| params.firstSectionModes | [String] | ✗ | List of modes to use at the begining of the journey | ['car'] |
-| params.lastSectionModes | [String] | ✗ | List of modes to use at the end of the journey | ['bike', 'bss'] |
+| params.firstSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUX.SectionMode.CAR] |
+| params.lastSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the end of the journey | [NavitiaSDKUX.SectionMode.BIKE, NavitiaSDKUX.SectionMode.BSS] |
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
