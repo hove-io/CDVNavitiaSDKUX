@@ -9,7 +9,7 @@ import NavitiaSDKUX
         let config: [String: Any] = command.arguments![0] as! [String: Any]
         let token: String = config["token"] as? String ?? ""
         
-        if token.count == 0 {
+        if token.isEmpty {
             pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
         } else {
             NavitiaSDKUXConfig.setToken(token: token)
