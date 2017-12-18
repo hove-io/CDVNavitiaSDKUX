@@ -3,12 +3,6 @@ module.exports = function(ctx) {
         return;
     }
 
-    console.log();
-    console.log("*****************************************************");
-    console.log("***             Take a coffee (~6min)             ***");
-    console.log("*****************************************************");
-    console.log();
-
     const deferral = ctx.requireCordovaModule('q').defer();
     const spawn = ctx.requireCordovaModule('child_process').spawn;
     const child = spawn('carthage', ['update', '--cache-builds', '--platform', 'iOS'], {

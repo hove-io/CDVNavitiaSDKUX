@@ -18,5 +18,15 @@ module.exports = {
             'invokeJourneyResults',
             [params]
         )
-    }
+    },
+    DatetimeRepresents: {
+        DEPARTURE: 'departure',
+        ARRIVAL: 'arrival'
+    },
+    SectionMode: {
+        WALKING: 'walking',
+        BIKE: 'bike',
+        CAR: 'car',
+        BSS: 'bss'
+    },
 };

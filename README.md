@@ -1,8 +1,13 @@
-# CDVNavitiaSDK
+# NavitiaSDK UX for Cordova
 
-Cordova plugin for using Navitia SDK UX
+Cordova plugin for using NavitiaSDK UX
 
 ## Installation
+
+This plugin uses Carthage to build dependencies for iOS, please install it first:
+https://github.com/Carthage/Carthage
+
+Then use this command to install the plugin
 
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
@@ -22,10 +27,18 @@ Cordova plugin for using Navitia SDK UX
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | params | Object | ✓ | Parameters of the screen | |
-| params.initOrigin | String | ✗ | Origin label, if not set the address will be display | Home |
-| params.initOriginId | String | ✓ | Origin coordinates, following the format `lon;lat` | 2.3665844;48.8465337 |
-| params.initDestination | String | ✗ | Destination label, if not set the address will be display | Work |
-| params.initDestinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
+| params.originId | String | ✓ | Origin coordinates, following the format `lon;lat` | 2.3665844;48.8465337 |
+| params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | 2.2979169;48.8848719 |
+| params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | Home |
+| params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
+| params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
+| params.datetimeRepresents | NavitiaSDKUX.DatetimeRepresents | ✗ | Can be `NavitiaSDKUX.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUX.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUX.DatetimeRepresents.DEPARTURE |
+| params.forbiddenUris | [String] | ✗ | List of navitia uris | ['commercial_mode:Bus', 'line:1'] |
+| params.firstSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUX.SectionMode.CAR] |
+| params.lastSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the end of the journey | [NavitiaSDKUX.SectionMode.BIKE, NavitiaSDKUX.SectionMode.BSS] |
+| params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
+| params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
+| params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -40,9 +53,9 @@ Cordova plugin for using Navitia SDK UX
     });
 
     var journeyParams = {
-        initOrigin: 'My Home',
-        initOriginId: '2.3665844;48.8465337',
-        initDestinationId: '2.2979169;48.8848719',
+        originLabel: 'My Home',
+        originId: '2.3665844;48.8465337',
+        destinationId: '2.2979169;48.8848719',
     };
 
     NavitiaSDKUX.invokeJourneyResults(journeyParams, function() {}, function(error) {
