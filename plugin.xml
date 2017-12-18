@@ -21,11 +21,7 @@
 
         <source-file src="src/ios/CDVNavitiaSDKUX.swift" />
 
-        <framework src="Carthage/Build/iOS/Alamofire.framework" custom="true" embed="true" />
-        <framework src="Carthage/Build/iOS/AlamofireObjectMapper.framework" custom="true" embed="true" />
-        <framework src="Carthage/Build/iOS/NavitiaSDK.framework" custom="true" embed="true" />
         <framework src="Carthage/Build/iOS/NavitiaSDKUX.framework" custom="true" embed="true" />
-        <framework src="Carthage/Build/iOS/ObjectMapper.framework" custom="true" embed="true" />
         <framework src="Carthage/Build/iOS/Render.framework" custom="true" embed="true" />
     </platform>
 
