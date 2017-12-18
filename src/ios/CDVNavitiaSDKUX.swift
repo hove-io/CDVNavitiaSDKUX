@@ -42,14 +42,11 @@ import NavitiaSDKUX
     }
 
     func getJourneyInParameters(from arguments: [String: Any]) -> JourneySolutionsController.InParameters {
-        var params: JourneySolutionsController.InParameters = JourneySolutionsController.InParameters()
+        let originId: String = arguments["originId"] as? String ?? ""
+        let destinationId: String = arguments["destinationId"] as? String ?? ""
 
-        if (arguments["originId"] != nil) {
-            params.originId = arguments["originId"] as? String ?? ""
-        }
-        if (arguments["destinationId"] != nil) {
-            params.destinationId = arguments["destinationId"] as? String ?? ""
-        }
+        var params: JourneySolutionsController.InParameters = JourneySolutionsController.InParameters(originId: originId, destinationId: destinationId)
+
         if (arguments["originLabel"] != nil) {
             params.originLabel = arguments["originLabel"] as? String ?? ""
         }
