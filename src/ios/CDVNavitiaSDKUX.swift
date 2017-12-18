@@ -18,7 +18,7 @@ import NavitiaSDKUX
         
         self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
     }
-
+    
     @objc(invokeJourneyResults:)
     public func invokeJourneyResults(command: CDVInvokedUrlCommand) {
         var pluginResult: CDVPluginResult? = nil
@@ -40,13 +40,13 @@ import NavitiaSDKUX
         
         self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
     }
-
+    
     func getJourneyInParameters(from arguments: [String: Any]) -> JourneySolutionsController.InParameters {
         let originId: String = arguments["originId"] as? String ?? ""
         let destinationId: String = arguments["destinationId"] as? String ?? ""
-
+        
         var params: JourneySolutionsController.InParameters = JourneySolutionsController.InParameters(originId: originId, destinationId: destinationId)
-
+        
         if (arguments["originLabel"] != nil) {
             params.originLabel = arguments["originLabel"] as? String ?? ""
         }
@@ -54,7 +54,9 @@ import NavitiaSDKUX
             params.destinationLabel = arguments["destinationLabel"] as? String ?? ""
         }
         if (arguments["datetimeRepresents"] != nil) {
-            params.datetimeRepresents = self.anyToEnum(arguments["datetimeRepresents"] as? String ?? "")
+            if let enumValue = self.anyToEnum(arguments["datetimeRepresents"]!) as JourneysRequestBuilder.DatetimeRepresents? {
+                params.datetimeRepresents = enumValue
+            }
         }
         if (arguments["datetime"] != nil) {
             params.datetime = getDatetime(from: arguments["datetime"] as? String ?? "")
@@ -63,10 +65,10 @@ import NavitiaSDKUX
             params.forbiddenUris = arguments["forbiddenUris"] as? [String] ?? []
         }
         if (arguments["firstSectionModes"] != nil) {
-            params.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"] as? [String] ?? [])
+            params.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"]!) as [JourneysRequestBuilder.FirstSectionMode]
         }
         if (arguments["lastSectionModes"] != nil) {
-            params.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"] as? [String] ?? [])
+            params.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"]!) as [JourneysRequestBuilder.LastSectionMode]
         }
         if (arguments["count"] != nil) {
             params.count = arguments["count"] as? Int32 ?? 0
@@ -77,14 +79,14 @@ import NavitiaSDKUX
         if (arguments["maxNbJourneys"] != nil) {
             params.maxNbJourneys = arguments["maxNbJourneys"] as? Int32 ?? 0
         }
-
+        
         return params
     }
-
-    func anyToEnum<T: RawRepresentable>(_ value: Any) -> T {
+    
+    func anyToEnum<T: RawRepresentable>(_ value: Any) -> T? {
         return T.init(rawValue: value as! T.RawValue)
     }
-
+    
     func arrayToEnum<T: RawRepresentable>(_ values: Any) -> [T] {
         let rawValues = values as! [Any]
         var values: [T]  = []
@@ -93,10 +95,10 @@ import NavitiaSDKUX
                 values.append(value)
             }
         })
-
+        
         return values
     }
-
+    
     func getDatetime(from argument: String) -> Date {
         let formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
