@@ -54,7 +54,7 @@ import NavitiaSDKUX
             params.destinationLabel = arguments["destinationLabel"] as? String ?? ""
         }
         if (arguments["datetimeRepresents"] != nil) {
-            params.datetimeRepresents = self.getDatetimeRepresents(from: arguments["datetimeRepresents"] as? String ?? "")
+            params.datetimeRepresents = self.anyToEnum(arguments["datetimeRepresents"] as? String ?? "")
         }
         if (arguments["datetime"] != nil) {
             params.datetime = getDatetime(from: arguments["datetime"] as? String ?? "")
@@ -63,10 +63,10 @@ import NavitiaSDKUX
             params.forbiddenUris = arguments["forbiddenUris"] as? [String] ?? []
         }
         if (arguments["firstSectionModes"] != nil) {
-            params.firstSectionModes = self.getFirstSectionModes(from: arguments["firstSectionModes"] as? [String] ?? [])
+            params.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"] as? [String] ?? [])
         }
         if (arguments["lastSectionModes"] != nil) {
-            params.lastSectionModes = self.getLastSectionModes(from: arguments["lastSectionModes"] as? [String] ?? [])
+            params.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"] as? [String] ?? [])
         }
         if (arguments["count"] != nil) {
             params.count = arguments["count"] as? Int32 ?? 0
@@ -81,60 +81,25 @@ import NavitiaSDKUX
         return params
     }
 
-    func getDatetimeRepresents(from argument: String) -> JourneysRequestBuilder.DatetimeRepresents {
-        switch argument {
-        case "arrival":
-            return .arrival
-        default:
-            return .departure
-        }
+    func anyToEnum<T: RawRepresentable>(_ value: Any) -> T {
+        return T.init(rawValue: value as! T.RawValue)
+    }
+
+    func arrayToEnum<T: RawRepresentable>(_ values: Any) -> [T] {
+        let rawValues = values as! [Any]
+        var values: [T]  = []
+        rawValues.forEach({ rawValue in
+            if let value = anyToEnum(rawValue) as T? {
+                values.append(value)
+            }
+        })
+
+        return values
     }
 
     func getDatetime(from argument: String) -> Date {
         let formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         return formatter.date(from: argument)!
-    }
-
-    func getFirstSectionModes(from modeStrings: [String]) -> [JourneysRequestBuilder.FirstSectionMode] {
-        var sectionModes: [JourneysRequestBuilder.FirstSectionMode] = []
-        for modeString: String in modeStrings {
-            switch modeString {
-            case "bike":
-                sectionModes.append(.bike)
-                break
-            case "car":
-                sectionModes.append(.car)
-                break
-            case "bss":
-                sectionModes.append(.bss)
-                break
-            default:
-                sectionModes.append(.walking)
-                break
-            }
-        }
-        return sectionModes
-    }
-
-    func getLastSectionModes(from modeStrings: [String]) -> [JourneysRequestBuilder.LastSectionMode] {
-        var sectionModes: [JourneysRequestBuilder.LastSectionMode] = []
-        for modeString: String in modeStrings {
-            switch modeString {
-            case "bike":
-                sectionModes.append(.bike)
-                break
-            case "car":
-                sectionModes.append(.car)
-                break
-            case "bss":
-                sectionModes.append(.bss)
-                break
-            default:
-                sectionModes.append(.walking)
-                break
-            }
-        }
-        return sectionModes
     }
 }
