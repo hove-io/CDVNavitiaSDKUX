@@ -1,7 +1,7 @@
 repositories {
     // mavenLocal()
     maven {
-        url  "https://dl.bintray.com/navitiasdkteam/NavitiaSDK" 
+        url  "https://dl.bintray.com/navitiasdkteam/NavitiaSDK"
     }
     maven {
         url "https://maven.google.com"
@@ -15,6 +15,6 @@ if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk
 }
 
 dependencies {
-    compile 'org.kisio.sdk:navitia-sdk-ux:0.3.2'
+    compile 'org.kisio.sdk:navitia-sdk-ux:0.3.3'
     compile 'com.android.support:appcompat-v7:+'
 }

@@ -65,3 +65,19 @@ Then use this command to install the plugin
 ## Known issues
 
 - Color configuration not available yet (but soon!)
+
+## Troubleshooting
+### Specific android tools version : 26
+In case you are having problems building and getting this kind of problems :
+```
+platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml:3: AAPT: Error retrieving parent for item: No resource found that matches the given name ...
+```
+
+You may try to override your android compiler environment variables :
+
+```
+export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-26
+export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=26.0.1
+```
+
+More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 
