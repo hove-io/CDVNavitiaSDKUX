@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-navitia-sdk-ux",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Cordova plugin for NavitiaSDKUX iOs & Android",
   "main": "index.js",
   "scripts": {
