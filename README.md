@@ -11,6 +11,26 @@ Then use this command to install the plugin
 
     cordova plugin add cordova-plugin-navitia-sdk-ux
 
+## Setup for Android platform
+This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
+
+You need to update your config.xml file as follows:
+
+    <widget ......... xmlns:android="http://schemas.android.com/apk/res/android">
+        .
+        .
+        <platform name="android">
+            .
+            .
+            <config-file parent="/manifest/application" target="AndroidManifest.xml">
+                <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR_API_KEY" />
+            </config-file>
+        </platform>
+        .
+        .
+    </widget>
+Note that you have to change YOUR_API_KEY with your own API key!
+
 ## Usage
 
 ### NavitiaSDKUX.init(config, success, failure)
@@ -81,3 +101,10 @@ export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=26.0.1
 ```
 
 More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 
+
+### Manifest merger issue
+This usually happens if you change the API key in the config.xml file. The build fails and you're getting this kind of error:
+```
+Element meta-data#com.google.android.geo.API_KEY at AndroidManifest.xml:xx:xx-xx duplicated with element declared at AndroidManifest.xml:xx:xx-xx
+```
+You may try to remove the Android platform and add it back again.
