@@ -15,6 +15,6 @@ if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk
 }
 
 dependencies {
-    compile 'org.kisio.sdk:navitia-sdk-ux:1.0.0'
+    compile 'org.kisio.sdk:navitia-sdk-ux:1.1.0'
     compile 'com.android.support:appcompat-v7:+'
 }
