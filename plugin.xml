@@ -35,7 +35,6 @@
     </platform>
 
     <platform name="android">
-
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUX">
                 <param name="android-package" value="org.kisio.CDVNavitiaSDKUX.CDVNavitiaSDKUX"/>
