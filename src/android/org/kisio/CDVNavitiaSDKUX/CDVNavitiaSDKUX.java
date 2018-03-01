@@ -29,7 +29,7 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
     private NavitiaSDKUX navitiaSDKUX;
     private Map<String, Action> actions = new HashMap<String, Action>();
 
-    private static final String TAG = "CDVNavitiaSDK";
+    private static final String TAG = CDVNavitiaSDKUX.class.getName();
 
     private interface IAction {
         void doAction(JSONObject params, CallbackContext callbackContext);
