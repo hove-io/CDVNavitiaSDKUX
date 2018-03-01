@@ -1,5 +1,4 @@
 import Foundation
-import NavitiaSDK
 import NavitiaSDKUX
 
 @objc(CDVNavitiaSDKUX) public class CDVNavitiaSDKUX : CDVPlugin {
