@@ -12,7 +12,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kisio.CDVNavitiaSDK.CDVNavitiaSDK;
 import org.kisio.NavitiaSDKUX.Config.Configuration;
 import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity;
 import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsInParameters;
@@ -30,7 +29,7 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
     private NavitiaSDKUX navitiaSDKUX;
     private Map<String, Action> actions = new HashMap<String, Action>();
 
-    private static final String TAG = CDVNavitiaSDK.class.getName();
+    private static final String TAG = CDVNavitiaSDKUX.class.getName();
 
     private interface IAction {
         void doAction(JSONObject params, CallbackContext callbackContext);
