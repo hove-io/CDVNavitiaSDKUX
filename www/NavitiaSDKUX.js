@@ -27,6 +27,7 @@ module.exports = {
         WALKING: 'walking',
         BIKE: 'bike',
         CAR: 'car',
-        BSS: 'bss'
+        BSS: 'bss',
+        RIDESHARING: 'ridesharing'
     },
 };
