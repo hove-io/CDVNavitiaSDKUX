@@ -14,6 +14,17 @@ if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk
     ext.cdvMinSdkVersion = minSdk;
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex") && !requested.name.contains("support-core-ui") && !requested.name.contains("support-compat")) {
+                details.useVersion '26.1.0'
+            }
+        }
+    }
+}
+
 dependencies {
     compile 'org.kisio.sdk:navitia-sdk-ux:1.1.3'
     compile 'com.android.support:appcompat-v7:+'
