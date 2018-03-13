@@ -28,6 +28,6 @@ module.exports = {
         BIKE: 'bike',
         CAR: 'car',
         BSS: 'bss',
-        RIDESHARING: 'ridesharing'
+        RIDESHARING: 'ridesharing',
     },
 };
