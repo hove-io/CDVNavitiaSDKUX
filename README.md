@@ -1,6 +1,7 @@
 # NavitiaSDK UX for Cordova
 
-Cordova plugin for using NavitiaSDK UX
+Cordova plugin for using NavitiaSDK UI.
+This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
 
 ## Installation
 
@@ -38,7 +39,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | config | Object | ✓ | Configuration | |
-| config.token | String | ✓ | Token navitia | 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
+| config.token | String | ✓ | Token navitia (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -53,8 +54,8 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
 | params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
 | params.datetimeRepresents | NavitiaSDKUX.DatetimeRepresents | ✗ | Can be `NavitiaSDKUX.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUX.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUX.DatetimeRepresents.DEPARTURE |
-| params.forbiddenUris | [String] | ✗ | List of navitia uris | ['commercial_mode:Bus', 'line:1'] |
-| params.firstSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUX.SectionMode.CAR] |
+| params.forbiddenUris | [String] | ✗ | Used to avoid lines, modes, networks, etc in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
+| params.firstSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUX.SectionMode.CAR, NavitiaSDKUX.SectionMode.RIDESHARING] |
 | params.lastSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the end of the journey | [NavitiaSDKUX.SectionMode.BIKE, NavitiaSDKUX.SectionMode.BSS] |
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
@@ -63,6 +64,8 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
 ### Example
+
+    declare var NavitiaSDKUX;
 
     var config = {
         token: 'my-token',
@@ -108,3 +111,13 @@ This usually happens if you change the API key in the config.xml file. The build
 Element meta-data#com.google.android.geo.API_KEY at AndroidManifest.xml:xx:xx-xx duplicated with element declared at AndroidManifest.xml:xx:xx-xx
 ```
 You may try to remove the Android platform and add it back again.
+
+### Android building problem : Cannot read property ‘replace’ of undefined
+In the file /platforms/android/cordova/lib/emulator.js, replace :
+```
+var num = target.split(’(API level ‘)[1].replace(’)’, ‘’);
+```
+By :
+```
+var num = target.match(/\d+/)[0];
+```
