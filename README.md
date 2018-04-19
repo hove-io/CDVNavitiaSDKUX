@@ -78,6 +78,9 @@ These parameters must be added to the "config" object.
 
     var config = {
         token: 'my-token',
+        mainColor: '#e67e22',
+        originColor: '#2980b9',
+        destinationColor: '#d35400',
     };
 
     NavitiaSDKUX.init(config, function() {}, function(error) {
