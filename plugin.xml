@@ -36,13 +36,7 @@
             <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionCarpoolActivity" android:theme="@style/NavitiaSDKUXTheme" />
         </config-file>
 
-        <preference name="ANDROID_PRIMARY_COLOR" default="#40958E" />
         <source-file src="src/android/styles.xml" target-dir="res/values" />
-        <config-file target="res/values/styles.xml" parent="/resources/style">
-            <item name="colorPrimary">$ANDROID_PRIMARY_COLOR</item>
-            <item name="colorPrimaryDark">$ANDROID_PRIMARY_COLOR</item>
-        </config-file>
-
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 
         <source-file src="src/android/org/kisio/CDVNavitiaSDKUX/CDVNavitiaSDKUX.java" target-dir="src/org/kisio/CDVNavitiaSDKUX" />

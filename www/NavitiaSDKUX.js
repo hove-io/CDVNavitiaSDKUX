@@ -19,6 +19,15 @@ module.exports = {
             [params]
         )
     },
+    resetPreferences: function(successCallback, errorCallback) {
+        exec(
+            successCallback,
+            errorCallback,
+            'NavitiaSDKUX',
+            'resetPreferences',
+            [{}]
+        )
+    },
     DatetimeRepresents: {
         DEPARTURE: 'departure',
         ARRIVAL: 'arrival'
