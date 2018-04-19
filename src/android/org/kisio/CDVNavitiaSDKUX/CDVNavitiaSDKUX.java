@@ -2,6 +2,7 @@ package org.kisio.CDVNavitiaSDKUX;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -16,6 +17,7 @@ import org.kisio.NavitiaSDKUX.Config.Configuration;
 import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity;
 import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsInParameters;
 import org.kisio.NavitiaSDKUX.NavitiaSDKUX;
+import org.kisio.NavitiaSDKUX.Util.NavitiaSDKPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +55,12 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
                 invokeJourneyResults(params, callbackContext);
             }
         });
+        actions.put("resetPreferences", new Action() {
+            @Override
+            public void doAction(JSONObject params, CallbackContext callbackContext) {
+                resetPreferences(callbackContext);
+            }
+        });
     }
 
     @Override
@@ -71,8 +79,20 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
             callbackContext.error("No token specified");
             return;
         }
-
         Configuration.token = token;
+
+        final String mainColor = config.optString("mainColor");
+        if (!mainColor.isEmpty()) {
+            Configuration.colors.setTertiary(Color.parseColor(mainColor));
+        }
+        final String departureColor = config.optString("departureColor");
+        if (!departureColor.isEmpty()) {
+            Configuration.colors.setOrigin(Color.parseColor(departureColor));
+        }
+        final String arrivalColor = config.optString("arrivalColor");
+        if (!arrivalColor.isEmpty()) {
+            Configuration.colors.setDestination(Color.parseColor(arrivalColor));
+        }
         callbackContext.success();
     }
 
@@ -82,45 +102,51 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
-            final JourneySolutionsInParameters parameters = new JourneySolutionsInParameters(params.getString("originId"), params.getString("destinationId"));
+            final JourneySolutionsInParameters journeyParameters = new JourneySolutionsInParameters(params.getString("originId"), params.getString("destinationId"));
 
             if (params.has("originLabel")) {
-                parameters.originLabel = params.getString("originLabel");
+                journeyParameters.originLabel = params.getString("originLabel");
             }
             if (params.has("destinationLabel")) {
-                parameters.destinationLabel = params.getString("destinationLabel");
+                journeyParameters.destinationLabel = params.getString("destinationLabel");
             }
             if (params.has("datetime")) {
-                parameters.datetime = getDatetimeFromString(params.getString("datetime"));
+                journeyParameters.datetime = getDatetimeFromString(params.getString("datetime"));
             }
             if (params.has("datetimeRepresents")) {
-                parameters.datetimeRepresents = params.getString("datetimeRepresents");
+                journeyParameters.datetimeRepresents = params.getString("datetimeRepresents");
             }
             if (params.has("forbiddenUris")) {
-                parameters.forbiddenUris = getStringListFromJsonArray(params.getJSONArray("forbiddenUris"));
+                journeyParameters.forbiddenUris = getStringListFromJsonArray(params.getJSONArray("forbiddenUris"));
             }
             if (params.has("firstSectionModes")) {
-                parameters.firstSectionModes = getStringListFromJsonArray(params.getJSONArray("firstSectionModes"));
+                journeyParameters.firstSectionModes = getStringListFromJsonArray(params.getJSONArray("firstSectionModes"));
             }
             if (params.has("lastSectionModes")) {
-                parameters.lastSectionModes = getStringListFromJsonArray(params.getJSONArray("lastSectionModes"));
+                journeyParameters.lastSectionModes = getStringListFromJsonArray(params.getJSONArray("lastSectionModes"));
             }
             if (params.has("count")) {
-                parameters.count = params.getInt("count");
+                journeyParameters.count = params.getInt("count");
             }
             if (params.has("minNbJourneys")) {
-                parameters.minNbJourneys = params.getInt("minNbJourneys");
+                journeyParameters.minNbJourneys = params.getInt("minNbJourneys");
             }
             if (params.has("maxNbJourneys")) {
-                parameters.maxNbJourneys = params.getInt("maxNbJourneys");
+                journeyParameters.maxNbJourneys = params.getInt("maxNbJourneys");
             }
 
-            intent.putExtra(JourneySolutionsActivity.IntentParameters.parameters.name(), parameters);
+            intent.putExtra(JourneySolutionsActivity.IntentParameters.journeyParameters.name(), journeyParameters);
             context.startActivity(intent);
             callbackContext.success();
         } catch (JSONException e) {
             callbackContext.error(e.getMessage());
         }
+    }
+
+    private void resetPreferences(CallbackContext callbackContext) {
+        final Context context = this.cordova.getActivity().getApplicationContext();
+        NavitiaSDKPreferencesManager.resetPreferences(context);
+        callbackContext.success();
     }
 
     private DateTime getDatetimeFromString(String value) {
