@@ -85,13 +85,13 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
         if (!mainColor.isEmpty()) {
             Configuration.colors.setTertiary(Color.parseColor(mainColor));
         }
-        final String departureColor = config.optString("departureColor");
-        if (!departureColor.isEmpty()) {
-            Configuration.colors.setOrigin(Color.parseColor(departureColor));
+        final String originColor = config.optString("originColor");
+        if (!originColor.isEmpty()) {
+            Configuration.colors.setOrigin(Color.parseColor(originColor));
         }
-        final String arrivalColor = config.optString("arrivalColor");
-        if (!arrivalColor.isEmpty()) {
-            Configuration.colors.setDestination(Color.parseColor(arrivalColor));
+        final String destinationColor = config.optString("destinationColor");
+        if (!destinationColor.isEmpty()) {
+            Configuration.colors.setDestination(Color.parseColor(destinationColor));
         }
         callbackContext.success();
     }
