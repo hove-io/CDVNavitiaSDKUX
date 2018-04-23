@@ -43,6 +43,15 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
+### Colors configuration
+Actually, three color parameters can be customized for the SDK.
+These parameters must be added to the "config" object.
+| Parameters | Type | Required | Description | Example |
+| --- | --- |:---:| --- | --- |
+| mainColor | String | ✗ | Represents the background and the journey's duration colors  | by default #2a968f |
+| originColor | String | ✗ | Represents the origin icon's color  | by default #00b981 |
+| destinationColor | String | ✗ | Represents the destination icon's color  | by default #b90054 |
+
 ### NavitiaSDKUX.invokeJourneyResults(params, success, failure)
 
 | Parameters | Type | Required | Description | Example |
@@ -69,6 +78,9 @@ Note that you have to change YOUR_API_KEY with your own API key!
 
     var config = {
         token: 'my-token',
+        mainColor: '#e67e22',
+        originColor: '#2980b9',
+        destinationColor: '#d35400',
     };
 
     NavitiaSDKUX.init(config, function() {}, function(error) {
@@ -85,9 +97,6 @@ Note that you have to change YOUR_API_KEY with your own API key!
         console.log(error);
     });
 
-## Known issues
-
-- Color configuration not available yet (but soon!)
 
 ## Troubleshooting
 ### Specific android tools version : 26
