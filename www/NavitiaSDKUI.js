@@ -5,7 +5,7 @@ module.exports = {
         exec(
             successCallback,
             errorCallback,
-            'NavitiaSDKUX',
+            'NavitiaSDKUI',
             'init',
             [config]
         )
@@ -14,7 +14,7 @@ module.exports = {
         exec(
             successCallback,
             errorCallback,
-            'NavitiaSDKUX',
+            'NavitiaSDKUI',
             'invokeJourneyResults',
             [params]
         )
@@ -23,7 +23,7 @@ module.exports = {
         exec(
             successCallback,
             errorCallback,
-            'NavitiaSDKUX',
+            'NavitiaSDKUI',
             'resetPreferences',
             [{}]
         )

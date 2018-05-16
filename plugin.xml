@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-navitia-sdk-ux" version="1.1.8" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>NavitiaSDKUX</name>
+<plugin id="cordova-plugin-navitia-sdk-ux" version="1.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>NavitiaSDKUI</name>
     
-    <js-module name="NavitiaSDKUX" src="www/NavitiaSDKUX.js">
-        <clobbers target="NavitiaSDKUX" />
+    <js-module name="NavitiaSDKUI" src="www/NavitiaSDKUI.js">
+        <clobbers target="NavitiaSDKUI" />
     </js-module>
 
     <platform name="ios">
@@ -12,14 +12,14 @@
         <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
 
         <config-file target="config.xml" parent="/*">
-            <feature name="NavitiaSDKUX">
+            <feature name="NavitiaSDKUI">
                 <param name="ios-package" value="CDVNavitiaSDKUX" />
             </feature>
         </config-file>
 
-        <source-file src="src/ios/CDVNavitiaSDKUX.swift" />
+        <source-file src="src/ios/CDVNavitiaSDKUI.swift" />
 
-        <framework src="Carthage/Build/iOS/NavitiaSDKUX.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/NavitiaSDKUI.framework" custom="true" embed="true" />
     </platform>
 
     <platform name="android">

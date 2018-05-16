@@ -1,5 +1,5 @@
 import Foundation
-import NavitiaSDKUX
+import NavitiaSDKUI
 
 @objc(CDVNavitiaSDKUX) public class CDVNavitiaSDKUX : CDVPlugin {
     @objc(init:)
@@ -14,10 +14,10 @@ import NavitiaSDKUX
         if token.isEmpty {
             pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
         } else {
-            NavitiaSDKUXConfig.setToken(token: token)
-            NavitiaSDKUXConfig.setTertiaryColor(color: getUIColorFromHexadecimal(hex: mainColor))
-            NavitiaSDKUXConfig.setOriginColor(color: getUIColorFromHexadecimal(hex: originColor))
-            NavitiaSDKUXConfig.setDestinationColor(color: getUIColorFromHexadecimal(hex: destinationColor))
+            NavitiaSDKUI.shared.initialize(token: token)
+            NavitiaSDKUI.shared.mainColor = toUIColor(hexColor: mainColor)
+            NavitiaSDKUI.shared.originColor = toUIColor(hexColor: originColor)
+            NavitiaSDKUI.shared.destinationColor = toUIColor(hexColor: destinationColor)
             pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
         }
 
@@ -28,14 +28,12 @@ import NavitiaSDKUX
     public func invokeJourneyResults(command: CDVInvokedUrlCommand) {
         var pluginResult: CDVPluginResult? = nil
         if command.arguments.count > 0 {
-            let params: JourneySolutionsController.InParameters = self.getJourneyInParameters(from: command.arguments![0] as! [String: Any])
-            let bundle: Bundle? = Bundle(identifier: "org.kisio.NavitiaSDKUX")
-            let storyboard: UIStoryboard = UIStoryboard(name: "Journey", bundle: bundle)
-
-            let rootViewController: JourneySolutionsController = storyboard.instantiateInitialViewController() as! JourneySolutionsController
-            rootViewController.setProps(with: params)
-
-            let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
+            let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI")
+            let storyboard = UIStoryboard(name: "Journey", bundle: bundle)
+            let journeyResultsViewController = storyboard.instantiateInitialViewController() as! JourneySolutionViewController
+            let params: JourneySolutionViewController.InParameters = self.getJourneyInParameters(from: command.arguments![0] as! [String: Any])
+            journeyResultsViewController.inParameters = params
+            let navigationController: UINavigationController = UINavigationController(rootViewController: journeyResultsViewController)
             self.viewController.present(navigationController, animated: true, completion: nil)
 
             pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
@@ -51,11 +49,11 @@ import NavitiaSDKUX
         NavitiaSDKUserDefaultsManager.resetUserDefaults()
     }
 
-    func getJourneyInParameters(from arguments: [String: Any]) -> JourneySolutionsController.InParameters {
+    func getJourneyInParameters(from arguments: [String: Any]) -> JourneySolutionViewController.InParameters {
         let originId: String = arguments["originId"] as? String ?? ""
         let destinationId: String = arguments["destinationId"] as? String ?? ""
 
-        var params: JourneySolutionsController.InParameters = JourneySolutionsController.InParameters(originId: originId, destinationId: destinationId)
+        var params: JourneySolutionViewController.InParameters = JourneySolutionViewController.InParameters(originId: originId, destinationId: destinationId)
 
         if (arguments["originLabel"] != nil) {
             params.originLabel = arguments["originLabel"] as? String ?? ""
@@ -113,5 +111,27 @@ import NavitiaSDKUX
         let formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         return formatter.date(from: argument)!
+    }
+
+    func toUIColor(hexColor: String) -> UIColor {
+        var cString:String = hexColor.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+        
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+        
+        var rgbValue:UInt32 = 0
+        Scanner(string: cString).scanHexInt32(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
 }
