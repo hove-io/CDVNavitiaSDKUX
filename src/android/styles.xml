@@ -1,5 +1,0 @@
-<resources>
-    <style name="NavitiaSDKUXTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Content added by cordova during plugin install -->
-    </style>
-</resources>
