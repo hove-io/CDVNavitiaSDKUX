@@ -1,8 +1,7 @@
-package org.kisio.CDVNavitiaSDKUX;
+package org.kisio.CDVNavitiaSDKUI;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -13,25 +12,22 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kisio.NavitiaSDKUX.Config.Configuration;
-import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity;
-import org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsInParameters;
-import org.kisio.NavitiaSDKUX.NavitiaSDKUX;
-import org.kisio.NavitiaSDKUX.Util.NavitiaSDKPreferencesManager;
+import org.kisio.navitia.sdk.ui.journey.common.JourneysRequest;
+import org.kisio.navitia.sdk.ui.journey.result.JourneyResultActivity;
+import org.kisio.navitia.sdk.ui.util.Configuration;
+import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 
-public class CDVNavitiaSDKUX extends CordovaPlugin {
+public class CDVNavitiaSDKUI extends CordovaPlugin {
 
-    private NavitiaSDKUX navitiaSDKUX;
     private Map<String, Action> actions = new HashMap<String, Action>();
 
-    private static final String TAG = CDVNavitiaSDKUX.class.getName();
+    private static final String TAG = CDVNavitiaSDKUI.class.getName();
 
     private interface IAction {
         void doAction(JSONObject params, CallbackContext callbackContext);
@@ -42,7 +38,7 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
         public abstract void doAction(JSONObject params, CallbackContext callbackContext);
     }
 
-    public CDVNavitiaSDKUX() {
+    public CDVNavitiaSDKUI() {
         actions.put("init", new Action() {
             @Override
             public void doAction(JSONObject config, CallbackContext callbackContext) {
@@ -79,63 +75,63 @@ public class CDVNavitiaSDKUX extends CordovaPlugin {
             callbackContext.error("No token specified");
             return;
         }
-        Configuration.token = token;
 
+        Configuration.TOKEN = token;
         final String mainColor = config.optString("mainColor");
         if (!mainColor.isEmpty()) {
-            Configuration.colors.setTertiary(Color.parseColor(mainColor));
+            Configuration.setMainColor(mainColor);
         }
         final String originColor = config.optString("originColor");
         if (!originColor.isEmpty()) {
-            Configuration.colors.setOrigin(Color.parseColor(originColor));
+            Configuration.setOriginColor(originColor);
         }
         final String destinationColor = config.optString("destinationColor");
         if (!destinationColor.isEmpty()) {
-            Configuration.colors.setDestination(Color.parseColor(destinationColor));
+            Configuration.setDestinationColor(destinationColor);
         }
         callbackContext.success();
     }
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
         final Context context = this.cordova.getActivity().getApplicationContext();
-        final Intent intent = new Intent(context, JourneySolutionsActivity.class);
+        final Intent intent = new Intent(context, JourneyResultActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
-            final JourneySolutionsInParameters journeyParameters = new JourneySolutionsInParameters(params.getString("originId"), params.getString("destinationId"));
+            final JourneysRequest request = new JourneysRequest(params.getString("originId"), params.getString("destinationId"));
 
             if (params.has("originLabel")) {
-                journeyParameters.originLabel = params.getString("originLabel");
+                request.setOriginLabel(params.getString("originLabel"));
             }
             if (params.has("destinationLabel")) {
-                journeyParameters.destinationLabel = params.getString("destinationLabel");
+                request.setDestinationLabel(params.getString("destinationLabel"));
             }
             if (params.has("datetime")) {
-                journeyParameters.datetime = getDatetimeFromString(params.getString("datetime"));
+                request.setDatetime(getDatetimeFromString(params.getString("datetime")));
             }
             if (params.has("datetimeRepresents")) {
-                journeyParameters.datetimeRepresents = params.getString("datetimeRepresents");
+                request.setDatetimeRepresents(params.getString("datetimeRepresents"));
             }
             if (params.has("forbiddenUris")) {
-                journeyParameters.forbiddenUris = getStringListFromJsonArray(params.getJSONArray("forbiddenUris"));
+                request.setForbiddenUris(getStringListFromJsonArray(params.getJSONArray("forbiddenUris")));
             }
             if (params.has("firstSectionModes")) {
-                journeyParameters.firstSectionModes = getStringListFromJsonArray(params.getJSONArray("firstSectionModes"));
+                request.setFirstSectionModes(getStringListFromJsonArray(params.getJSONArray("firstSectionModes")));
             }
             if (params.has("lastSectionModes")) {
-                journeyParameters.lastSectionModes = getStringListFromJsonArray(params.getJSONArray("lastSectionModes"));
+                request.setLastSectionModes(getStringListFromJsonArray(params.getJSONArray("lastSectionModes")));
             }
             if (params.has("count")) {
-                journeyParameters.count = params.getInt("count");
+                request.setCount(params.getInt("count"));
             }
             if (params.has("minNbJourneys")) {
-                journeyParameters.minNbJourneys = params.getInt("minNbJourneys");
+                request.setMinNbJourneys(params.getInt("minNbJourneys"));
             }
             if (params.has("maxNbJourneys")) {
-                journeyParameters.maxNbJourneys = params.getInt("maxNbJourneys");
+                request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
             }
 
-            intent.putExtra(JourneySolutionsActivity.IntentParameters.journeyParameters.name(), journeyParameters);
+            intent.putExtra(JourneyResultActivity.INTENT_PARAM, request);
             context.startActivity(intent);
             callbackContext.success();
         } catch (JSONException e) {
