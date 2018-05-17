@@ -1,7 +1,7 @@
 import Foundation
 import NavitiaSDKUI
 
-@objc(CDVNavitiaSDKUX) public class CDVNavitiaSDKUX : CDVPlugin {
+@objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     @objc(init:)
     public func `init`(command: CDVInvokedUrlCommand) {
         var pluginResult: CDVPluginResult? = nil

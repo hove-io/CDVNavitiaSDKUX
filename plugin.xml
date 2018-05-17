@@ -8,37 +8,23 @@
 
     <platform name="ios">
         <dependency id="cordova-plugin-add-swift-support" version="1.6.1"/>
-
         <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
-
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUI">
-                <param name="ios-package" value="CDVNavitiaSDKUX" />
+                <param name="ios-package" value="CDVNavitiaSDKUI" />
             </feature>
         </config-file>
-
         <source-file src="src/ios/CDVNavitiaSDKUI.swift" />
-
         <framework src="Carthage/Build/iOS/NavitiaSDKUI.framework" custom="true" embed="true" />
     </platform>
 
     <platform name="android">
         <config-file target="config.xml" parent="/*">
-            <feature name="NavitiaSDKUX">
-                <param name="android-package" value="org.kisio.CDVNavitiaSDKUX.CDVNavitiaSDKUX"/>
+            <feature name="NavitiaSDKUI">
+                <param name="android-package" value="org.kisio.CDVNavitiaSDKUI.CDVNavitiaSDKUI"/>
             </feature>
         </config-file>
-
-        <!-- Until https://issues.apache.org/jira/browse/CB-13474 is fixed, we need to apply theme on every activity-->
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionsActivity" android:theme="@style/NavitiaSDKUXTheme" />
-            <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionRoadmapActivity" android:theme="@style/NavitiaSDKUXTheme" />
-            <activity android:name="org.kisio.NavitiaSDKUX.Controllers.JourneySolutionCarpoolActivity" android:theme="@style/NavitiaSDKUXTheme" />
-        </config-file>
-
-        <source-file src="src/android/styles.xml" target-dir="res/values" />
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-
-        <source-file src="src/android/org/kisio/CDVNavitiaSDKUX/CDVNavitiaSDKUX.java" target-dir="src/org/kisio/CDVNavitiaSDKUX" />
+        <source-file src="src/android/org/kisio/CDVNavitiaSDKUI/CDVNavitiaSDKUI.java" target-dir="src/org/kisio/CDVNavitiaSDKUI" />
     </platform>
 </plugin>
