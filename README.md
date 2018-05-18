@@ -1,7 +1,7 @@
-# NavitiaSDK UX for Cordova
+# NavitiaSDK UI for Cordova
 
 Cordova plugin for using NavitiaSDK UI.
-This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
+This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUI_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUI_ios).
 
 ## Installation
 
@@ -10,7 +10,7 @@ https://github.com/Carthage/Carthage
 
 Then use this command to install the plugin
 
-    cordova plugin add cordova-plugin-navitia-sdk-ux
+    cordova plugin add cordova-plugin-navitia-sdk-ui
 
 ## Setup for Android platform
 This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
@@ -34,7 +34,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 
 ## Usage
 
-### NavitiaSDKUX.init(config, success, failure)
+### NavitiaSDKUI.init(config, success, failure)
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -52,7 +52,7 @@ These parameters must be added to the "config" object.
 | originColor | String | ✗ | Represents the origin icon's color  | by default #00b981 |
 | destinationColor | String | ✗ | Represents the destination icon's color  | by default #b90054 |
 
-### NavitiaSDKUX.invokeJourneyResults(params, success, failure)
+### NavitiaSDKUI.invokeJourneyResults(params, success, failure)
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -62,10 +62,10 @@ These parameters must be added to the "config" object.
 | params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | Home |
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | Work |
 | params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
-| params.datetimeRepresents | NavitiaSDKUX.DatetimeRepresents | ✗ | Can be `NavitiaSDKUX.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUX.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUX.DatetimeRepresents.DEPARTURE |
+| params.datetimeRepresents | NavitiaSDKUI.DatetimeRepresents | ✗ | Can be `NavitiaSDKUI.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUI.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUI.DatetimeRepresents.DEPARTURE |
 | params.forbiddenUris | [String] | ✗ | Used to avoid lines, modes, networks, etc in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
-| params.firstSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUX.SectionMode.CAR, NavitiaSDKUX.SectionMode.RIDESHARING] |
-| params.lastSectionModes | [NavitiaSDKUX.SectionMode] | ✗ | List of modes to use at the end of the journey | [NavitiaSDKUX.SectionMode.BIKE, NavitiaSDKUX.SectionMode.BSS] |
+| params.firstSectionModes | [NavitiaSDKUI.SectionMode] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUI.SectionMode.CAR, NavitiaSDKUI.SectionMode.RIDESHARING] |
+| params.lastSectionModes | [NavitiaSDKUI.SectionMode] | ✗ | List of modes to use at the end of the journey | [NavitiaSDKUI.SectionMode.BIKE, NavitiaSDKUI.SectionMode.BSS] |
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
@@ -74,8 +74,6 @@ These parameters must be added to the "config" object.
 
 ### Example
 
-    declare var NavitiaSDKUX;
-
     var config = {
         token: 'my-token',
         mainColor: '#e67e22',
@@ -83,7 +81,7 @@ These parameters must be added to the "config" object.
         destinationColor: '#d35400',
     };
 
-    NavitiaSDKUX.init(config, function() {}, function(error) {
+    NavitiaSDKUI.init(config, function() {}, function(error) {
         console.log(error);
     });
 
@@ -93,7 +91,7 @@ These parameters must be added to the "config" object.
         destinationId: '2.2979169;48.8848719',
     };
 
-    NavitiaSDKUX.invokeJourneyResults(journeyParams, function() {}, function(error) {
+    NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) {
         console.log(error);
     });
 
