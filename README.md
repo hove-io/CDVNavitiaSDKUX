@@ -46,6 +46,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 ### Colors configuration
 Actually, three color parameters can be customized for the SDK.
 These parameters must be added to the "config" object.
+
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | mainColor | String | ✗ | Represents the background and the journey's duration colors  | by default #2a968f |
