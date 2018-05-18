@@ -1,7 +1,7 @@
 # NavitiaSDK UI for Cordova
 
 Cordova plugin for using NavitiaSDK UI.
-This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUI_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUI_ios).
+This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
 
 ## Installation
 
