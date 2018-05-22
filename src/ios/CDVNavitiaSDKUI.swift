@@ -28,13 +28,17 @@ import NavitiaSDKUI
     public func invokeJourneyResults(command: CDVInvokedUrlCommand) {
         var pluginResult: CDVPluginResult? = nil
         if command.arguments.count > 0 {
-            let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI")
+            let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI") ?? Bundle(identifier: "org.kisio.NavitiaSDKUI")
             let storyboard = UIStoryboard(name: "Journey", bundle: bundle)
             let journeyResultsViewController = storyboard.instantiateInitialViewController() as! JourneySolutionViewController
-            let params: JourneySolutionViewController.InParameters = self.getJourneyInParameters(from: command.arguments![0] as! [String: Any])
-            journeyResultsViewController.inParameters = params
-            let navigationController: UINavigationController = UINavigationController(rootViewController: journeyResultsViewController)
-            self.viewController.present(navigationController, animated: true, completion: nil)
+            journeyResultsViewController.inParameters = self.getJourneyInParameters(from: command.arguments![0] as! [String: Any])
+
+            if self.viewController.navigationController != nil {
+                self.viewController.navigationController?.pushViewController(journeyResultsViewController, animated: true)
+            } else {
+                let navigationController: UINavigationController = UINavigationController(rootViewController: journeyResultsViewController)
+                self.viewController.present(navigationController, animated: true, completion: nil)
+            }
 
             pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
         } else {
