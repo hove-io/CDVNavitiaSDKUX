@@ -14,8 +14,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.kisio.navitia.sdk.ui.journey.common.JourneysRequest;
 import org.kisio.navitia.sdk.ui.journey.result.JourneyResultActivity;
+import org.kisio.navitia.sdk.ui.presentation.journeys.JourneysActivity;
 import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
+import org.kisio.navitia.sdk.ui.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +97,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
         final Context context = this.cordova.getActivity().getApplicationContext();
-        final Intent intent = new Intent(context, JourneyResultActivity.class);
+        final Intent intent = new Intent(context, JourneysActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
@@ -135,7 +137,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
                 request.setAddPoiInfos(Arrays.asList("bss_stands"));
             }
 
-            intent.putExtra(JourneyResultActivity.INTENT_PARAM, request);
+            intent.putExtra(Constant.LIST_JOURNEYS, request);
             context.startActivity(intent);
             callbackContext.success();
         } catch (JSONException e) {
