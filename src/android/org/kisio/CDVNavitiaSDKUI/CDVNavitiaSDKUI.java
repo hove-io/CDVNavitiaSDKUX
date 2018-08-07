@@ -18,6 +18,7 @@ import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,6 +130,9 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             }
             if (params.has("maxNbJourneys")) {
                 request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
+            }
+            if (params.has("bss_stands") && params.getBoolean("bss_stands")) {
+                request.setAddPoiInfos(Arrays.asList("bss_stands"));
             }
 
             intent.putExtra(JourneyResultActivity.INTENT_PARAM, request);
