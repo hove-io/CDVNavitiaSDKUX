@@ -131,7 +131,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             if (params.has("maxNbJourneys")) {
                 request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
             }
-            if (params.has("bss_stands") && params.getBoolean("bss_stands")) {
+            if (params.has("bssStands") && params.getBoolean("bssStands")) {
                 request.setAddPoiInfos(Arrays.asList("bss_stands"));
             }
 
