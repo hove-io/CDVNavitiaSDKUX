@@ -18,6 +18,7 @@ import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,9 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             if (params.has("maxNbJourneys")) {
                 request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
             }
+            if (params.has("bssStands") && params.getBoolean("bssStands")) {
+                request.setAddPoiInfos(Arrays.asList("bss_stands"));
+            }
 
             intent.putExtra(JourneyResultActivity.INTENT_PARAM, request);
             context.startActivity(intent);
@@ -148,7 +152,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
     private DateTime getDatetimeFromString(String value) {
         DateTime dt = new DateTime();
         try {
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZoneUTC();
             dt = formatter.parseDateTime(value);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

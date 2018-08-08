@@ -8,7 +8,7 @@ repositories {
     }
 }
 
-def DEFAULT_MIN_SDK_VERSION = 21
+def DEFAULT_MIN_SDK_VERSION = 19
 def minSdk = Math.max(DEFAULT_MIN_SDK_VERSION, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer);
 if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk ) {
     ext.cdvMinSdkVersion = minSdk;
@@ -26,6 +26,6 @@ configurations.all {
 }
 
 dependencies {
-    compile 'org.kisio.sdk:navitia-sdk-ui:1.2.1'
+    compile 'org.kisio.sdk:navitia-sdk-ui:1.4.1'
     compile 'com.android.support:appcompat-v7:+'
 }

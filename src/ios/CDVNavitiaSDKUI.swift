@@ -91,6 +91,9 @@ import NavitiaSDKUI
         if (arguments["maxNbJourneys"] != nil) {
             params.maxNbJourneys = arguments["maxNbJourneys"] as? Int32 ?? 0
         }
+        if (arguments["bssStands"] != nil) {
+            params.bssStands = arguments["bssStands"] as? Bool ?? false
+        }
 
         return params
     }
