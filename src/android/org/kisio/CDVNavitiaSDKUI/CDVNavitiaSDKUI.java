@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.kisio.navitia.sdk.ui.journey.common.JourneysRequest;
-import org.kisio.navitia.sdk.ui.journey.result.JourneyResultActivity;
 import org.kisio.navitia.sdk.ui.presentation.journeys.JourneysActivity;
 import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
