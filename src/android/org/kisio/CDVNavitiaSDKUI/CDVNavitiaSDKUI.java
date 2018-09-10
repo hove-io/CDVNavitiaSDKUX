@@ -152,7 +152,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
     private DateTime getDatetimeFromString(String value) {
         DateTime dt = new DateTime();
         try {
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZoneUTC();
             dt = formatter.parseDateTime(value);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
