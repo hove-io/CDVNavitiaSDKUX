@@ -26,6 +26,6 @@ configurations.all {
 }
 
 dependencies {
-    compile 'org.kisio.sdk:navitia-sdk-ui:1.5.0'
+    compile 'org.kisio.sdk:navitia-sdk-ui:1.5.1'
     compile 'com.android.support:appcompat-v7:+'
 }
