@@ -1,2 +1,4 @@
-Carthage/
+frameworks/
 .idea/
+.DS_Store
+src/android/.gradle/

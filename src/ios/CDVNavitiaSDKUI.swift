@@ -4,48 +4,71 @@ import NavitiaSDKUI
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     @objc(init:)
     public func `init`(command: CDVInvokedUrlCommand) {
-        var pluginResult: CDVPluginResult? = nil
-        let config: [String: String] = command.arguments![0] as! [String: String]
-        let token: String = config["token"] ?? ""
-        let mainColor: String = config["mainColor"] != nil && !config["mainColor"]!.isEmpty ? config["mainColor"]! : "#40958E"
-        let originColor: String = config["originColor"] != nil && !config["originColor"]!.isEmpty ? config["originColor"]! : "#00BB75"
-        let destinationColor: String = config["destinationColor"] != nil && !config["destinationColor"]!.isEmpty ? config["destinationColor"]! : "#B00353"
+        guard let arguments = command.arguments, let config = arguments[0] as? [String: Any] else {
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No valid plugin config")
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
 
-        if token.isEmpty {
-            pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
-        } else {
-            NavitiaSDKUI.shared.initialize(token: token)
-            NavitiaSDKUI.shared.mainColor = toUIColor(hexColor: mainColor)
-            NavitiaSDKUI.shared.originColor = toUIColor(hexColor: originColor)
-            NavitiaSDKUI.shared.destinationColor = toUIColor(hexColor: destinationColor)
-            pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
+            return
         }
 
-        self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
+        guard let token: String = config["token"] as? String, !token.isEmpty else {
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
+            
+            return
+        }
+        
+        var mainColor = "#40958E"
+        if let mainColorArg = config["mainColor"] as? String, !mainColorArg.isEmpty {
+            mainColor = mainColorArg
+        }
+        
+        var originColor = "#00BB75"
+        if let originColorArg = config["originColor"] as? String, !originColorArg.isEmpty {
+            originColor = originColorArg
+        }
+        
+        var destinationColor = "#B00353"
+        if let destinationColorArg = config["destinationColor"] as? String, !destinationColorArg.isEmpty {
+            destinationColor = destinationColorArg
+        }
+        
+        let multiNetwork: Bool = config["multiNetwork"] as? Bool ?? false
+
+        NavitiaSDKUI.shared.initialize(token: token)
+        NavitiaSDKUI.shared.mainColor = toUIColor(hexColor: mainColor)
+        NavitiaSDKUI.shared.originColor = toUIColor(hexColor: originColor)
+        NavitiaSDKUI.shared.destinationColor = toUIColor(hexColor: destinationColor)
+        NavitiaSDKUI.shared.multiNetwork = multiNetwork
+        
+        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
+        commandDelegate.send(pluginResult, callbackId: command.callbackId)
     }
 
     @objc(invokeJourneyResults:)
     public func invokeJourneyResults(command: CDVInvokedUrlCommand) {
-        var pluginResult: CDVPluginResult? = nil
-        if command.arguments.count > 0 {
-            let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI") ?? Bundle(identifier: "org.kisio.NavitiaSDKUI")
-            let storyboard = UIStoryboard(name: "Journey", bundle: bundle)
-            let journeyResultsViewController = storyboard.instantiateInitialViewController() as! JourneySolutionViewController
-            journeyResultsViewController.inParameters = self.getJourneyInParameters(from: command.arguments![0] as! [String: Any])
-
-            if self.viewController.navigationController != nil {
-                self.viewController.navigationController?.pushViewController(journeyResultsViewController, animated: true)
-            } else {
-                let navigationController: UINavigationController = UINavigationController(rootViewController: journeyResultsViewController)
-                self.viewController.present(navigationController, animated: true, completion: nil)
-            }
-
-            pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
-        } else {
-            pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No parameter specified in invokeJourneyResults")
+        guard command.arguments.count > 0, let arguments = command.arguments[0] as? [String: Any] else {
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No parameter specified in invokeJourneyResults")
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
+            
+            return
         }
-
-        self.commandDelegate!.send(pluginResult, callbackId: command.callbackId)
+        
+        let journeysRequest = self.getJourneysRequest(from: arguments)
+        let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI") ?? Bundle(identifier: "org.kisio.NavitiaSDKUI")
+        let storyboard = UIStoryboard(name: "Journey", bundle: bundle)
+        let listJourneysViewController = storyboard.instantiateInitialViewController() as! ListJourneysViewController
+        listJourneysViewController.journeysRequest = journeysRequest
+        
+        if viewController.navigationController != nil {
+            self.viewController.navigationController?.pushViewController(listJourneysViewController, animated: true)
+        } else {
+            let navigationController: UINavigationController = UINavigationController(rootViewController: listJourneysViewController)
+            viewController.present(navigationController, animated: true, completion: nil)
+        }
+        
+        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
+        commandDelegate.send(pluginResult, callbackId: command.callbackId)
     }
 
     @objc(resetPreferences:)
@@ -53,49 +76,51 @@ import NavitiaSDKUI
         NavitiaSDKUserDefaultsManager.resetUserDefaults()
     }
 
-    func getJourneyInParameters(from arguments: [String: Any]) -> JourneySolutionViewController.InParameters {
+    func getJourneysRequest(from arguments: [String: Any]) -> JourneysRequest {
         let originId: String = arguments["originId"] as? String ?? ""
         let destinationId: String = arguments["destinationId"] as? String ?? ""
-
-        var params: JourneySolutionViewController.InParameters = JourneySolutionViewController.InParameters(originId: originId, destinationId: destinationId)
+        var journeysRequest = JourneysRequest(originId: originId, destinationId: destinationId)
 
         if (arguments["originLabel"] != nil) {
-            params.originLabel = arguments["originLabel"] as? String ?? ""
+            journeysRequest.originLabel = arguments["originLabel"] as? String ?? ""
         }
         if (arguments["destinationLabel"] != nil) {
-            params.destinationLabel = arguments["destinationLabel"] as? String ?? ""
+            journeysRequest.destinationLabel = arguments["destinationLabel"] as? String ?? ""
         }
         if (arguments["datetimeRepresents"] != nil) {
             if let enumValue = self.anyToEnum(arguments["datetimeRepresents"]!) as JourneysRequestBuilder.DatetimeRepresents? {
-                params.datetimeRepresents = enumValue
+                journeysRequest.datetimeRepresents = enumValue
             }
         }
         if (arguments["datetime"] != nil) {
-            params.datetime = getDatetime(from: arguments["datetime"] as? String ?? "")
+            journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String ?? "")
         }
         if (arguments["forbiddenUris"] != nil) {
-            params.forbiddenUris = arguments["forbiddenUris"] as? [String] ?? []
+            journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String] ?? []
         }
         if (arguments["firstSectionModes"] != nil) {
-            params.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"]!) as [JourneysRequestBuilder.FirstSectionMode]
+            journeysRequest.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"]!) as [JourneysRequestBuilder.FirstSectionMode]
         }
         if (arguments["lastSectionModes"] != nil) {
-            params.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"]!) as [JourneysRequestBuilder.LastSectionMode]
+            journeysRequest.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"]!) as [JourneysRequestBuilder.LastSectionMode]
         }
         if (arguments["count"] != nil) {
-            params.count = arguments["count"] as? Int32 ?? 0
+            journeysRequest.count = arguments["count"] as? Int32 ?? 0
         }
         if (arguments["minNbJourneys"] != nil) {
-            params.minNbJourneys = arguments["minNbJourneys"] as? Int32 ?? 0
+            journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int32 ?? 0
         }
         if (arguments["maxNbJourneys"] != nil) {
-            params.maxNbJourneys = arguments["maxNbJourneys"] as? Int32 ?? 0
+            journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int32 ?? 0
         }
         if (arguments["bssStands"] != nil) {
-            params.bssStands = arguments["bssStands"] as? Bool ?? false
+            journeysRequest.bssStands = arguments["bssStands"] as? Bool ?? false
+        }
+        if (arguments["addPoiInfos"] != nil) {
+            journeysRequest.addPoiInfos = self.arrayToEnum(arguments["addPoiInfos"]!) as [JourneysRequestBuilder.AddPoiInfos]
         }
 
-        return params
+        return journeysRequest
     }
 
     func anyToEnum<T: RawRepresentable>(_ value: Any) -> T? {
@@ -119,6 +144,7 @@ import NavitiaSDKUI
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
+
         return formatter.date(from: argument)!
     }
 
