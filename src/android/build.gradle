@@ -25,7 +25,24 @@ configurations.all {
     }
 }
 
+android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+}
+
+ext.postBuildExtras = {
+    android {
+        allprojects {
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
+            }
+        }
+    }
+}
+
 dependencies {
-    compile 'org.kisio.sdk:navitia-sdk-ui:1.5.1'
-    compile 'com.android.support:appcompat-v7:+'
+    implementation 'org.kisio.sdk:navitia-sdk-ui:1.6.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 }

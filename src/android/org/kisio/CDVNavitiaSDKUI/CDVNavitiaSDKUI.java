@@ -12,9 +12,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kisio.navitia.sdk.ui.journey.common.JourneysRequest;
-import org.kisio.navitia.sdk.ui.journey.result.JourneyResultActivity;
+import org.kisio.navitia.sdk.ui.core.JourneysRequest;
+import org.kisio.navitia.sdk.ui.presentation.journeys.JourneysActivity;
 import org.kisio.navitia.sdk.ui.util.Configuration;
+import org.kisio.navitia.sdk.ui.util.Constant;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
 import java.util.ArrayList;
@@ -67,39 +68,41 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
         } else {
             callbackContext.error("Action " + action + " not found");
         }
+
         return true;
     }
 
     private void init(JSONObject config, CallbackContext callbackContext) {
-        final String token = config.optString("token");
+        String token = config.optString("token");
         if (token.isEmpty()) {
             callbackContext.error("No token specified");
+
             return;
         }
 
         Configuration.TOKEN = token;
-        final String mainColor = config.optString("mainColor");
-        if (!mainColor.isEmpty()) {
-            Configuration.setMainColor(mainColor);
-        }
-        final String originColor = config.optString("originColor");
-        if (!originColor.isEmpty()) {
-            Configuration.setOriginColor(originColor);
-        }
-        final String destinationColor = config.optString("destinationColor");
-        if (!destinationColor.isEmpty()) {
-            Configuration.setDestinationColor(destinationColor);
-        }
+
+        String mainColor = config.optString("mainColor", "#40958E");
+        Configuration.setMainColor(mainColor);
+
+        String originColor = config.optString("originColor", "#00BB75");
+        Configuration.setOriginColor(originColor);
+
+        String destinationColor = config.optString("destinationColor", "#B00353");
+        Configuration.setDestinationColor(destinationColor);
+
+        boolean multiNetwork = config.optBoolean("multiNetwork", false);
+        Configuration.MULTI_NETWORK = multiNetwork;
+
         callbackContext.success();
     }
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
-        final Context context = this.cordova.getActivity().getApplicationContext();
-        final Intent intent = new Intent(context, JourneyResultActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         try {
-            final JourneysRequest request = new JourneysRequest(params.getString("originId"), params.getString("destinationId"));
+            final Context context = this.cordova.getActivity().getApplicationContext();
+            Intent intent = new Intent(context, JourneysActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            JourneysRequest request = new JourneysRequest(params.getString("originId"), params.getString("destinationId"));
 
             if (params.has("originLabel")) {
                 request.setOriginLabel(params.getString("originLabel"));
@@ -135,8 +138,9 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
                 request.setAddPoiInfos(Arrays.asList("bss_stands"));
             }
 
-            intent.putExtra(JourneyResultActivity.INTENT_PARAM, request);
+            intent.putExtra(Constant.JOURNEYS_REQUEST, request);
             context.startActivity(intent);
+
             callbackContext.success();
         } catch (JSONException e) {
             callbackContext.error(e.getMessage());
@@ -146,29 +150,37 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
     private void resetPreferences(CallbackContext callbackContext) {
         final Context context = this.cordova.getActivity().getApplicationContext();
         NavitiaSDKPreferencesManager.resetPreferences(context);
+
         callbackContext.success();
     }
 
     private DateTime getDatetimeFromString(String value) {
-        DateTime dt = new DateTime();
         try {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZoneUTC();
-            dt = formatter.parseDateTime(value);
+            DateTime parsedDate = formatter.parseDateTime(value);
+
+            return parsedDate;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+            DateTime currentDate = new DateTime();
+
+            return currentDate;
         }
-        return dt;
     }
 
     private List<String> getStringListFromJsonArray(JSONArray array) {
-        List<String> list = new ArrayList<String>();
         try {
+            List<String> stringList = new ArrayList<String>();
             for (int i = 0; i < array.length(); i++) {
-                list.add(array.getString(i));
+                stringList.add(array.getString(i));
             }
+
+            return stringList;
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
+            List<String> emptyStringList = new ArrayList<String>();
+
+            return emptyStringList;
         }
-        return list;
     }
 }
