@@ -43,6 +43,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #2a968f |
 | config.originColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
 | config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
+| config.multiNetwork | Boolean | ✗ | to set the display of the network name in the roadmap  | by default false |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -64,6 +65,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
+| params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | [NavitiaSDKUI.AddPoiInfos.bss\_stand, NavitiaSDKUI.AddPoiInfos.car\_park] |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
