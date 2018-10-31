@@ -1,4 +1,6 @@
 # NavitiaSDK UI for Cordova
+[![npm version](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui.svg)](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Cordova plugin for using NavitiaSDK UI.
 This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
@@ -34,7 +36,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 
 ## Usage
 
-### NavitiaSDKUI.init(config, success, failure)
+### Configuration - NavitiaSDKUI.init(config, success, failure)
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -47,7 +49,22 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
-### NavitiaSDKUI.invokeJourneyResults(params, success, failure)
+#### Example
+
+```js
+var config = {
+    token: 'my-token',
+    mainColor: '#e67e22',
+    originColor: '#2980b9',
+    destinationColor: '#d35400',
+};
+
+NavitiaSDKUI.init(config, function() {}, function(error) {
+    console.log(error);
+});
+```
+
+### Journeys request - NavitiaSDKUI.invokeJourneyResults(params, success, failure)
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -65,32 +82,26 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
-| params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | [NavitiaSDKUI.AddPoiInfos.bss\_stand, NavitiaSDKUI.AddPoiInfos.car\_park] |
+| params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | ['bss\_stand', 'car\_park'] |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
-### Example
+#### Example
 
-    var config = {
-        token: 'my-token',
-        mainColor: '#e67e22',
-        originColor: '#2980b9',
-        destinationColor: '#d35400',
-    };
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    originLabel: 'My Home',
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.CAR, NavitiaSDKUI.SectionMode.BIKE, NavitiaSDKUI.SectionMode.BSS, NavitiaSDKUI.SectionMode.RIDESHARING],
+    addPoiInfos: ['bss_stand', 'car_park'],
+    count: 5,
+};
 
-    NavitiaSDKUI.init(config, function() {}, function(error) {
-        console.log(error);
-    });
-
-    var journeyParams = {
-        originLabel: 'My Home',
-        originId: '2.3665844;48.8465337',
-        destinationId: '2.2979169;48.8848719',
-    };
-
-    NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) {
-        console.log(error);
-    });
+NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) {
+    console.log(error);
+});
+```
 
 ### Colors configuration
 Actually, three color parameters can be customized for the SDK.
@@ -129,3 +140,7 @@ By :
 ```
 var num = target.match(/\d+/)[0];
 ```
+
+## License 
+
+Check out the Cordova plugin [License](https://github.com/CanalTP/CDVNavitiaSDKUX/blob/master/LICENSE) here.
