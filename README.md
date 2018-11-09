@@ -41,11 +41,11 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | config | Object | ✓ | Configuration | |
-| config.token | String | ✓ | Token navitia (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
+| config.token | String | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
 | config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #2a968f |
 | config.originColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
 | config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
-| config.multiNetwork | Boolean | ✗ | to set the display of the network name in the roadmap  | by default false |
+| config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -101,6 +101,65 @@ var journeyParams = {
 NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) {
     console.log(error);
 });
+```
+
+##### Public transport 
+
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
+};
+```
+
+##### Bike
+
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BIKE],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BIKE],
+};
+```
+
+##### BSS
+
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BSS],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BSS],
+    addPoiInfos: ['bss_stand'],
+};
+```
+
+##### Car
+
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.CAR],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
+    addPoiInfos: ['car_park'],
+};
+```
+
+##### Ridesharing
+
+```js
+var journeyParams = {
+    originId: '2.3665844;48.8465337',
+    destinationId: '2.2979169;48.8848719',
+    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.RIDESHARING],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.RIDESHARING],
+};
 ```
 
 ### Colors configuration
