@@ -109,8 +109,6 @@ NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) 
 var journeyParams = {
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
-    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
-    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
 };
 ```
 
@@ -121,8 +119,8 @@ var journeyParams = {
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
-    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BIKE],
-    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BIKE],
+    firstSectionModes: [NavitiaSDKUI.SectionMode.BIKE],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.BIKE],
 };
 ```
 
@@ -133,8 +131,8 @@ var journeyParams = {
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
-    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BSS],
-    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.BSS],
+    firstSectionModes: [NavitiaSDKUI.SectionMode.BSS],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.BSS],
     addPoiInfos: ['bss_stand'],
 };
 ```
@@ -145,8 +143,7 @@ var journeyParams = {
 var journeyParams = {
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
-    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.CAR],
-    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING],
+    firstSectionModes: [NavitiaSDKUI.SectionMode.CAR],
     addPoiInfos: ['car_park'],
 };
 ```
@@ -157,8 +154,8 @@ var journeyParams = {
 var journeyParams = {
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
-    firstSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.RIDESHARING],
-    lastSectionModes: [NavitiaSDKUI.SectionMode.WALKING, NavitiaSDKUI.SectionMode.RIDESHARING],
+    firstSectionModes: [NavitiaSDKUI.SectionMode.RIDESHARING],
+    lastSectionModes: [NavitiaSDKUI.SectionMode.RIDESHARING],
 };
 ```
 
