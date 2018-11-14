@@ -119,7 +119,10 @@ import NavitiaSDKUI
         if (arguments["addPoiInfos"] != nil) {
             journeysRequest.addPoiInfos = self.arrayToEnum(arguments["addPoiInfos"]!) as [JourneysRequestBuilder.AddPoiInfos]
         }
-
+        if (arguments["directPath"] != nil) {
+            journeysRequest.directPath = self.arrayToEnum(arguments["directPath"]!) as [JourneysRequestBuilder.DirectPath]
+        }
+        
         return journeysRequest
     }
 

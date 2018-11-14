@@ -137,6 +137,9 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             if (params.has("bssStands") && params.getBoolean("bssStands")) {
                 request.setAddPoiInfos(Arrays.asList("bss_stands"));
             }
+            if (params.has("directPath")) {
+                request.setDirectPath(params.getString("directPath"));
+            }
 
             intent.putExtra(Constant.JOURNEYS_REQUEST, request);
             context.startActivity(intent);
