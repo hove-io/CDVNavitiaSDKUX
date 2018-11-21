@@ -81,46 +81,46 @@ import NavitiaSDKUI
         let destinationId: String = arguments["destinationId"] as? String ?? ""
         var journeysRequest = JourneysRequest(originId: originId, destinationId: destinationId)
 
-        if (arguments["originLabel"] != nil) {
+        if arguments["originLabel"] != nil {
             journeysRequest.originLabel = arguments["originLabel"] as? String ?? ""
         }
-        if (arguments["destinationLabel"] != nil) {
+        if arguments["destinationLabel"] != nil {
             journeysRequest.destinationLabel = arguments["destinationLabel"] as? String ?? ""
         }
-        if (arguments["datetimeRepresents"] != nil) {
+        if arguments["datetimeRepresents"] != nil {
             if let enumValue = self.anyToEnum(arguments["datetimeRepresents"]!) as JourneysRequestBuilder.DatetimeRepresents? {
                 journeysRequest.datetimeRepresents = enumValue
             }
         }
-        if (arguments["datetime"] != nil) {
+        if arguments["datetime"] != nil {
             journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String ?? "")
         }
-        if (arguments["forbiddenUris"] != nil) {
+        if arguments["forbiddenUris"] != nil {
             journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String] ?? []
         }
-        if (arguments["firstSectionModes"] != nil) {
+        if arguments["firstSectionModes"] != nil {
             journeysRequest.firstSectionModes = self.arrayToEnum(arguments["firstSectionModes"]!) as [JourneysRequestBuilder.FirstSectionMode]
         }
-        if (arguments["lastSectionModes"] != nil) {
+        if arguments["lastSectionModes"] != nil {
             journeysRequest.lastSectionModes = self.arrayToEnum(arguments["lastSectionModes"]!) as [JourneysRequestBuilder.LastSectionMode]
         }
-        if (arguments["count"] != nil) {
+        if arguments["count"] != nil {
             journeysRequest.count = arguments["count"] as? Int32 ?? 0
         }
-        if (arguments["minNbJourneys"] != nil) {
+        if arguments["minNbJourneys"] != nil {
             journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int32 ?? 0
         }
-        if (arguments["maxNbJourneys"] != nil) {
+        if arguments["maxNbJourneys"] != nil {
             journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int32 ?? 0
         }
-        if (arguments["bssStands"] != nil) {
+        if arguments["bssStands"] != nil {
             journeysRequest.bssStands = arguments["bssStands"] as? Bool ?? false
         }
-        if (arguments["addPoiInfos"] != nil) {
+        if arguments["addPoiInfos"] != nil {
             journeysRequest.addPoiInfos = self.arrayToEnum(arguments["addPoiInfos"]!) as [JourneysRequestBuilder.AddPoiInfos]
         }
-        if (arguments["directPath"] != nil) {
-            journeysRequest.directPath = self.arrayToEnum(arguments["directPath"]!) as [JourneysRequestBuilder.DirectPath]
+        if arguments["directPath"] != nil, let directPath = self.anyToEnum(arguments["directPath"]!) as JourneysRequestBuilder.DirectPath? {
+            journeysRequest.directPath = directPath
         }
         
         return journeysRequest
