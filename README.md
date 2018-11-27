@@ -83,6 +83,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
 | params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | ['bss\_stand', 'car\_park'] |
+| params.directPath | String | ✗ | To indicate if the journey is direct | "only" |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
