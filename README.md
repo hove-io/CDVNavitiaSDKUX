@@ -73,7 +73,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | "2.2979169;48.8848719" |
 | params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | "Home" |
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | "Work" |
-| params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
+| params.datetime | String | ✗ | Requested date and time for journey results | new Date().toISOString() |
 | params.datetimeRepresents | String | ✗ | Can be `NavitiaSDKUI.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUI.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUI.DatetimeRepresents.DEPARTURE |
 | params.forbiddenUris | [String] | ✗ | Used to avoid lines, modes, networks, etc in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
 | params.allowedId | [String] | ✗ | If you want to use only a small subset of the public transport objects in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
