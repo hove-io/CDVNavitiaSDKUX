@@ -134,8 +134,11 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             if (params.has("maxNbJourneys")) {
                 request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
             }
-            if (params.has("bssStands") && params.getBoolean("bssStands")) {
-                request.setAddPoiInfos(Arrays.asList("bss_stands"));
+            if (params.has("addPoiInfos")) {
+                request.setAddPoiInfos(getStringListFromJsonArray(params.getJSONArray("addPoiInfos")));
+            }
+            if (params.has("directPath")) {
+                request.setDirectPath(params.getString("directPath"));
             }
 
             intent.putExtra(Constant.JOURNEYS_REQUEST, request);
@@ -156,7 +159,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
 
     private DateTime getDatetimeFromString(String value) {
         try {
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZoneUTC();
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             DateTime parsedDate = formatter.parseDateTime(value);
 
             return parsedDate;

@@ -73,7 +73,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | "2.2979169;48.8848719" |
 | params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | "Home" |
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | "Work" |
-| params.datetime | Date | ✗ | Requested date and time for journey results | new Date() |
+| params.datetime | String | ✗ | Requested date and time (in UTC Timezone) for journey results | new Date().toISOString() |
 | params.datetimeRepresents | String | ✗ | Can be `NavitiaSDKUI.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUI.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUI.DatetimeRepresents.DEPARTURE |
 | params.forbiddenUris | [String] | ✗ | Used to avoid lines, modes, networks, etc in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
 | params.allowedId | [String] | ✗ | If you want to use only a small subset of the public transport objects in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
@@ -82,7 +82,8 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | params.count | Integer | ✗ | The number of journeys that will be displayed | 3 |
 | params.minNbJourneys | Integer | ✗ | The minimum number of journeys that will be displayed | 3 |
 | params.maxNbJourneys | Integer | ✗ | The maximum number of journeys that will be displayed | 10 |
-| params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | ['bss\_stand', 'car\_park'] |
+| params.addPoiInfos | [String] | ✗ | Allow the display of the availability in real time for bike share and car park | ['bss\_stands', 'car\_park'] |
+| params.directPath | String | ✗ | To indicate if the journey is direct | "only" |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
