@@ -64,6 +64,9 @@ import NavitiaSDKUI
             self.viewController.navigationController?.pushViewController(listJourneysViewController, animated: true)
         } else {
             let navigationController: UINavigationController = UINavigationController(rootViewController: listJourneysViewController)
+            
+            navigationController.navigationBar.isTranslucent = false
+            
             viewController.present(navigationController, animated: true, completion: nil)
         }
         
