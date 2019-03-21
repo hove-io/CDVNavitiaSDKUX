@@ -5,6 +5,8 @@
 Cordova plugin for using NavitiaSDK UI.
 This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
 
+Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS) or a Bottom Navigation (Android)
+
 ## Installation
 
 This plugin uses Carthage to build dependencies for iOS, please install it first:
