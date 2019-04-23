@@ -43,6 +43,6 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation 'org.kisio.sdk:navitia-sdk-ui:1.9.0'
+    implementation 'org.kisio.sdk:navitia-sdk-ui:2.0.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
 }
