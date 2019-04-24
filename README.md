@@ -48,12 +48,14 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.originColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
 | config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
+| config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
+| config.modeForm | Object | ✗ | To customize the search form |  |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
 #### Example
 
-```js
+```js****
 var config = {
     token: 'my-token',
     mainColor: '#e67e22',
@@ -66,13 +68,80 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 });
 ```
 
+#### Example with custom form
+
+| Parameters | Type | Required | Description | Example |
+| --- | --- |:---:| --- | --- |
+| modeForm | Object | ✓ | Configuration | |
+| modeForm.title | String | ✓ | To set the button title | 'Metro' |
+| modeForm.icon | String | ✓ | To set the button icon | 'metro' |
+| modeForm.selected | Boolean | ✓ | To set the button is selected by default | false |
+| modeForm.mode | String | ✓ | To set mode to use at the begining and end by the button | NavitiaSDKUI.SectionMode.WALKING |
+| modeForm.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
+| modeForm.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
+
+```js****
+var modeForm = [{
+      title: 'Metro',
+      icon: 'metro',
+      selected: true,
+      mode: NavitiaSDKUI.SectionMode.WALKING,
+      physicalMode: ['physical_mode:Metro'],
+    },{
+      title: 'Bus',
+      icon: 'bus',
+      selected: true,
+      mode: NavitiaSDKUI.SectionMode.WALKING,
+      physicalMode: ['physical_mode:Bus'],
+    },{
+      title: 'Train',
+      icon: 'train',
+      selected: true,
+      mode: NavitiaSDKUI.SectionMode.WALKING,
+      physicalMode: ['physical_mode:RapidTransit', 'physical_mode:LocalTrain', 'physical_mode:Train', 'physical_mode:Shuttle'],
+    },{
+      title: 'Bike',
+      icon: 'bike',
+      selected: false,
+      mode: NavitiaSDKUI.SectionMode.BIKE,
+      physicalMode: ['physical_mode:Bike'],
+    },{
+      title: 'BSS',
+      icon: 'bss',
+      selected: false,
+      mode: NavitiaSDKUI.SectionMode.BSS,
+      physicalMode: ['physical_mode:Bss'],
+      realTime: true,
+    },{
+      title: 'Car',
+      icon: 'car',
+      selected: false,
+      mode: NavitiaSDKUI.SectionMode.CAR,
+      physicalMode: ['physical_mode:Car'],
+      realTime: true,
+    }];
+
+var config = {
+    token: 'my-token',
+    mainColor: '#e67e22',
+    originColor: '#2980b9',
+    destinationColor: '#d35400',
+    modeForm: modeForm,
+};
+
+NavitiaSDKUI.init(config, function() {}, function(error) {
+    console.log(error);
+});
+```
+
 ### Journeys request - NavitiaSDKUI.invokeJourneyResults(params, success, failure)
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | params | Object | ✓ | Parameters of the screen | |
-| params.originId | String | ✓ | Origin coordinates, following the format `lon;lat` | "2.3665844;48.8465337" |
-| params.destinationId | String | ✓ | Destination coordinates, following the format `lon;lat` | "2.2979169;48.8848719" |
+| params.coverage | String | ✓ | Name of search area | "fr-idf" |
+| params.originId | String | ✗ | Origin coordinates, following the format `lon;lat` | "2.3665844;48.8465337" |
+| params.destinationId | String | ✗ | Destination coordinates, following the format `lon;lat` | "2.2979169;48.8848719" |
 | params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | "Home" |
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | "Work" |
 | params.datetime | String | ✗ | Requested date and time (in UTC Timezone) for journey results | new Date().toISOString() |
@@ -93,6 +162,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     originLabel: 'My Home',
@@ -110,6 +180,7 @@ NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) 
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
 };
@@ -119,6 +190,7 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
@@ -131,6 +203,7 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
@@ -144,6 +217,7 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     firstSectionModes: [NavitiaSDKUI.SectionMode.CAR],
@@ -155,6 +229,7 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
+	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     firstSectionModes: [NavitiaSDKUI.SectionMode.RIDESHARING],
