@@ -1,7 +1,9 @@
 package org.kisio.CDVNavitiaSDKUI;
 
+import android.support.annotation.StringDef;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -20,6 +22,8 @@ import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.Constant;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +47,30 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
     private abstract class Action implements IAction {
         @Override
         public abstract void doAction(JSONObject params, CallbackContext callbackContext);
+    }
+
+    @StringDef({})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TransportModeIcon {
+        String AIR = "air";
+        String BIKE = "bike";
+        String FERRY = "ferry";
+        String BSS = "bss";
+        String BUS = "bus";
+        String CAR = "car";
+        String COACH = "coach";
+        String FUNICULAR = "funicular";
+        String METRO = "metro";
+        String LOCALTRAIN = "localtrain";
+        String TRAIN = "train";
+        String RAPIDTRANSIT = "rapidtransit";
+        String LONGDISTANCETRAIN = "longdistancetrain";
+        String TRAMWAY = "tramway";
+        String WALKING = "walking";
+        String PHONE_TAD = "phone-tad";
+        String BUS_TAD = "bus-tad";
+        String TAXI_TAD = "taxi-tad";
+        String CAR_TAD = "car-tad";
     }
 
     public CDVNavitiaSDKUI() {
@@ -216,7 +244,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
 
                 TransportModeModel transportModeModel = new TransportModeModel();
                 transportModeModel.setTitle(object.optString("title"));
-                transportModeModel.setTextIcon(object.optString("icon"));
+                transportModeModel.setTextIcon(getTextIcon(object.optString("icon")));
                 transportModeModel.setFirstSectionMode(getStringListFromJsonArray(object.optJSONArray("firstSectionMode")).toArray(new String[0]));
                 transportModeModel.setLastSectionMode(getStringListFromJsonArray(object.optJSONArray("lastSectionMode")).toArray(new String[0]));
                 transportModeModel.setPhysicalModes(getStringListFromJsonArray(object.optJSONArray("physicalMode")).toArray(new String[0]));
@@ -231,4 +259,54 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
 
         return transportModes;
     }
+
+    private String getTextIcon(@TransportModeIcon String value) {
+        if (TextUtils.isEmpty(value)) {
+            return "";
+        }
+
+        switch (value) {
+            case TransportModeIcon.AIR:
+                return "\uea04";
+            case TransportModeIcon.BIKE:
+                return "\uea0d";
+            case TransportModeIcon.FERRY:
+                return "\uea0e";
+            case TransportModeIcon.BSS:
+                return "\uea0f";
+            case TransportModeIcon.BUS:
+                return "\uea10";
+            case TransportModeIcon.CAR:
+                return "\uea12";
+            case TransportModeIcon.COACH:
+                return "\uea14";
+            case TransportModeIcon.FUNICULAR:
+                return "\uea18";
+            case TransportModeIcon.METRO:
+                return "\uea1b";
+            case TransportModeIcon.LOCALTRAIN:
+                return "\uea23";
+            case TransportModeIcon.TRAIN:
+                return "\uea23";
+            case TransportModeIcon.RAPIDTRANSIT:
+                return "\uea23";
+            case TransportModeIcon.LONGDISTANCETRAIN:
+                return "\uea23";
+            case TransportModeIcon.TRAMWAY:
+                return "\uea24";
+            case TransportModeIcon.WALKING:
+                return "\uea25";
+            case TransportModeIcon.PHONE_TAD:
+                return "\ue913";
+            case TransportModeIcon.BUS_TAD:
+                return "\ue911";
+            case TransportModeIcon.TAXI_TAD:
+                return "\ue910";
+            case TransportModeIcon.CAR_TAD:
+                return "\ue90e";
+            default:
+                return "";
+        }
+    }
+    
 }
