@@ -122,7 +122,7 @@ import NavitiaSDKUI
         if viewController.navigationController != nil {
             self.viewController.navigationController?.pushViewController(rootViewController, animated: true)
         } else {
-            let navigationController: UINavigationController = UINavigationController(rootViewController: listJourneysViewController)
+            let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
             
             navigationController.navigationBar.isTranslucent = false
             
