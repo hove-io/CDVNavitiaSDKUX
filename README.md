@@ -73,50 +73,57 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | modeForm | Object | ✓ | Configuration | |
-| modeForm.title | String | ✓ | To set the button title | 'Metro' |
+| modeForm.title | String | ✓ | To set the button title | NavitiaSDKUI.TransportModeIcon.METRO |
 | modeForm.icon | String | ✓ | To set the button icon | 'metro' |
 | modeForm.selected | Boolean | ✓ | To set the button is selected by default | false |
-| modeForm.mode | String | ✓ | To set mode to use at the begining and end by the button | NavitiaSDKUI.SectionMode.WALKING |
+| modeForm.firstSectionMode | [String] | ✓ | To set mode to use at the begining by the button | NavitiaSDKUI.SectionMode.WALKING |
+| modeForm.lastSectionMode | [String] | ✓ | To set mode to use at the end by the button | NavitiaSDKUI.SectionMode.WALKING |
 | modeForm.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
 | modeForm.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
 
 ```js****
 var modeForm = [{
       title: 'Metro',
-      icon: 'metro',
+      icon: NavitiaSDKUI.TransportModeIcon.METRO,
       selected: true,
-      mode: NavitiaSDKUI.SectionMode.WALKING,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
       physicalMode: ['physical_mode:Metro'],
     },{
       title: 'Bus',
-      icon: 'bus',
+      icon: NavitiaSDKUI.TransportModeIcon.BUS,
       selected: true,
-      mode: NavitiaSDKUI.SectionMode.WALKING,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
       physicalMode: ['physical_mode:Bus'],
     },{
       title: 'Train',
-      icon: 'train',
+      icon: NavitiaSDKUI.TransportModeIcon.TRAIN,
       selected: true,
-      mode: NavitiaSDKUI.SectionMode.WALKING,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
       physicalMode: ['physical_mode:RapidTransit', 'physical_mode:LocalTrain', 'physical_mode:Train', 'physical_mode:Shuttle'],
     },{
       title: 'Bike',
-      icon: 'bike',
+      icon: NavitiaSDKUI.TransportModeIcon.BIKE,
       selected: false,
-      mode: NavitiaSDKUI.SectionMode.BIKE,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.BIKE ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.BIKE ],
       physicalMode: ['physical_mode:Bike'],
     },{
       title: 'BSS',
-      icon: 'bss',
+      icon: NavitiaSDKUI.TransportModeIcon.BSS,
       selected: false,
-      mode: NavitiaSDKUI.SectionMode.BSS,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.BSS ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.BSS ],
       physicalMode: ['physical_mode:Bss'],
       realTime: true,
     },{
       title: 'Car',
-      icon: 'car',
+      icon: NavitiaSDKUI.TransportModeIcon.CAR,
       selected: false,
-      mode: NavitiaSDKUI.SectionMode.CAR,
+      firstSectionMode: [ NavitiaSDKUI.SectionMode.CAR ],
+      lastSectionMode: [ NavitiaSDKUI.SectionMode.CAR ],
       physicalMode: ['physical_mode:Car'],
       realTime: true,
     }];
