@@ -72,7 +72,8 @@ import NavitiaSDKUI
         guard let title = arguments["title"] as? String,
             let icon = arguments["icon"] as? String,
             let selected = arguments["selected"] as? Bool,
-            let mode = anyToEnum(arguments["mode"] as! String) as ModeButtonModel.ModeType? else {
+            let firstSectionMode = arguments["firstSectionMode"] as? [String],
+            let lastSectionMode = arguments["lastSectionMode"] as? [String] else {
                 return nil
         }
         
@@ -80,7 +81,8 @@ import NavitiaSDKUI
         let  modeButtonModel = ModeButtonModel(title: title,
                                                icon: icon,
                                                selected: selected,
-                                               mode: mode,
+                                               firstSectionMode: firstSectionMode,
+                                               lastSectionMode: lastSectionMode,
                                                physicalMode: arguments["physicalMode"] as? [String],
                                                realTime: arguments["realTime"] as? Bool ?? false)
         
