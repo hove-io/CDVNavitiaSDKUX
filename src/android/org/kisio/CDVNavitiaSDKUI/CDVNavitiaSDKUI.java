@@ -176,10 +176,26 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             }
             if (params.has("addPoiInfos")) {
                 request.setAddPoiInfos(getStringListFromJsonArray(params.getJSONArray("addPoiInfos")));
+            } else {
+                List<String> addPoiInfosList = new ArrayList<>();
+                for (TransportModeModel transportMode : transportModes) {
+                    if (transportMode.getTitle().equalsIgnoreCase("bss") && transportMode.isRealTime()) {
+                        addPoiInfosList.add("bss_stands");
+                    }
+
+                    if (transportMode.getTitle().equalsIgnoreCase("car") && transportMode.isRealTime()) {
+                        addPoiInfosList.add("car_park");
+                    }
+                }
+
+                if (addPoiInfosList.size() > 0) {
+                    request.setAddPoiInfos(addPoiInfosList);
+                }
             }
             if (params.has("directPath")) {
                 request.setDirectPath(params.getString("directPath"));
             }
+
 
             final Intent intent = formJourney ? new Intent(context, FormActivity.class) : new Intent(context, JourneysActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
