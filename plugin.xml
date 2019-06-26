@@ -20,10 +20,10 @@
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUI">
-                <param name="android-package" value="org.kisio.CDVNavitiaSDKUI.CDVNavitiaSDKUI"/>
+                <param name="android-package" value="com.kisio.navitia.sdk.ui.cordova.JourneysUICordovaPlugin"/>
             </feature>
         </config-file>
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-        <source-file src="src/android/org/kisio/CDVNavitiaSDKUI/CDVNavitiaSDKUI.java" target-dir="src/org/kisio/CDVNavitiaSDKUI" />
+        <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/cordova" />
     </platform>
 </plugin>
