@@ -1,7 +1,7 @@
 {
   "name": "cordova-plugin-navitia-sdk-ui",
   "version": "2.0.1",
-  "description": "Cordova plugin for NavitiaSDKUX iOS & Android",
+  "description": "Cordova plugin for Journey UI Android & iOS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

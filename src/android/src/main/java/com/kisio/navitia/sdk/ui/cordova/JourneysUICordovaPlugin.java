@@ -1,4 +1,4 @@
-package org.kisio.CDVNavitiaSDKUI;
+package com.kisio.navitia.sdk.ui.cordova;
 
 import android.support.annotation.StringDef;
 import android.content.Context;
@@ -14,11 +14,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kisio.navitia.sdk.ui.core.JourneysUI;
 import org.kisio.navitia.sdk.ui.core.JourneysRequest;
-import org.kisio.navitia.sdk.ui.presentation.form.FormActivity;
-import org.kisio.navitia.sdk.ui.presentation.journeys.JourneysActivity;
+import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
 import org.kisio.navitia.sdk.ui.presentation.model.TransportModeModel;
-import org.kisio.navitia.sdk.ui.util.Configuration;
 import org.kisio.navitia.sdk.ui.util.Constant;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
 
@@ -30,15 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class CDVNavitiaSDKUI extends CordovaPlugin {
+public class JourneysUICordovaPlugin extends CordovaPlugin {
 
     private Map<String, Action> actions = new HashMap<String, Action>();
-
     private ArrayList<TransportModeModel> transportModes = new ArrayList<>();
     private boolean formJourney = false;
 
-    private static final String TAG = CDVNavitiaSDKUI.class.getName();
+    private static final String TAG = JourneysUICordovaPlugin.class.getName();
 
     private interface IAction {
         void doAction(JSONObject params, CallbackContext callbackContext);
@@ -73,7 +70,7 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
         String CAR_TAD = "car-tad";
     }
 
-    public CDVNavitiaSDKUI() {
+    public JourneysUICordovaPlugin() {
         actions.put("init", new Action() {
             @Override
             public void doAction(JSONObject config, CallbackContext callbackContext) {
@@ -113,23 +110,24 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             return;
         }
 
-        Configuration.TOKEN = token;
+        JourneysUI.getInstance().token(token);
 
         String mainColor = config.optString("mainColor", "#40958E");
-        Configuration.setMainColor(mainColor);
+        JourneysUI.getInstance().mainColor(mainColor);
 
         String originColor = config.optString("originColor", "#00BB75");
-        Configuration.setOriginColor(originColor);
+        JourneysUI.getInstance().originColor(mainColor);
 
         String destinationColor = config.optString("destinationColor", "#B00353");
-        Configuration.setDestinationColor(destinationColor);
+        JourneysUI.getInstance().originColor(mainColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
-        Configuration.MULTI_NETWORK = multiNetwork;
+        if (multiNetwork) {
+            JourneysUI.getInstance().withMultiNetwork();
+        }
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
-
         callbackContext.success();
     }
 
@@ -195,12 +193,12 @@ public class CDVNavitiaSDKUI extends CordovaPlugin {
             if (params.has("directPath")) {
                 request.setDirectPath(params.getString("directPath"));
             }
+            request.setTransportModeListRequested(this.transportModes);
 
-
-            final Intent intent = formJourney ? new Intent(context, FormActivity.class) : new Intent(context, JourneysActivity.class);
+            final Intent intent = new Intent(context, JourneysUIActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.JOURNEYS_REQUEST, request);
-            intent.putParcelableArrayListExtra(Constant.JOURNEYS_TRANSPORT_MODE, this.transportModes);
+            intent.putExtra(Constant.WITH_FORM, formJourney);
 
             context.startActivity(intent);
 
