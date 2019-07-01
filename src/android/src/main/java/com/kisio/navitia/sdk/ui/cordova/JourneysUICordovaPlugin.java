@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kisio.navitia.sdk.ui.core.enums.TransportMode;
 import org.kisio.navitia.sdk.ui.core.JourneysUI;
 import org.kisio.navitia.sdk.ui.core.JourneysRequest;
 import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
@@ -271,7 +272,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         return transportModes;
     }
 
-    private int getTextIcon(@TransportModeIcon String value) {
+    private int getIcon(@TransportModeIcon String value) {
         if (TextUtils.isEmpty(value)) {
             return -1;
         }
