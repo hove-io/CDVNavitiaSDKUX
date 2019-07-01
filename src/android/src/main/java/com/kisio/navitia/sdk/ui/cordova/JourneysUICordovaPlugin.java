@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.kisio.navitia.sdk.ui.core.JourneysUI;
 import org.kisio.navitia.sdk.ui.core.JourneysRequest;
+import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
 import org.kisio.navitia.sdk.ui.presentation.model.TransportModeModel;
 import org.kisio.navitia.sdk.ui.util.Constant;
 import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
@@ -127,9 +128,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
-
-        JourneysUI.getInstance().init(====);
-
         callbackContext.success();
     }
 
@@ -197,15 +195,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             }
             request.setTransportModeListRequested(this.transportModes);
 
-            /*final Intent intent = formJourney ? new Intent(context, FormActivity.class) : new Intent(context, JourneysActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Constant.JOURNEYS_REQUEST, request);
-            intent.putParcelableArrayListExtra(Constant.JOURNEYS_TRANSPORT_MODE, this.transportModes); */
-
             final Intent intent = new Intent(context, JourneysUIActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constant.JOURNEYS_REQUEST, request);
-            intent.putExtra(JourneysUIActivity.EXTRA_FORM_JOURNEY, formJourney);
+            intent.putExtra(Constant.WITH_FORM, formJourney);
 
             context.startActivity(intent);
 
