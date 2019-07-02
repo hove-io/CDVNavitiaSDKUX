@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kisio.navitia.sdk.ui.core.enums.TransportMode;
 import org.kisio.navitia.sdk.ui.core.JourneysUI;
 import org.kisio.navitia.sdk.ui.core.JourneysRequest;
 import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
@@ -49,25 +50,22 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     @StringDef({})
     @Retention(RetentionPolicy.SOURCE)
     public @interface TransportModeIcon {
-        String AIR = "air";
         String BIKE = "bike";
-        String FERRY = "ferry";
         String BSS = "bss";
         String BUS = "bus";
         String CAR = "car";
+        String CARPOOLING = "carpooling";
         String COACH = "coach";
+        String FERRY = "ferry";
         String FUNICULAR = "funicular";
-        String METRO = "metro";
         String LOCALTRAIN = "localtrain";
-        String TRAIN = "train";
-        String RAPIDTRANSIT = "rapidtransit";
         String LONGDISTANCETRAIN = "longdistancetrain";
+        String METRO = "metro";
+        String RAPIDTRANSIT = "rapidtransit";
+        String SHUTTLE = "shuttle";
+        String TAXI = "taxi";
+        String TRAIN = "train";
         String TRAMWAY = "tramway";
-        String WALKING = "walking";
-        String PHONE_TAD = "phone-tad";
-        String BUS_TAD = "bus-tad";
-        String TAXI_TAD = "taxi-tad";
-        String CAR_TAD = "car-tad";
     }
 
     public JourneysUICordovaPlugin() {
@@ -257,8 +255,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 JSONObject object = (JSONObject) array.get(i);
 
                 TransportModeModel transportModeModel = new TransportModeModel();
-                transportModeModel.setTitle(object.optString("title"));
-                transportModeModel.setTextIcon(getTextIcon(object.optString("icon")));
+                transportModeModel.setTitle(object.optString("title"));              
+                transportModeModel.setResIconId(getIcon(object.optString("icon")));
                 transportModeModel.setFirstSectionMode(getStringListFromJsonArray(object.optJSONArray("firstSectionMode")).toArray(new String[0]));
                 transportModeModel.setLastSectionMode(getStringListFromJsonArray(object.optJSONArray("lastSectionMode")).toArray(new String[0]));
                 transportModeModel.setPhysicalModes(getStringListFromJsonArray(object.optJSONArray("physicalMode")).toArray(new String[0]));
@@ -274,53 +272,46 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         return transportModes;
     }
 
-    private String getTextIcon(@TransportModeIcon String value) {
+    private int getIcon(@TransportModeIcon String value) {
         if (TextUtils.isEmpty(value)) {
-            return "";
+            return -1;
         }
 
         switch (value) {
-            case TransportModeIcon.AIR:
-                return "\uea04";
             case TransportModeIcon.BIKE:
-                return "\uea0d";
-            case TransportModeIcon.FERRY:
-                return "\uea0e";
+                return TransportMode.BIKE.getResIconId();
             case TransportModeIcon.BSS:
-                return "\uea0f";
+                return TransportMode.BSS.getResIconId();
             case TransportModeIcon.BUS:
-                return "\uea10";
+                return TransportMode.BUS.getResIconId();
             case TransportModeIcon.CAR:
-                return "\uea12";
+                return TransportMode.CAR.getResIconId();
+            case TransportModeIcon.CARPOOLING:
+                return TransportMode.CARPOOLING.getResIconId();
             case TransportModeIcon.COACH:
-                return "\uea14";
+                return TransportMode.COACH.getResIconId();
+            case TransportModeIcon.FERRY:
+                return TransportMode.FERRY.getResIconId();
             case TransportModeIcon.FUNICULAR:
-                return "\uea18";
-            case TransportModeIcon.METRO:
-                return "\uea1b";
+                return TransportMode.FUNICULAR.getResIconId();
             case TransportModeIcon.LOCALTRAIN:
-                return "\uea23";
-            case TransportModeIcon.TRAIN:
-                return "\uea23";
-            case TransportModeIcon.RAPIDTRANSIT:
-                return "\uea23";
+                return TransportMode.LOCAL_TRAIN.getResIconId();
             case TransportModeIcon.LONGDISTANCETRAIN:
-                return "\uea23";
+                return TransportMode.LONG_DISTANCE_TRAIN.getResIconId();
+            case TransportModeIcon.METRO:
+                return TransportMode.METRO.getResIconId();
+            case TransportModeIcon.RAPIDTRANSIT:
+                return TransportMode.RAPID_TRANSIT.getResIconId();
+            case TransportModeIcon.SHUTTLE:
+                return TransportMode.SHUTTLE.getResIconId();
+            case TransportModeIcon.TAXI:
+                return TransportMode.TAXI.getResIconId();
+            case TransportModeIcon.TRAIN:
+                return TransportMode.TRAIN.getResIconId();
             case TransportModeIcon.TRAMWAY:
-                return "\uea24";
-            case TransportModeIcon.WALKING:
-                return "\uea25";
-            case TransportModeIcon.PHONE_TAD:
-                return "\ue913";
-            case TransportModeIcon.BUS_TAD:
-                return "\ue911";
-            case TransportModeIcon.TAXI_TAD:
-                return "\ue910";
-            case TransportModeIcon.CAR_TAD:
-                return "\ue90e";
+                return TransportMode.TRAMWAY.getResIconId();
             default:
-                return "";
+                return -1;
         }
     }
-    
 }

@@ -1,15 +1,16 @@
 repositories {
-    // mavenLocal()
+    google()
+    mavenLocal()
     maven {
-        url  "https://dl.bintray.com/navitiasdkteam/NavitiaSDK"
+        url("https://dl.bintray.com/navitiasdkteam/NavitiaSDK")
     }
     maven {
-            url(kisio_artifactory_url + kisio_artifactory_android_repo_release)
-            credentials {
-                username = kisio_artifactory_username
-                password = kisio_artifactory_password
-            }
+        url(kisio_artifactory_url + kisio_artifactory_android_repo_release)
+        credentials {
+            username = kisio_artifactory_username
+            password = kisio_artifactory_password
         }
+    }
     maven {
         url(kisio_artifactory_url + kisio_artifactory_android_repo_snapshot)
         credentials {
@@ -18,7 +19,7 @@ repositories {
         }
     }
     maven {
-        url "https://maven.google.com"
+        url("https://maven.google.com")
     }
 }
 
@@ -32,7 +33,7 @@ if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
-        if (requested.group == 'com.android.support') {
+        if (requested.group == "com.android.support") {
             if (!requested.name.startsWith("multidex") && !requested.name.contains("support-core-ui") && !requested.name.contains("support-compat")) {
                 details.useVersion(supportLibraryVersion)
             }
@@ -42,7 +43,7 @@ configurations.all {
 
 android {
     defaultConfig {
-        multiDexEnabled true
+        multiDexEnabled = true
     }
 }
 
@@ -58,7 +59,7 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("org.kisio.sdk:navitia-sdk-ui:2.2.0-486a08af-SNAPSHOT")
+    implementation("org.kisio.sdk:navitia-sdk-ui:2.2.0-a056140a-20190701.155734-1")
     implementation("com.android.support:appcompat-v7:$supportLibraryVersion")
     implementation("com.android.support:design:$supportLibraryVersion")
 }
