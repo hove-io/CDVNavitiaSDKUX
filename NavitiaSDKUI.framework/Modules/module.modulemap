@@ -1,0 +1,11 @@
+framework module NavitiaSDKUI {
+  umbrella header "NavitiaSDKUI-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module NavitiaSDKUI.Swift {
+    header "NavitiaSDKUI-Swift.h"
+    requires objc
+}
