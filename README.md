@@ -1,4 +1,4 @@
-# NavitiaSDK UI for Cordova
+# Journeys UI for Cordova
 [![npm version](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui.svg)](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -248,6 +248,39 @@ var journeyParams = {
 Actually, three color parameters can be customized for the SDK.
 These parameters must be added to the "config" object as indicated in the table above.
 
+### Customize icons
+Rename your customized icon with the same resource name as the default icon.
+Simply register your custom icons in `config.xml`:
+```
+<platform name="android">
+  <resource-file src="www/res/drawable/yourImage.xml" target="res/drawable/yourImage.xml" />
+</platform>
+```
+
+#### Departure Icon
+In order to customize the `departure` icon, rename your resource as `ic_departure.xml`
+
+#### Arrival Icon
+In order to customize the `arrival` icon, rename your resource as `ic_arrival.xml`
+
+#### Transport Mode Icons
+Here is the list of default icon name:
+`ic_transport_mode_air.xml`
+`ic_transport_mode_bike.xml`
+`ic_transport_mode_bss.xml`
+`ic_transport_mode_bus.xml`
+`ic_transport_mode_car.xml`
+`ic_transport_mode_coach.xml`
+`ic_transport_mode_ferry.xml`
+`ic_transport_mode_funicular.xml`
+`ic_transport_mode_metro.xml`
+`ic_transport_mode_ridesharing.xml`
+`ic_transport_mode_shuttle.xml`
+`ic_transport_mode_taxi.xml`
+`ic_transport_mode_train.xml`
+`ic_transport_mode_tramway.xml`
+`ic_transport_mode_walking.xml`
+
 
 ## Troubleshooting
 ### Specific android tools version : 26
@@ -260,7 +293,7 @@ You may try to override your android compiler environment variables :
 
 ```
 export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-26
-export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=26.0.1
+export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=28.0.0
 ```
 
 More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 

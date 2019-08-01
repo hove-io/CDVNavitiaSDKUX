@@ -1,15 +1,31 @@
 repositories {
-    // mavenLocal()
+    google()
+    mavenLocal()
     maven {
-        url  "https://dl.bintray.com/navitiasdkteam/NavitiaSDK"
+        url("https://dl.bintray.com/navitiasdkteam/NavitiaSDK")
     }
     maven {
-        url "https://maven.google.com"
+        url(kisio_artifactory_url + kisio_artifactory_android_repo_release)
+        credentials {
+            username = kisio_artifactory_username
+            password = kisio_artifactory_password
+        }
+    }
+    maven {
+        url(kisio_artifactory_url + kisio_artifactory_android_repo_snapshot)
+        credentials {
+            username = kisio_artifactory_username
+            password = kisio_artifactory_password
+        }
+    }
+    maven {
+        url("https://maven.google.com")
     }
 }
 
+def supportLibraryVersion = "28.0.0"
 def DEFAULT_MIN_SDK_VERSION = 19
-def minSdk = Math.max(DEFAULT_MIN_SDK_VERSION, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer);
+def minSdk = Math.max(DEFAULT_MIN_SDK_VERSION, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer)
 if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk ) {
     ext.cdvMinSdkVersion = minSdk;
 }
@@ -17,9 +33,9 @@ if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
-        if (requested.group == 'com.android.support') {
+        if (requested.group == "com.android.support") {
             if (!requested.name.startsWith("multidex") && !requested.name.contains("support-core-ui") && !requested.name.contains("support-compat")) {
-                details.useVersion '26.1.0'
+                details.useVersion(supportLibraryVersion)
             }
         }
     }
@@ -27,7 +43,7 @@ configurations.all {
 
 android {
     defaultConfig {
-        multiDexEnabled true
+        multiDexEnabled = true
     }
 }
 
@@ -43,6 +59,7 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation 'org.kisio.sdk:navitia-sdk-ui:2.0.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation("org.kisio.sdk:navitia-sdk-ui:2.1.0")
+    implementation("com.android.support:appcompat-v7:$supportLibraryVersion")
+    implementation("com.android.support:design:$supportLibraryVersion")
 }

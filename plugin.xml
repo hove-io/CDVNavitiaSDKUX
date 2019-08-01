@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-navitia-sdk-ui" version="2.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-navitia-sdk-ui" version="2.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUI</name>
     
     <js-module name="NavitiaSDKUI" src="www/NavitiaSDKUI.js">
@@ -20,10 +20,10 @@
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUI">
-                <param name="android-package" value="org.kisio.CDVNavitiaSDKUI.CDVNavitiaSDKUI"/>
+                <param name="android-package" value="com.kisio.navitia.sdk.ui.cordova.JourneysUICordovaPlugin"/>
             </feature>
         </config-file>
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-        <source-file src="src/android/org/kisio/CDVNavitiaSDKUI/CDVNavitiaSDKUI.java" target-dir="src/org/kisio/CDVNavitiaSDKUI" />
+        <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/cordova" />
     </platform>
 </plugin>
