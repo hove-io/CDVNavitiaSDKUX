@@ -1,23 +1,33 @@
+def artifactoryUrl = project.properties['kisio_artifactory_url'] ?: ""
+def artifactoryUsername = project.properties['kisio_artifactory_username'] ?: ""
+def artifactoryPassword = project.properties['kisio_artifactory_password'] ?: ""
+def artifactoryAndroidRepoRelease = project.properties['kisio_artifactory_android_repo_release'] ?: ""
+def artifactoryAndroidRepoSnapshot = project.properties['kisio_artifactory_android_repo_snapshot'] ?: ""
+
 repositories {
     google()
     mavenLocal()
     maven {
         url("https://dl.bintray.com/navitiasdkteam/NavitiaSDK")
     }
-    maven {
-        url(kisio_artifactory_url + kisio_artifactory_android_repo_release)
-        credentials {
-            username = kisio_artifactory_username
-            password = kisio_artifactory_password
+
+    if (project.hasProperty("kisio_artifactory_url")) {
+        maven {
+            url(artifactoryUrl + artifactoryAndroidRepoRelease)
+            credentials {
+                username = artifactoryUsername
+                password = artifactoryPassword
+            }
+        }
+        maven {
+            url(artifactoryUrl + artifactoryAndroidRepoSnapshot)
+            credentials {
+                username = artifactoryUsername
+                password = artifactoryPassword
+            }
         }
     }
-    maven {
-        url(kisio_artifactory_url + kisio_artifactory_android_repo_snapshot)
-        credentials {
-            username = kisio_artifactory_username
-            password = kisio_artifactory_password
-        }
-    }
+    
     maven {
         url("https://maven.google.com")
     }
