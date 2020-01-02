@@ -49,6 +49,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
+| config.isEarlierLaterFeatureEnable | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
 | config.modeForm | Object | ✗ | To customize the search form |  |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
