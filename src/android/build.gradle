@@ -73,7 +73,10 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("com.kisio.navitia.sdk.ui:journey:3.0.0.019-7d1fe19d-SNAPSHOT")
+    // TODO('use release version')
+    implementation("com.kisio.navitia.sdk.ui:journey:3.0.0.019-473fa09c-SNAPSHOT")
+    implementation("org.jacoco:org.jacoco.agent:${android.jacoco.version}:runtime")
+
     implementation("joda-time:joda-time:2.10.5")
     implementation("androidx.multidex:multidex:2.0.1")
 }
