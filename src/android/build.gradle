@@ -6,6 +6,7 @@ def artifactoryAndroidRepoSnapshot = project.properties["kisio_artifactory_andro
 
 repositories {
     google()
+    jcenter()
     mavenLocal()
     maven {
         url("https://dl.bintray.com/navitiasdkteam/NavitiaSDK")
@@ -27,14 +28,10 @@ repositories {
             }
         }
     }
-    
-    maven {
-        url("https://maven.google.com")
-    }
 }
 
-def supportLibraryVersion = "28.0.0"
-def DEFAULT_MIN_SDK_VERSION = 19
+def supportLibraryVersion = "29.0.0"
+def DEFAULT_MIN_SDK_VERSION = 21
 def minSdk = Math.max(DEFAULT_MIN_SDK_VERSION, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer)
 if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk ) {
     ext.cdvMinSdkVersion = minSdk;
@@ -69,7 +66,7 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("org.kisio.sdk:navitia-sdk-ui:2.1.0")
-    implementation("com.android.support:appcompat-v7:$supportLibraryVersion")
-    implementation("com.android.support:design:$supportLibraryVersion")
+    implementation("com.kisio.navitia.sdk.ui:journey:3.0.0.019-7d1fe19d-SNAPSHOT")
+    implementation("joda-time:joda-time:2.10.5")
+    implementation("androidx.multidex:multidex:2.0.1")
 }
