@@ -52,6 +52,13 @@ android {
     defaultConfig {
         multiDexEnabled = true
     }
+
+    buildTypes {
+        release {
+            debuggable = false
+            testCoverageEnabled = false
+        }
+    }
 }
 
 ext.postBuildExtras = {
