@@ -49,7 +49,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
-| config.isEarlierLaterFeatureEnable | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
+| config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
 | config.modeForm | Object | ✗ | To customize the search form |  |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
@@ -293,8 +293,8 @@ platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml
 You may try to override your android compiler environment variables :
 
 ```
-export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-26
-export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=28.0.0
+export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-28
+export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=29.0.0
 ```
 
 More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 
