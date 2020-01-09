@@ -1,4 +1,4 @@
-package com.kisio.navitia.sdk.ui.cordova;
+package com.kisio.navitia.sdk.ui.journey.cordova;
 
 import android.support.annotation.StringDef;
 import android.content.Context;
@@ -14,13 +14,13 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kisio.navitia.sdk.ui.core.enums.TransportMode;
-import org.kisio.navitia.sdk.ui.core.JourneysUI;
-import org.kisio.navitia.sdk.ui.core.JourneysRequest;
-import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
-import org.kisio.navitia.sdk.ui.presentation.model.TransportModeModel;
-import org.kisio.navitia.sdk.ui.util.Constant;
-import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
+import com.kisio.navitia.sdk.ui.journey.core.enums.TransportMode;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysUI;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
+import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneysUIActivity;
+import com.kisio.navitia.sdk.ui.journey.presentation.model.TransportModeModel;
+import com.kisio.navitia.sdk.ui.journey.util.Constant;
+import com.kisio.navitia.sdk.ui.journey.util.NavitiaSDKPreferencesManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -114,10 +114,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         JourneysUI.getInstance().mainColor(mainColor);
 
         String originColor = config.optString("originColor", "#00BB75");
-        JourneysUI.getInstance().originColor(mainColor);
+        JourneysUI.getInstance().originBackgroundColor(mainColor);
 
         String destinationColor = config.optString("destinationColor", "#B00353");
-        JourneysUI.getInstance().originColor(mainColor);
+        JourneysUI.getInstance().originBackgroundColor(mainColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -191,6 +191,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             if (params.has("directPath")) {
                 request.setDirectPath(params.getString("directPath"));
             }
+            if (params.has("isEarlierLaterFeatureEnabled")) {
+                request.setUseShortcuts(params.optBoolean("isEarlierLaterFeatureEnabled", false));
+            }
+            Log.e(TAG, "isEarlierLaterFeatureEnabled= " + params.has("isEarlierLaterFeatureEnabled"));
+            Log.e(TAG, "isEarlierLaterFeatureEnabled= " + params.getBoolean("isEarlierLaterFeatureEnabled"));
             request.setTransportModeListRequested(this.transportModes);
 
             final Intent intent = new Intent(context, JourneysUIActivity.class);
