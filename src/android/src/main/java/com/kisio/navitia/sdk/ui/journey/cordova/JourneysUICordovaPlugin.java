@@ -113,11 +113,14 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String mainColor = config.optString("mainColor", "#40958E");
         JourneysUI.getInstance().mainColor(mainColor);
 
-        String originColor = config.optString("originColor", "#00BB75");
-        JourneysUI.getInstance().originBackgroundColor(mainColor);
+        String accentColor = config.optString("accentColor", "#FFBBOO");
+        JourneysUI.getInstance().accentColor(accentColor);
 
-        String destinationColor = config.optString("destinationColor", "#B00353");
-        JourneysUI.getInstance().originBackgroundColor(mainColor);
+        String originBackgroundColor = config.optString("originBackgroundColor", "#00BB75");
+        JourneysUI.getInstance().originBackgroundColor(originBackgroundColor);
+
+        String destinationBackgroundColor = config.optString("destinationBackgroundColor", "#B00353");
+        JourneysUI.getInstance().originBackgroundColor(destinationBackgroundColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -194,8 +197,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             if (params.has("isEarlierLaterFeatureEnabled")) {
                 request.setUseShortcuts(params.optBoolean("isEarlierLaterFeatureEnabled", false));
             }
-            Log.e(TAG, "isEarlierLaterFeatureEnabled= " + params.has("isEarlierLaterFeatureEnabled"));
-            Log.e(TAG, "isEarlierLaterFeatureEnabled= " + params.getBoolean("isEarlierLaterFeatureEnabled"));
             request.setTransportModeListRequested(this.transportModes);
 
             final Intent intent = new Intent(context, JourneysUIActivity.class);
