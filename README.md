@@ -45,8 +45,9 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config | Object | ✓ | Configuration | |
 | config.token | String | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
 | config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #2a968f |
-| config.originColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
-| config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
+| config.accentColor | String | ✗ | To set the color of journey's main color | by default #00b981 |
+| config.originBackgroundColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
+| config.destinationBackgroundColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
 | config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
