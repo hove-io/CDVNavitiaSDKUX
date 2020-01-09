@@ -31,7 +31,7 @@ import NavitiaSDKUI
         let destinationColor = toUIColor(hexColor: config["destinationColor"] as? String) ?? UIColor(red:0.69, green:0.01, blue:0.33, alpha:1.0)
         let multiNetwork = config["multiNetwork"] as? Bool ?? false
         let formJourney = config["formJourney"] as? Bool ?? false
-        let isEarlierLaterFeatureEnable = config["isEarlierLaterFeatureEnable"] as? Bool ?? false 
+        let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false 
         
         NavitiaSDKUI.shared.initialize(token: token)
         NavitiaSDKUI.shared.bundle = bundle
@@ -40,7 +40,7 @@ import NavitiaSDKUI
         NavitiaSDKUI.shared.destinationColor = destinationColor
         NavitiaSDKUI.shared.multiNetwork = multiNetwork
         NavitiaSDKUI.shared.formJourney = formJourney
-        NavitiaSDKUI.shared.isEarlierLaterFeatureEnable = isEarlierLaterFeatureEnable
+        NavitiaSDKUI.shared.isEarlierLaterFeatureEnable = isEarlierLaterFeatureEnabled
         
         if let modeForm = config["modeForm"] as? [Any] {
             if let modes = getModes(from: modeForm) {
