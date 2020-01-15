@@ -285,7 +285,13 @@ Here is the list of default icon name:
 
 
 ## Troubleshooting
-### Specific android tools version : 26
+### Force gradle wrapper version before build
+In terminal, before building :
+```
+export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https://services.gradle.org/distributions/gradle-6.0.1-all.zip
+```
+
+### Specific android tools version : 29
 In case you are having problems building and getting this kind of problems :
 ```
 platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml:3: AAPT: Error retrieving parent for item: No resource found that matches the given name ...
