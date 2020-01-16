@@ -14,7 +14,7 @@
             </feature>
         </config-file>
         <source-file src="src/ios/CDVNavitiaSDKUI.swift" />
-        <framework src="NavitiaSDKUI.framework" custom="true" embed="true" />
+        <framework src="Carthage/Build/iOS/NavitiaSDKUI.framework" custom="true" embed="true" />
     </platform>
 
     <platform name="android">
