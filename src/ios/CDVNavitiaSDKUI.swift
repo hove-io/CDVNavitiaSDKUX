@@ -124,7 +124,8 @@ import NavitiaSDKUI
         }
         
         if viewController.navigationController != nil {
-            self.viewController.navigationController?.pushViewController(rootViewController, animated: true)
+            viewController.navigationController?.modalPresentationStyle = .overCurrentContext
+            viewController.navigationController?.pushViewController(rootViewController, animated: true)
         } else {
             let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
             
