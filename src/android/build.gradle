@@ -74,7 +74,7 @@ ext.postBuildExtras = {
 
 dependencies {
     // TODO('use release version')
-    implementation("com.kisio.navitia.sdk.ui:journey:3.0.0.019-473fa09c-SNAPSHOT")
+    implementation("com.kisio.navitia.sdk.ui:journey:3.0.0.019-cb19ff0b-SNAPSHOT")
     implementation("org.jacoco:org.jacoco.agent:${android.jacoco.version}:runtime")
 
     implementation("joda-time:joda-time:2.10.5")
