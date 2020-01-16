@@ -40,7 +40,7 @@ import NavitiaSDKUI
         NavitiaSDKUI.shared.destinationColor = destinationColor
         NavitiaSDKUI.shared.multiNetwork = multiNetwork
         NavitiaSDKUI.shared.formJourney = formJourney
-        NavitiaSDKUI.shared.isEarlierLaterFeatureEnable = isEarlierLaterFeatureEnabled
+        NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
         
         if let modeForm = config["modeForm"] as? [Any] {
             if let modes = getModes(from: modeForm) {
