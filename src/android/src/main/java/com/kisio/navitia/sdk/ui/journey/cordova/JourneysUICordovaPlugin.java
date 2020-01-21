@@ -1,6 +1,6 @@
 package com.kisio.navitia.sdk.ui.journey.cordova;
 
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
