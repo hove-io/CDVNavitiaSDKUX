@@ -128,7 +128,7 @@ import NavitiaSDKUI
             viewController.navigationController?.pushViewController(rootViewController, animated: true)
         } else {
             let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
-            
+            navigationController.modalPresentationStyle = .overCurrentContext
             navigationController.navigationBar.isTranslucent = false
             
             viewController.present(navigationController, animated: true, completion: nil)
