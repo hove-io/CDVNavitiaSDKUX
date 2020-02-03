@@ -36,6 +36,11 @@ You need to update your config.xml file as follows:
     </widget>
 Note that you have to change YOUR_API_KEY with your own API key!
 
+### androidsetup.sh
+After installing that plugin, please execute the script androidsetup.sh. After its execution, follow the instructions displayed in the prompt to finish the plugin installation.
+
+We have added that file for androidX support, it modifies some files (mostly it just updates some version number in gradle files).
+
 ## Usage
 
 ### Configuration - NavitiaSDKUI.init(config, success, failure)
