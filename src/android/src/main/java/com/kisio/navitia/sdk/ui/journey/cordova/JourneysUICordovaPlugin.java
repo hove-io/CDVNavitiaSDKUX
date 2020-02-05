@@ -1,6 +1,6 @@
-package com.kisio.navitia.sdk.ui.cordova;
+package com.kisio.navitia.sdk.ui.journey.cordova;
 
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -14,13 +14,13 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kisio.navitia.sdk.ui.core.enums.TransportMode;
-import org.kisio.navitia.sdk.ui.core.JourneysUI;
-import org.kisio.navitia.sdk.ui.core.JourneysRequest;
-import org.kisio.navitia.sdk.ui.core.cordova.JourneysUIActivity;
-import org.kisio.navitia.sdk.ui.presentation.model.TransportModeModel;
-import org.kisio.navitia.sdk.ui.util.Constant;
-import org.kisio.navitia.sdk.ui.util.NavitiaSDKPreferencesManager;
+import com.kisio.navitia.sdk.ui.journey.core.enums.TransportMode;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysUI;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
+import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneysUIActivity;
+import com.kisio.navitia.sdk.ui.journey.presentation.model.TransportModeModel;
+import com.kisio.navitia.sdk.ui.journey.util.Constant;
+import com.kisio.navitia.sdk.ui.journey.util.NavitiaSDKPreferencesManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -113,11 +113,14 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String mainColor = config.optString("mainColor", "#40958E");
         JourneysUI.getInstance().mainColor(mainColor);
 
-        String originColor = config.optString("originColor", "#00BB75");
-        JourneysUI.getInstance().originColor(mainColor);
+        String accentColor = config.optString("accentColor", "#FFBBOO");
+        JourneysUI.getInstance().accentColor(accentColor);
 
-        String destinationColor = config.optString("destinationColor", "#B00353");
-        JourneysUI.getInstance().originColor(mainColor);
+        String originBackgroundColor = config.optString("originBackgroundColor", "#00BB75");
+        JourneysUI.getInstance().originBackgroundColor(originBackgroundColor);
+
+        String destinationBackgroundColor = config.optString("destinationBackgroundColor", "#B00353");
+        JourneysUI.getInstance().originBackgroundColor(destinationBackgroundColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -190,6 +193,9 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             }
             if (params.has("directPath")) {
                 request.setDirectPath(params.getString("directPath"));
+            }
+            if (params.has("isEarlierLaterFeatureEnabled")) {
+                request.setUseShortcuts(params.optBoolean("isEarlierLaterFeatureEnabled", false));
             }
             request.setTransportModeListRequested(this.transportModes);
 

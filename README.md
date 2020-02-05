@@ -36,6 +36,11 @@ You need to update your config.xml file as follows:
     </widget>
 Note that you have to change YOUR_API_KEY with your own API key!
 
+### androidsetup.sh
+After installing that plugin, please execute the script androidsetup.sh. After its execution, follow the instructions displayed in the prompt to finish the plugin installation.
+
+We have added that file for androidX support, it modifies some files (mostly it just updates some version number in gradle files).
+
 ## Usage
 
 ### Configuration - NavitiaSDKUI.init(config, success, failure)
@@ -45,10 +50,12 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config | Object | ✓ | Configuration | |
 | config.token | String | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
 | config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #2a968f |
-| config.originColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
-| config.destinationColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
+| config.accentColor | String | ✗ | To set the color of journey's main color | by default #00b981 |
+| config.originBackgroundColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
+| config.destinationBackgroundColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
+| config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
 | config.modeForm | Object | ✗ | To customize the search form |  |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
@@ -283,7 +290,13 @@ Here is the list of default icon name:
 
 
 ## Troubleshooting
-### Specific android tools version : 26
+### Force gradle wrapper version before build
+In terminal, before building :
+```
+export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https://services.gradle.org/distributions/gradle-6.0.1-all.zip
+```
+
+### Specific android tools version : 29
 In case you are having problems building and getting this kind of problems :
 ```
 platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml:3: AAPT: Error retrieving parent for item: No resource found that matches the given name ...
@@ -292,8 +305,8 @@ platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml
 You may try to override your android compiler environment variables :
 
 ```
-export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-26
-export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=28.0.0
+export ORG_GRADLE_PROJECT_cdvCompileSdkVersion=android-28
+export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=29.0.0
 ```
 
 More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 

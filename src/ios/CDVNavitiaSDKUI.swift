@@ -31,6 +31,7 @@ import NavitiaSDKUI
         let destinationColor = toUIColor(hexColor: config["destinationColor"] as? String) ?? UIColor(red:0.69, green:0.01, blue:0.33, alpha:1.0)
         let multiNetwork = config["multiNetwork"] as? Bool ?? false
         let formJourney = config["formJourney"] as? Bool ?? false
+        let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false 
         
         NavitiaSDKUI.shared.initialize(token: token)
         NavitiaSDKUI.shared.bundle = bundle
@@ -39,6 +40,7 @@ import NavitiaSDKUI
         NavitiaSDKUI.shared.destinationColor = destinationColor
         NavitiaSDKUI.shared.multiNetwork = multiNetwork
         NavitiaSDKUI.shared.formJourney = formJourney
+        NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
         
         if let modeForm = config["modeForm"] as? [Any] {
             if let modes = getModes(from: modeForm) {
@@ -79,7 +81,7 @@ import NavitiaSDKUI
         
         
         let  modeButtonModel = ModeButtonModel(title: title,
-                                               icon: icon,
+                                               type: icon,
                                                selected: selected,
                                                firstSectionMode: firstSectionMode,
                                                lastSectionMode: lastSectionMode,
@@ -98,7 +100,7 @@ import NavitiaSDKUI
             return
         }
         
-        guard let rootViewController = NavitiaSDKUI.shared.rootViewController else {
+        guard var rootViewController = NavitiaSDKUI.shared.rootViewController else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No root view controller available")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
             
@@ -122,10 +124,11 @@ import NavitiaSDKUI
         }
         
         if viewController.navigationController != nil {
-            self.viewController.navigationController?.pushViewController(rootViewController, animated: true)
+            viewController.navigationController?.modalPresentationStyle = .overCurrentContext
+            viewController.navigationController?.pushViewController(rootViewController, animated: true)
         } else {
             let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
-            
+            navigationController.modalPresentationStyle = .overCurrentContext
             navigationController.navigationBar.isTranslucent = false
             
             viewController.present(navigationController, animated: true, completion: nil)
