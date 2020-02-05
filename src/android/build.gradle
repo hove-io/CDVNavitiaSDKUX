@@ -9,7 +9,7 @@ repositories {
     jcenter()
     mavenLocal()
     maven {
-        url("https://dl.bintray.com/navitiasdkteam/NavitiaSDK")
+        url("https://dl.bintray.com/kisio/maven/")
     }
 
     if (project.hasProperty("kisio_artifactory_url")) {
