@@ -7,14 +7,21 @@
     </js-module>
 
     <platform name="ios">
-        <hook type="before_plugin_install" src="scripts/ios/carthage.js" />
         <config-file target="config.xml" parent="/*">
             <feature name="NavitiaSDKUI">
                 <param name="ios-package" value="CDVNavitiaSDKUI" />
             </feature>
         </config-file>
         <source-file src="src/ios/CDVNavitiaSDKUI.swift" />
-        <framework src="Carthage/Build/iOS/NavitiaSDKUI.framework" custom="true" embed="true" />
+
+        <podspec>
+            <config>
+                <source url="https://github.com/CanalTP/Podspecs"/>
+            </config>
+            <pods use-frameworks="true">
+                <pod name="NavitiaSDKUI" spec="3.0.0" />
+            </pods>
+        </podspec>
     </platform>
 
     <platform name="android">
