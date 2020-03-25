@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-navitia-sdk-ui",
-  "version": "2.3.0",
+  "version": "2.2.2",
   "description": "Cordova plugin for Journey UI Android & iOS",
   "main": "index.js",
   "scripts": {
