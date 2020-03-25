@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import NavitiaSDK
 import NavitiaSDKUI
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
@@ -25,7 +26,6 @@ import NavitiaSDKUI
             return
         }
         
-        let bundle = Bundle(identifier: "org.cocoapods.NavitiaSDKUI") ?? Bundle(identifier: "org.kisio.NavitiaSDKUI")
         let mainColor = toUIColor(hexColor: config["mainColor"] as? String) ?? UIColor(red:0.25, green:0.58, blue:0.56, alpha:1.0)
         let originColor = toUIColor(hexColor: config["originColor"] as? String) ?? UIColor(red:0.00, green:0.73, blue:0.46, alpha:1.0)
         let destinationColor = toUIColor(hexColor: config["destinationColor"] as? String) ?? UIColor(red:0.69, green:0.01, blue:0.33, alpha:1.0)
@@ -34,7 +34,7 @@ import NavitiaSDKUI
         let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false 
         
         NavitiaSDKUI.shared.initialize(token: token)
-        NavitiaSDKUI.shared.bundle = bundle
+        NavitiaSDKUI.shared.applicationBundle = Bundle.main
         NavitiaSDKUI.shared.mainColor = mainColor
         NavitiaSDKUI.shared.originColor = originColor
         NavitiaSDKUI.shared.destinationColor = destinationColor
