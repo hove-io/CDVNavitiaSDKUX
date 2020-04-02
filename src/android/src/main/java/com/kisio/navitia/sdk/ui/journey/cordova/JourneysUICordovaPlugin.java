@@ -120,7 +120,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         JourneysUI.getInstance().originBackgroundColor(originBackgroundColor);
 
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "#B00353");
-        JourneysUI.getInstance().originBackgroundColor(destinationBackgroundColor);
+        JourneysUI.getInstance().destinationBackgroundColor(destinationBackgroundColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
