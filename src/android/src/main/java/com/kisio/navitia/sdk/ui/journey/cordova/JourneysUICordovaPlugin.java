@@ -120,11 +120,16 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         JourneysUI.getInstance().originBackgroundColor(originBackgroundColor);
 
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "#B00353");
-        JourneysUI.getInstance().originBackgroundColor(destinationBackgroundColor);
+        JourneysUI.getInstance().destinationBackgroundColor(destinationBackgroundColor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
             JourneysUI.getInstance().withMultiNetwork();
+        }
+
+        boolean isEarlierLaterFeatureEnabled = config.optBoolean("isEarlierLaterFeatureEnabled", false);
+        if (isEarlierLaterFeatureEnabled) {
+            JourneysUI.getInstance().withEarlierLaterFeature();
         }
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
@@ -193,9 +198,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             }
             if (params.has("directPath")) {
                 request.setDirectPath(params.getString("directPath"));
-            }
-            if (params.has("isEarlierLaterFeatureEnabled")) {
-                request.setUseShortcuts(params.optBoolean("isEarlierLaterFeatureEnabled", false));
             }
             request.setTransportModeListRequested(this.transportModes);
 
