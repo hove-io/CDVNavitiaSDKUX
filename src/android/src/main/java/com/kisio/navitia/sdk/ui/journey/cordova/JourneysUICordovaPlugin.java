@@ -137,6 +137,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         if (isEarlierLaterFeatureEnabled) {
             JourneysUI.getInstance().withEarlierLaterFeature();
         }
+
+        boolean isNextDeparturesFeatureEnabled = config.optBoolean("isNextDeparturesFeatureEnabled", false);
+        if (isNextDeparturesFeatureEnabled) {
+            JourneysUI.getInstance().withNextDepartures();
+        }
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);

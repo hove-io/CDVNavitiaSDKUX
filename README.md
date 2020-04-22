@@ -62,6 +62,7 @@ It MUST be executed at the root of the application that includes the plugin. We 
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
 | config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
+| config.isNextDeparturesFeatureEnabled | Boolean | ✗ | To set the display of next departures | by default false |
 | config.modeForm | Object | ✗ | To customize the search form |  |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
