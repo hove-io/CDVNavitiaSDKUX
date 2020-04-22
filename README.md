@@ -53,10 +53,12 @@ It MUST be executed at the root of the application that includes the plugin. We 
 | --- | --- |:---:| --- | --- |
 | config | Object | ✓ | Configuration | |
 | config.token | String | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
-| config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #2a968f |
-| config.accentColor | String | ✗ | To set the color of journey's main color | by default #00b981 |
-| config.originBackgroundColor | String | ✗ | To set the color of the origin icon and the roadmap departure bloc | by default #00b981 |
-| config.destinationBackgroundColor | String | ✗ | To set the color of the destination icon and the roadmap arrival bloc  | by default #b90054 |
+| config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #40958E |
+| config.accentColor | String | ✗ | To set the color of journey's main color | by default #40958E |
+| config.originBackgroundColor | String | ✗ | To set the color of the origin at the roadmap departure bloc | by default #00BB75 |
+| config.originIconColor | String | ✗ | To set the color of the origin icon | by default #00BB75 |
+| config.destinationBackgroundColor | String | ✗ | To set the color of the destination at the roadmap arrival bloc  | by default #B00353 |
+| config.destinationIconColor | String | ✗ | To set the color of the destination icon | by default #B00353 |
 | config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
 | config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
 | config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
