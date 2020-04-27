@@ -110,11 +110,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         JourneysUI.getInstance().token(token);
 
-        String mainColor = config.optString("mainColor", "#40958E");
-        JourneysUI.getInstance().mainColor(mainColor);
+        String backgroundColor = config.optString("backgroundColor", "#40958E");
+        JourneysUI.getInstance().backgroundColor(backgroundColor);
 
-        String accentColor = config.optString("accentColor", "#40958E");
-        JourneysUI.getInstance().accentColor(accentColor);
+        String primaryColor = config.optString("primaryColor", "#40958E");
+        JourneysUI.getInstance().primaryColor(primaryColor);
 
         String originIconColor = config.optString("originIconColor", "#00BB75");
         JourneysUI.getInstance().originIconColor(originIconColor);
