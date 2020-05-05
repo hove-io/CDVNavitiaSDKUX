@@ -49,22 +49,22 @@ It MUST be executed at the root of the application that includes the plugin. We 
 
 ### Configuration - NavitiaSDKUI.init(config, success, failure)
 
-| Parameters | Type | Required | Description | Example |
+| Parameters | Type | Required | Description | Default |
 | --- | --- |:---:| --- | --- |
-| config | `Object` | ✓ | Configuration | |
-| config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
-| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | by default #40958E |
-| config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | by default `backgroundColor` |
-| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | by default #00BB75 |
-| config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | by default `originColor` |
-| config.originIconColor | `String` | ✗ | To set the color of the origin icon | by default `transparent` |
-| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | by default #B00353 |
-| config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | by default `destinationColor` |
-| config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | by default `transparent` |
-| config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | by default false |
-| config.formJourney | `Boolean` | ✗ | To set the display of search form | by default false |
-| config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
-| config.modeForm | `Object` | ✗ | To customize the search form |  |
+| config | `Object` | ✓ | Configuration | ✗ |
+| config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
+| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | #40958E |
+| config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
+| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | #00BB75 |
+| config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | `originColor` |
+| config.originIconColor | `String` | ✗ | To set the color of the origin icon | `transparent` (no color filter) |
+| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | #B00353 |
+| config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | `destinationColor` |
+| config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | `transparent` (no color filter) |
+| config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
+| config.formJourney | `Boolean` | ✗ | To set the display of search form | false |
+| config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | false |
+| config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
