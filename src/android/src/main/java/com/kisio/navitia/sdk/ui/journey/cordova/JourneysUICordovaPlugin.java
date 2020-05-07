@@ -108,31 +108,28 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             return;
         }
 
-        JourneysColors colors = new JourneysColors();
-
-        String backgroundColor = config.optString("backgroundColor", "#40958E");
-        colors.backgroundColor(backgroundColor);
+        JourneysColors colors = new JourneysColors("#40958E");
 
         String primaryColor = config.optString("primaryColor", "");
-        colors.primaryColor(primaryColor);
+        colors.setPrimaryColor(primaryColor);
 
         String originColor = config.optString("originColor", "#00BB75");
-        colors.originColor(originColor);
+        colors.setOriginColor(originColor);
 
         String originIconColor = config.optString("originIconColor", "");
-        colors.originIconColor(originIconColor);
+        colors.setOriginIconColor(originIconColor);
 
         String originBackgroundColor = config.optString("originBackgroundColor", "");
-        colors.originBackgroundColor(originBackgroundColor);
+        colors.setOriginBackgroundColor(originBackgroundColor);
 
         String destinationColor = config.optString("destinationColor", "#B00353");
-        colors.destinationColor(destinationColor);
+        colors.setDestinationColor(destinationColor);
 
         String destinationIconColor = config.optString("destinationIconColor", "");
-        colors.destinationIconColor(destinationIconColor);
+        colors.setDestinationIconColor(destinationIconColor);
 
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
-        colors.destinationBackgroundColor(destinationBackgroundColor);
+        colors.setDestinationBackgroundColor(destinationBackgroundColor);
 
         JourneysUI.getInstance()
             .token(token)
