@@ -65,6 +65,7 @@ It MUST be executed at the root of the application that includes the plugin. We 
 | config.formJourney | `Boolean` | ✗ | To set the display of search form | false |
 | config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | false |
 | config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
+| config.maxHistory | `Int` | ✗ | To set the maximum number of autocomplete history inputs | 10 |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -73,7 +74,7 @@ It MUST be executed at the root of the application that includes the plugin. We 
 ```js****
 var config = {
     token: 'my-token',
-    mainColor: '#e67e22',
+    backgroundColor: '#e67e22',
     originColor: '#2980b9',
     destinationColor: '#d35400',
 };
@@ -145,7 +146,7 @@ var modeForm = [{
 
 var config = {
     token: 'my-token',
-    mainColor: '#e67e22',
+    backgroundColor: '#e67e22',
     originColor: '#2980b9',
     destinationColor: '#d35400',
     modeForm: modeForm,
