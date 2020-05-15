@@ -7,6 +7,7 @@
 import Foundation
 import NavitiaSDK
 import NavitiaSDKUI
+import Toolbox
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     
@@ -15,41 +16,48 @@ import NavitiaSDKUI
         guard let arguments = command.arguments, let config = arguments[0] as? [String: Any] else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No valid plugin config")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
-            
             return
         }
         
         guard let token: String = config["token"] as? String, !token.isEmpty else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
-            
             return
         }
-        
-        let mainColor = toUIColor(hexColor: config["mainColor"] as? String) ?? UIColor(red:0.25, green:0.58, blue:0.56, alpha:1.0)
-        let originColor = toUIColor(hexColor: config["originColor"] as? String) ?? UIColor(red:0.00, green:0.73, blue:0.46, alpha:1.0)
-        let destinationColor = toUIColor(hexColor: config["destinationColor"] as? String) ?? UIColor(red:0.69, green:0.01, blue:0.33, alpha:1.0)
-        let multiNetwork = config["multiNetwork"] as? Bool ?? false
-        let formJourney = config["formJourney"] as? Bool ?? false
-        let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false 
-        
-        NavitiaSDKUI.shared.initialize(token: token)
-        NavitiaSDKUI.shared.applicationBundle = Bundle.main
-        NavitiaSDKUI.shared.mainColor = mainColor
-        NavitiaSDKUI.shared.originColor = originColor
-        NavitiaSDKUI.shared.destinationColor = destinationColor
-        NavitiaSDKUI.shared.multiNetwork = multiNetwork
-        NavitiaSDKUI.shared.formJourney = formJourney
-        NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
-        
-        if let modeForm = config["modeForm"] as? [Any] {
-            if let modes = getModes(from: modeForm) {
+
+        do {
+            let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
+                                                               primary: config["primaryColor"] as? String,
+                                                               origin: config["originColor"] as? String,
+                                                               originIcon: config["originIconColor"] as? String,
+                                                               originBackground: config["originBackgroundColor"] as? String,
+                                                               destination: config["destinationColor"] as? String,
+                                                               destinationIcon: config["destinationIconColor"] as? String,
+                                                               destinationBackground: config["destinationBackgroundColor"] as? String)
+            let formJourney = config["formJourney"] as? Bool ?? false
+            let multiNetwork = config["multiNetwork"] as? Bool ?? false
+            let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
+            let maxHistory = config["maxHistory"] as? Int ?? 10
+            let modeForm = config["modeForm"] as? [Any]
+            
+            try NavitiaSDKUI.shared.initialize(token: token, colorConfiguration: colorConfiguration)
+            NavitiaSDKUI.shared.applicationBundle = Bundle.main
+            NavitiaSDKUI.shared.formJourney = formJourney
+            if let modeForm = modeForm, let modes = getModes(from: modeForm) {
                 NavitiaSDKUI.shared.modeForm = modes
             }
+            NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
+            NavitiaSDKUI.shared.multiNetwork = multiNetwork
+            NavitiaSDKUI.shared.maxHistory = maxHistory
+            
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
+        } catch {
+            if let error = error as? MissingColorConfigurationError {
+                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: String(format: "Journey SDK cannot be initialized! %@", error.localizedDescription))
+                commandDelegate.send(pluginResult, callbackId: command.callbackId)
+            }
         }
-        
-        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
-        commandDelegate.send(pluginResult, callbackId: command.callbackId)
     }
     
     private func getModes(from arguments: [Any]) -> [ModeButtonModel]? {
