@@ -87,7 +87,6 @@ import Toolbox
                 return nil
         }
         
-        
         let  modeButtonModel = ModeButtonModel(title: title,
                                                type: icon,
                                                selected: selected,
@@ -104,14 +103,12 @@ import Toolbox
         guard command.arguments.count > 0, let arguments = command.arguments[0] as? [String: Any] else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No parameter specified in invokeJourneyResults")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
-            
             return
         }
         
         guard var rootViewController = NavitiaSDKUI.shared.rootViewController else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No root view controller available")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
-            
             return
         }
         
@@ -156,7 +153,6 @@ import Toolbox
         }
         
         let journeysRequest = JourneysRequest(coverage: coverage)
-        
         journeysRequest.originId = arguments["originId"] as? String
         journeysRequest.destinationId = arguments["destinationId"] as? String
         journeysRequest.originLabel = arguments["originLabel"] as? String
@@ -217,7 +213,6 @@ import Toolbox
         }
         
         var cString:String = hexColor.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
         }
