@@ -144,6 +144,9 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         if (isEarlierLaterFeatureEnabled) {
             JourneysUI.getInstance().withEarlierLaterFeature();
         }
+
+        int maxHistory = config.optInt("maxHistory", 10);
+        JourneysUI.getInstance().maxHistory(maxHistory);
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
