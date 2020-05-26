@@ -34,4 +34,7 @@
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
     </platform>
+    
+    <dependency id="cordova-plugin-androidx" version="1.0.2" />
+    <dependency id="cordova-plugin-androidx-adapter" version="1.1.0" />
 </plugin>
