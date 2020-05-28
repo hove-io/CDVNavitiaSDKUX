@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.kisio.navitia.sdk.ui.journey.core.enums.TransportMode;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysColors;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysUI;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
 import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneysUIActivity;
@@ -104,29 +105,35 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String token = config.optString("token");
         if (token.isEmpty()) {
             callbackContext.error("No token specified");
-
             return;
         }
 
-        JourneysUI.getInstance().token(token);
+        JourneysColors colors = new JourneysColors("#40958E");
 
-        String mainColor = config.optString("mainColor", "#40958E");
-        JourneysUI.getInstance().mainColor(mainColor);
+        String primaryColor = config.optString("primaryColor", "");
+        colors.setPrimaryColor(primaryColor);
 
-        String accentColor = config.optString("accentColor", "#40958E");
-        JourneysUI.getInstance().accentColor(accentColor);
+        String originColor = config.optString("originColor", "#00BB75");
+        colors.setOriginColor(originColor);
 
-        String originIconColor = config.optString("originIconColor", "#00BB75");
-        JourneysUI.getInstance().originIconColor(originIconColor);
+        String originIconColor = config.optString("originIconColor", "");
+        colors.setOriginIconColor(originIconColor);
 
-        String originBackgroundColor = config.optString("originBackgroundColor", "#00BB75");
-        JourneysUI.getInstance().originBackgroundColor(originBackgroundColor);
+        String originBackgroundColor = config.optString("originBackgroundColor", "");
+        colors.setOriginBackgroundColor(originBackgroundColor);
 
-        String destinationIconColor = config.optString("destinationIconColor", "#B00353");
-        JourneysUI.getInstance().destinationIconColor(destinationIconColor);
+        String destinationColor = config.optString("destinationColor", "#B00353");
+        colors.setDestinationColor(destinationColor);
 
-        String destinationBackgroundColor = config.optString("destinationBackgroundColor", "#B00353");
-        JourneysUI.getInstance().destinationBackgroundColor(destinationBackgroundColor);
+        String destinationIconColor = config.optString("destinationIconColor", "");
+        colors.setDestinationIconColor(destinationIconColor);
+
+        String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
+        colors.setDestinationBackgroundColor(destinationBackgroundColor);
+
+        JourneysUI.getInstance()
+            .token(token)
+            .colors(colors);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -137,6 +144,9 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         if (isEarlierLaterFeatureEnabled) {
             JourneysUI.getInstance().withEarlierLaterFeature();
         }
+
+        int maxHistory = config.optInt("maxHistory", 10);
+        JourneysUI.getInstance().maxHistory(maxHistory);
         
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);

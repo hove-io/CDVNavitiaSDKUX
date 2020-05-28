@@ -40,20 +40,23 @@ Note that you have to change YOUR_API_KEY with your own API key!
 
 ### Configuration - NavitiaSDKUI.init(config, success, failure)
 
-| Parameters | Type | Required | Description | Example |
+| Parameters | Type | Required | Description | Default |
 | --- | --- |:---:| --- | --- |
-| config | Object | ✓ | Configuration | |
-| config.token | String | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| 0de19ce5-e0eb-4524-a074-bda3c6894c19 |
-| config.mainColor | String | ✗ | To set the background and the journey's duration colors  | by default #40958E |
-| config.accentColor | String | ✗ | To set the color of journey's main color | by default #40958E |
-| config.originBackgroundColor | String | ✗ | To set the color of the origin at the roadmap departure bloc | by default #00BB75 |
-| config.originIconColor | String | ✗ | To set the color of the origin icon | by default #00BB75 |
-| config.destinationBackgroundColor | String | ✗ | To set the color of the destination at the roadmap arrival bloc  | by default #B00353 |
-| config.destinationIconColor | String | ✗ | To set the color of the destination icon | by default #B00353 |
-| config.multiNetwork | Boolean | ✗ | To set the display of the network name in the roadmap  | by default false |
-| config.formJourney | Boolean | ✗ | To set the display of search form | by default false |
-| config.isEarlierLaterFeatureEnabled | Boolean | ✗ | To set the display of "Earlier" and "Later" buttons | by default false |
-| config.modeForm | Object | ✗ | To customize the search form |  |
+| config | `Object` | ✓ | Configuration | ✗ |
+| config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
+| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | #40958E |
+| config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
+| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | #00BB75 |
+| config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | `originColor` |
+| config.originIconColor | `String` | ✗ | To set the color of the origin icon | `transparent` (no color filter) |
+| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | #B00353 |
+| config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | `destinationColor` |
+| config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | `transparent` (no color filter) |
+| config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
+| config.formJourney | `Boolean` | ✗ | To set the display of search form | false |
+| config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | false |
+| config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
+| config.maxHistory | `Int` | ✗ | To set the maximum number of autocomplete history inputs | 10 |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -62,7 +65,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 ```js****
 var config = {
     token: 'my-token',
-    mainColor: '#e67e22',
+    backgroundColor: '#e67e22',
     originColor: '#2980b9',
     destinationColor: '#d35400',
 };
@@ -134,7 +137,7 @@ var modeForm = [{
 
 var config = {
     token: 'my-token',
-    mainColor: '#e67e22',
+    backgroundColor: '#e67e22',
     originColor: '#2980b9',
     destinationColor: '#d35400',
     modeForm: modeForm,
