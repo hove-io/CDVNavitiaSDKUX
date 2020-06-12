@@ -7,14 +7,39 @@ This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKU
 
 Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS) or a Bottom Navigation (Android)
 
+## Requirements
+
+This plugin uses native SDKs. Since those SDKs are private, you will need to get access credentials to our [artifactory] (https://kisiodigital.jfrog.io).
+This plugin uses Cocoapods to manage dependencies for iOS, please install it first: https://cocoapods.org.
+
 ## Installation
 
-This plugin uses Carthage to build dependencies for iOS, please install it first:
-https://github.com/Carthage/Carthage
+Use this command to install the plugin
 
-Then use this command to install the plugin
+    cordova plugin add cordova-plugin-navitia-sdk-ui --variable ARTIFACTORY_USERNAME=username --variable ARTIFACTORY_PASSWORD=password
 
-    cordova plugin add cordova-plugin-navitia-sdk-ui
+You can also add the plugin directly in the config.xml file
+```xml
+<widget>
+	<plugin name="cordova-plugin-navitia-sdk-ui">
+		<variable name="ARTIFACTORY_USERNAME" value="username" />
+		<variable name="ARTIFACTORY_PASSWORD" value="password" />
+	</plugin>
+</widget>
+```
+or in the package.json file
+```json
+{
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-navitia-sdk-ui": {
+        "ARTIFACTORY_USERNAME": "username",
+        "ARTIFACTORY_PASSWORD": "password"
+      }
+    }
+  }
+}
+```
 
 ## Setup for Android platform
 This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
@@ -44,12 +69,12 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | --- | --- |:---:| --- | --- |
 | config | `Object` | ✓ | Configuration | ✗ |
 | config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
-| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | #40958E |
+| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | ✗ |
 | config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
-| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | #00BB75 |
+| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | ✗ |
 | config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | `originColor` |
 | config.originIconColor | `String` | ✗ | To set the color of the origin icon | `transparent` (no color filter) |
-| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | #B00353 |
+| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | ✗ |
 | config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | `destinationColor` |
 | config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | `transparent` (no color filter) |
 | config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
