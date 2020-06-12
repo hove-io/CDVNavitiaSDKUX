@@ -7,6 +7,11 @@ This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKU
 
 Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS) or a Bottom Navigation (Android)
 
+## Requirements
+
+This plugin uses native SDKs. Since those SDKs are private, you will need to get access credentials to our [artifactory] (https://kisiodigital.jfrog.io).
+This plugin uses Cocoapods to manage dependencies for iOS, please install it first: https://cocoapods.org.
+
 ## Installation
 
 Use this command to install the plugin
@@ -64,12 +69,12 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | --- | --- |:---:| --- | --- |
 | config | `Object` | ✓ | Configuration | ✗ |
 | config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
-| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | #40958E |
+| config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | ✗ |
 | config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
-| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | #00BB75 |
+| config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | ✗ |
 | config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | `originColor` |
 | config.originIconColor | `String` | ✗ | To set the color of the origin icon | `transparent` (no color filter) |
-| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | #B00353 |
+| config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | ✗ |
 | config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | `destinationColor` |
 | config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | `transparent` (no color filter) |
 | config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
