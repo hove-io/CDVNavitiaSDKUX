@@ -108,12 +108,13 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             return;
         }
 
-        JourneysColors colors = new JourneysColors("#40958E");
+        String backgroundColor = config.optString("backgroundColor", "");
+        JourneysColors colors = new JourneysColors(backgroundColor);
 
         String primaryColor = config.optString("primaryColor", "");
         colors.setPrimaryColor(primaryColor);
 
-        String originColor = config.optString("originColor", "#00BB75");
+        String originColor = config.optString("originColor", "");
         colors.setOriginColor(originColor);
 
         String originIconColor = config.optString("originIconColor", "");
@@ -122,7 +123,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String originBackgroundColor = config.optString("originBackgroundColor", "");
         colors.setOriginBackgroundColor(originBackgroundColor);
 
-        String destinationColor = config.optString("destinationColor", "#B00353");
+        String destinationColor = config.optString("destinationColor", "");
         colors.setDestinationColor(destinationColor);
 
         String destinationIconColor = config.optString("destinationIconColor", "");
