@@ -23,6 +23,8 @@
                 <pod name="NavitiaSDKUI" spec="3.3.0" />
             </pods>
         </podspec>
+
+		<hook src="hooks/add_buildPhase.js" type="after_platform_add" />
     </platform>
 
     <platform name="android">
