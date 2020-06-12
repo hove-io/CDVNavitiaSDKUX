@@ -9,12 +9,32 @@ Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS
 
 ## Installation
 
-This plugin uses Carthage to build dependencies for iOS, please install it first:
-https://github.com/Carthage/Carthage
+Use this command to install the plugin
 
-Then use this command to install the plugin
+    cordova plugin add cordova-plugin-navitia-sdk-ui --variable ARTIFACTORY_USERNAME=username --variable ARTIFACTORY_PASSWORD=password
 
-    cordova plugin add cordova-plugin-navitia-sdk-ui
+You can also add the plugin directly in the config.xml file
+```xml
+<widget>
+	<plugin name="cordova-plugin-navitia-sdk-ui">
+		<variable name="ARTIFACTORY_USERNAME" value="username" />
+		<variable name="ARTIFACTORY_PASSWORD" value="password" />
+	</plugin>
+</widget>
+```
+or in the package.json file
+```json
+{
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-navitia-sdk-ui": {
+        "ARTIFACTORY_USERNAME": "username",
+        "ARTIFACTORY_PASSWORD": "password"
+      }
+    }
+  }
+}
+```
 
 ## Setup for Android platform
 This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
