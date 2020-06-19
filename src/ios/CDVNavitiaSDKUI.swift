@@ -32,6 +32,7 @@ import NavitiaSDKUI
         let multiNetwork = config["multiNetwork"] as? Bool ?? false
         let formJourney = config["formJourney"] as? Bool ?? false
         let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false 
+        let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
         
         NavitiaSDKUI.shared.initialize(token: token)
         NavitiaSDKUI.shared.applicationBundle = Bundle.main
@@ -41,6 +42,7 @@ import NavitiaSDKUI
         NavitiaSDKUI.shared.multiNetwork = multiNetwork
         NavitiaSDKUI.shared.formJourney = formJourney
         NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
+        NavitiaSDKUI.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
         
         if let modeForm = config["modeForm"] as? [Any] {
             if let modes = getModes(from: modeForm) {
