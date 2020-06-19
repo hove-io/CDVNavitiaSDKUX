@@ -80,6 +80,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
 | config.formJourney | `Boolean` | ✗ | To set the display of search form | false |
 | config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | false |
+| config.isNextDeparturesFeatureEnabled | Boolean | ✗ | To set the display of next departures | by default false |
 | config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
 | config.maxHistory | `Int` | ✗ | To set the maximum number of autocomplete history inputs | 10 |
 | success | Function | ✓ | Success callback function | function() {} |

@@ -37,6 +37,7 @@ import Toolbox
             let formJourney = config["formJourney"] as? Bool ?? false
             let multiNetwork = config["multiNetwork"] as? Bool ?? false
             let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
+            let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let modeForm = config["modeForm"] as? [Any]
             
@@ -47,6 +48,7 @@ import Toolbox
                 NavitiaSDKUI.shared.modeForm = modes
             }
             NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
+            NavitiaSDKUI.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
             NavitiaSDKUI.shared.multiNetwork = multiNetwork
             NavitiaSDKUI.shared.maxHistory = maxHistory
             
