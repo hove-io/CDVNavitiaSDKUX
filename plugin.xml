@@ -1,7 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-navitia-sdk-ui" version="2.2.3" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-navitia-sdk-ui" version="2.4.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUI</name>
-    
+
+	<preference name="ARTIFACTORY_USERNAME"/>
+	<preference name="ARTIFACTORY_PASSWORD" />
+	<preference name="ARTIFACTORY_URL" default="https://kisiodigital.jfrog.io/kisiodigital/" />
+	<preference name="ARTIFACTORY_ANDROID_REPO_RELEASE" default="android-release" />
+	<preference name="ARTIFACTORY_ANDROID_REPO_SNAPSHOT" default="android-snapshot" />
+	<hook src="hooks/add_artifactory_conf.js" type="before_prepare" />
+
     <js-module name="NavitiaSDKUI" src="www/NavitiaSDKUI.js">
         <clobbers target="NavitiaSDKUI" />
     </js-module>
@@ -24,6 +31,8 @@
                 <pod name="NavitiaSDKUI" spec="3.3.0-59-SNAPSHOT" />
             </pods>
         </podspec>
+
+		<hook src="hooks/add_buildPhase.js" type="after_platform_add" />
     </platform>
 
     <platform name="android">
@@ -35,4 +44,7 @@
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
     </platform>
+    
+    <dependency id="cordova-plugin-androidx" version="1.0.2" />
+    <dependency id="cordova-plugin-androidx-adapter" version="1.1.0" />
 </plugin>

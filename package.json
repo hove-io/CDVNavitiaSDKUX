@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-navitia-sdk-ui",
-  "version": "2.2.3",
+  "version": "2.4.0",
   "description": "Cordova plugin for Journey UI Android & iOS",
   "main": "index.js",
   "scripts": {
@@ -22,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/CanalTP/CDVNavitiaSDKUX/issues"
   },
-  "homepage": "https://github.com/CanalTP/CDVNavitiaSDKUX#readme"
+  "homepage": "https://github.com/CanalTP/CDVNavitiaSDKUX#readme",
+  "devDependencies": {
+    "elementtree": "0.1.7",
+    "xcode": "2.0.0"
+  }
 }
