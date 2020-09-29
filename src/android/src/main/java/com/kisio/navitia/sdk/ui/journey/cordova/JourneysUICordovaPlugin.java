@@ -146,6 +146,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             JourneysUI.getInstance().withEarlierLaterFeature();
         }
 
+        boolean isNextDeparturesFeatureEnabled = config.optBoolean("isNextDeparturesFeatureEnabled", false);
+        if (isNextDeparturesFeatureEnabled) {
+            JourneysUI.getInstance().withNextDepartures();
+        }
+        
         int maxHistory = config.optInt("maxHistory", 10);
         JourneysUI.getInstance().maxHistory(maxHistory);
         
