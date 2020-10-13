@@ -2,6 +2,11 @@
 <plugin id="cordova-plugin-navitia-sdk-ui" version="2.6.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUI</name>
 
+    <engines>
+        <engine name="cordova" version=">=9.0.0"/>
+        <engine name="cordova-android" version=">=9.0.0"/>
+    </engines>
+
 	<preference name="ARTIFACTORY_USERNAME"/>
 	<preference name="ARTIFACTORY_PASSWORD" />
 	<preference name="ARTIFACTORY_URL" default="https://kisiodigital.jfrog.io/kisiodigital/" />
@@ -40,11 +45,9 @@
             <feature name="NavitiaSDKUI">
                 <param name="android-package" value="com.kisio.navitia.sdk.ui.journey.cordova.JourneysUICordovaPlugin"/>
             </feature>
+            <preference name="AndroidXEnabled" value="true" />
         </config-file>
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
     </platform>
-    
-    <dependency id="cordova-plugin-androidx" version="1.0.2" />
-    <dependency id="cordova-plugin-androidx-adapter" version="1.1.0" />
 </plugin>
