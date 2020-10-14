@@ -41,16 +41,16 @@ import Toolbox
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let modeForm = config["modeForm"] as? [Any]
             
-            try NavitiaSDKUI.shared.initialize(token: token, colorConfiguration: colorConfiguration)
-            NavitiaSDKUI.shared.applicationBundle = Bundle.main
-            NavitiaSDKUI.shared.formJourney = formJourney
+            try JourneySdk.shared.initialize(token: token, colorConfiguration: colorConfiguration)
+            JourneySdk.shared.applicationBundle = Bundle.main
+            JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
-                NavitiaSDKUI.shared.modeForm = modes
+                JourneySdk.shared.modeForm = modes
             }
-            NavitiaSDKUI.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
-            NavitiaSDKUI.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
-            NavitiaSDKUI.shared.multiNetwork = multiNetwork
-            NavitiaSDKUI.shared.maxHistory = maxHistory
+            JourneySdk.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
+            JourneySdk.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
+            JourneySdk.shared.multiNetwork = multiNetwork
+            JourneySdk.shared.maxHistory = maxHistory
             
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
@@ -108,7 +108,7 @@ import Toolbox
             return
         }
         
-        guard var rootViewController = NavitiaSDKUI.shared.rootViewController else {
+        guard var rootViewController = JourneySdk.shared.rootViewController else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No root view controller available")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
             return

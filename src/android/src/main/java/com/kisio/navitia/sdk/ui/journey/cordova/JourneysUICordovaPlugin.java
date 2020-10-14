@@ -133,8 +133,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         colors.setDestinationBackgroundColor(destinationBackgroundColor);
 
         JourneysUI.getInstance()
-            .token(token)
-            .colors(colors);
+          .setToken(token)
+          .setColors(colors);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -150,10 +150,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         if (isNextDeparturesFeatureEnabled) {
             JourneysUI.getInstance().withNextDepartures();
         }
-        
+
         int maxHistory = config.optInt("maxHistory", 10);
         JourneysUI.getInstance().maxHistory(maxHistory);
-        
+
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
         callbackContext.success();
@@ -163,6 +163,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         try {
             final Context context = this.cordova.getActivity().getApplicationContext();
             final JourneysRequest request = new JourneysRequest(params.getString("coverage"));
+            JourneysUI.getInstance().setCoverage(params.getString("coverage"));
 
             if (params.has("originId")) {
                 request.setOriginId(params.getString("originId"));
@@ -285,7 +286,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 JSONObject object = (JSONObject) array.get(i);
 
                 TransportModeModel transportModeModel = new TransportModeModel();
-                transportModeModel.setTitle(object.optString("title"));              
+                transportModeModel.setTitle(object.optString("title"));
                 transportModeModel.setResIconId(getIcon(object.optString("icon")));
                 transportModeModel.setFirstSectionMode(getStringListFromJsonArray(object.optJSONArray("firstSectionMode")).toArray(new String[0]));
                 transportModeModel.setLastSectionMode(getStringListFromJsonArray(object.optJSONArray("lastSectionMode")).toArray(new String[0]));
