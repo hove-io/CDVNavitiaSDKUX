@@ -7,8 +7,8 @@
         <engine name="cordova-android" version=">=9.0.0"/>
     </engines>
 
-	<preference name="ARTIFACTORY_USERNAME" value=""/>
-	<preference name="ARTIFACTORY_PASSWORD" value=""/>
+	<preference name="ARTIFACTORY_USERNAME"/>
+	<preference name="ARTIFACTORY_PASSWORD"/>
 	<preference name="ARTIFACTORY_URL" default="https://kisiodigital.jfrog.io/kisiodigital/" />
 	<preference name="ARTIFACTORY_ANDROID_REPO_RELEASE" default="android-release" />
 	<preference name="ARTIFACTORY_ANDROID_REPO_SNAPSHOT" default="android-snapshot" />
