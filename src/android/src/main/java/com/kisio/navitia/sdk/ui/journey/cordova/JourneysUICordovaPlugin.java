@@ -55,7 +55,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String BSS = "bss";
         String BUS = "bus";
         String CAR = "car";
-        String CARPOOLING = "carpooling";
         String COACH = "coach";
         String FERRY = "ferry";
         String FUNICULAR = "funicular";
@@ -63,6 +62,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String LONGDISTANCETRAIN = "longdistancetrain";
         String METRO = "metro";
         String RAPIDTRANSIT = "rapidtransit";
+        String RIDESHARING = "ridesharing";
         String SHUTTLE = "shuttle";
         String TAXI = "taxi";
         String TRAIN = "train";
@@ -317,8 +317,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 return TransportMode.BUS.getResIconId();
             case TransportModeIcon.CAR:
                 return TransportMode.CAR.getResIconId();
-            case TransportModeIcon.CARPOOLING:
-                return TransportMode.CARPOOLING.getResIconId();
             case TransportModeIcon.COACH:
                 return TransportMode.COACH.getResIconId();
             case TransportModeIcon.FERRY:
@@ -333,6 +331,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 return TransportMode.METRO.getResIconId();
             case TransportModeIcon.RAPIDTRANSIT:
                 return TransportMode.RAPID_TRANSIT.getResIconId();
+            case TransportModeIcon.RIDESHARING:
+                return TransportMode.RIDESHARING.getResIconId();
             case TransportModeIcon.SHUTTLE:
                 return TransportMode.SHUTTLE.getResIconId();
             case TransportModeIcon.TAXI:
