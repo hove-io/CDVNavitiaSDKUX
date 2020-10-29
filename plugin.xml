@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-navitia-sdk-ui" version="2.6.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-navitia-sdk-ui" version="2.6.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUI</name>
 
     <engines>
@@ -33,7 +33,7 @@
                 <source url="https://github.com/CanalTP/Podspecs_snapshot"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="NavitiaSDKUI" spec="3.4.4" />
+                <pod name="NavitiaSDKUI" spec="3.4.5" />
             </pods>
         </podspec>
 
