@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-navitia-sdk-ui" version="2.6.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="cordova-plugin-navitia-sdk-ui" version="2.6.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>NavitiaSDKUI</name>
 
     <engines>
@@ -7,12 +7,10 @@
         <engine name="cordova-android" version=">=9.0.0"/>
     </engines>
 
-	<preference name="ARTIFACTORY_USERNAME"/>
-	<preference name="ARTIFACTORY_PASSWORD"/>
-	<preference name="ARTIFACTORY_URL" default="https://kisiodigital.jfrog.io/kisiodigital/" />
-	<preference name="ARTIFACTORY_ANDROID_REPO_RELEASE" default="android-release" />
-	<preference name="ARTIFACTORY_ANDROID_REPO_SNAPSHOT" default="android-snapshot" />
-	<hook src="hooks/add_artifactory_conf.js" type="before_prepare" />
+	<preference name="KISIO_ARTIFACTORY_URL" default="https://kisiodigital.jfrog.io/kisiodigital/" />
+	<preference name="KISIO_ARTIFACTORY_ANDROID_REPO_RELEASE" default="android-release" />
+	<preference name="KISIO_ARTIFACTORY_ANDROID_REPO_SNAPSHOT" default="android-snapshot" />
+	<hook src="hooks/add_artifactory_conf.js" type="before_plugin_install" />
 
     <js-module name="NavitiaSDKUI" src="www/NavitiaSDKUI.js">
         <clobbers target="NavitiaSDKUI" />
@@ -30,10 +28,9 @@
             <config>
                 <source url="https://github.com/CocoaPods/Specs.git"/>
                 <source url="https://github.com/CanalTP/Podspecs"/>
-                <source url="https://github.com/CanalTP/Podspecs_snapshot"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="NavitiaSDKUI" spec="3.4.4" />
+                <pod name="NavitiaSDKUI" spec="3.4.5" />
             </pods>
         </podspec>
 

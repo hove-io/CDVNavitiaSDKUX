@@ -9,37 +9,54 @@ Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS
 
 ## Requirements
 
-This plugin uses native SDKs. Since those SDKs are private, you will need to get access credentials to our [artifactory] (https://kisiodigital.jfrog.io).
-This plugin uses Cocoapods to manage dependencies for iOS, please install it first: https://cocoapods.org.
+This plugin uses native SDKs. Since those SDKs are private, you will need to get access credentials to our [artifactory](https://kisiodigital.jfrog.io). This plugin uses Cocoapods to manage dependencies for iOS, please install it first: https://cocoapods.org.
+
+## Credentials configuration
+
+Once you have credentials to access our [artifactory](https://kisiodigital.jfrog.io), one further step is required before installing the plugin. Please follow one of these steps to configure the credentials properly. 
+The `<YOUR_ARTIFACTORY_USERNAME>` and `<YOUR_ARTIFACTORY_PASSWORD>` should be replaced with your username and password!
+
+#### Using Config.xml preferences
+
+In the Config.xml file of your project, add these lines:
+
+```xml
+<widget>
+	.
+	.
+	<preference name="KISIO_ARTIFACTORY_USERNAME" value="<YOUR_ARTIFACTORY_USERNAME>" />
+    	<preference name="KISIO_ARTIFACTORY_PASSWORD" value="<YOUR_ARTIFACTORY_PASSWORD>" />
+</widget>
+```
+
+#### Using environment variables
+
+Define two global environment variables as follows:
+```
+KISIO_ARTIFACTORY_USERNAME=<YOUR_ARTIFACTORY_USERNAME>
+KISIO_ARTIFACTORT_PASSWORD=<YOUR_ARTIFACTORY_PASSWORD>
+```
+
+#### Using global properties files (MacOS users only)
+
+##### iOS
+
+In the Home directory, open `.netrc` file (if not found, create a new file) and add this line:
+```
+machine kisiodigital.jfrog.io login <YOUR_ARTIFACTORY_USERNAME> password <YOUR_ARTIFACTORY_PASSWORD>
+``````
+
+##### Android
+
+In the `~/.gradle` directory, open `gradle.properties`file (if not found, create a new file) andd these lines:
+```
+kisio_artifactory_username=<YOUR_ARTIFACTORY_USERNAME>
+kisio_artifactory_password=<YOUR_ARTIFACTORY_PASSWORD>
+```
 
 ## Installation
 
-Use this command to install the plugin
-
-    cordova plugin add cordova-plugin-navitia-sdk-ui --variable ARTIFACTORY_USERNAME=username --variable ARTIFACTORY_PASSWORD=password
-
-You can also add the plugin directly in the config.xml file
-```xml
-<widget>
-	<plugin name="cordova-plugin-navitia-sdk-ui">
-		<variable name="ARTIFACTORY_USERNAME" value="username" />
-		<variable name="ARTIFACTORY_PASSWORD" value="password" />
-	</plugin>
-</widget>
-```
-or in the package.json file
-```json
-{
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-navitia-sdk-ui": {
-        "ARTIFACTORY_USERNAME": "username",
-        "ARTIFACTORY_PASSWORD": "password"
-      }
-    }
-  }
-}
-```
+Use this command to install the plugin `cordova plugin add cordova-plugin-navitia-sdk-ui`
 
 ## Setup for Android platform
 This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
