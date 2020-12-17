@@ -40,6 +40,7 @@ import Toolbox
             let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let modeForm = config["modeForm"] as? [Any]
+            let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             
             try JourneySdk.shared.initialize(token: token, colorConfiguration: colorConfiguration)
             JourneySdk.shared.applicationBundle = Bundle.main
@@ -51,6 +52,7 @@ import Toolbox
             JourneySdk.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
             JourneySdk.shared.multiNetwork = multiNetwork
             JourneySdk.shared.maxHistory = maxHistory
+            JourneySdk.shared.disruptionContributor = disruptionContributor
             
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
