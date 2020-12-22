@@ -132,8 +132,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
         colors.setDestinationBackgroundColor(destinationBackgroundColor);
 
+        String disruptionContributor = config.optString("disruptionContributor", "");
+
         JourneysUI.getInstance()
           .setToken(token)
+          .disruptionContributor(disruptionContributor)
           .setColors(colors);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
