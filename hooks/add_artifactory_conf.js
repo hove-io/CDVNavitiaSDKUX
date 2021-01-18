@@ -1,6 +1,7 @@
 module.exports = function(ctx) {
 	var fs = require('fs');
 	var os = require('os');
+	var path = require('path');
 	var package;
 	try {
 		package = require(ctx.opts.projectRoot + '/package.json');
