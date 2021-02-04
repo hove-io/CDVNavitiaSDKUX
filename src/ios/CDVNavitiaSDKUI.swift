@@ -7,7 +7,7 @@
 import Foundation
 import NavitiaSDK
 import NavitiaSDKUI
-import Toolbox
+import ToolboxEngine
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     
@@ -47,7 +47,7 @@ import Toolbox
             if !basePath.isEmpty {
                 JourneySdk.shared.basePath = basePath
             }
-            JourneySdk.shared.applicationBundle = Bundle.main
+            
             JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
                 JourneySdk.shared.modeForm = modes
