@@ -26,6 +26,7 @@ import Toolbox
         }
 
         do {
+            let basePath = config["basePath"] as? String ?? ""
             let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
                                                                primary: config["primaryColor"] as? String,
                                                                origin: config["originColor"] as? String,
@@ -43,6 +44,9 @@ import Toolbox
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             
             try JourneySdk.shared.initialize(token: token, colorConfiguration: colorConfiguration)
+            if !basePath.isEmpty {
+                JourneySdk.shared.basePath = basePath
+            }
             JourneySdk.shared.applicationBundle = Bundle.main
             JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
