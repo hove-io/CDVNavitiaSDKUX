@@ -108,6 +108,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             return;
         }
 
+        String basePath = config.optString("basePath", "");
         String backgroundColor = config.optString("backgroundColor", "");
         JourneysColors colors = new JourneysColors(backgroundColor);
 
@@ -134,6 +135,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         String disruptionContributor = config.optString("disruptionContributor", "");
 
+        if (!basePath.isEmpty()) {
+            JourneysUI.getInstance().setBasePath(basePath);
+        }
+        
         JourneysUI.getInstance()
           .setToken(token)
           .disruptionContributor(disruptionContributor)
