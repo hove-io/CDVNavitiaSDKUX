@@ -19,7 +19,7 @@ import ToolboxEngine
             return
         }
         
-        guard let token: String = config["token"] as? String, !token.isEmpty else {
+        guard let token = config["token"] as? String, !token.isEmpty else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
             return
