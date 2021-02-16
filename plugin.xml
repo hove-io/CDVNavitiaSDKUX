@@ -30,7 +30,7 @@
                 <source url="https://github.com/CanalTP/Podspecs"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="NavitiaSDKUI" spec="3.5.0" />
+                <pod name="NavitiaSDKUI" spec="3.5.1" />
             </pods>
         </podspec>
 
