@@ -1,11 +1,11 @@
-# Journeys UI for Cordova
+# Journey for Cordova
 [![npm version](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui.svg)](https://badge.fury.io/js/cordova-plugin-navitia-sdk-ui)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Cordova plugin for using NavitiaSDK UI.
+Cordova plugin for using Journey.
 This plugin uses the native SDK [Android](https://github.com/CanalTP/NavitiaSDKUX_android) and [iOS](https://github.com/CanalTP/NavitiaSDKUX_ios).
 
-Actually, it's not possible to use NavitiaSDK UI for Cordova with a Tab Bar (iOS) or a Bottom Navigation (Android)
+Actually, it's not possible to use Journey for Cordova with a Tab Bar (iOS) or a Bottom Navigation (Android)
 
 ## Requirements
 
@@ -86,6 +86,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | --- | --- |:---:| --- | --- |
 | config | `Object` | ✓ | Configuration | ✗ |
 | config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
+| config.coverage | `String` | ✓ | Name of search area | ✗ |
 | config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | ✗ |
 | config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
 | config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | ✗ |
@@ -108,6 +109,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 ```js****
 var config = {
     token: 'my-token',
+    coverage: 'my-coverage',
     backgroundColor: '#e67e22',
     originColor: '#2980b9',
     destinationColor: '#d35400',
@@ -196,7 +198,6 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
 | params | Object | ✓ | Parameters of the screen | |
-| params.coverage | String | ✓ | Name of search area | "fr-idf" |
 | params.originId | String | ✗ | Origin coordinates, following the format `lon;lat` | "2.3665844;48.8465337" |
 | params.destinationId | String | ✗ | Destination coordinates, following the format `lon;lat` | "2.2979169;48.8848719" |
 | params.originLabel | String | ✗ | Origin label, if not set the address will be displayed | "Home" |
@@ -219,7 +220,6 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     originLabel: 'My Home',
@@ -237,7 +237,6 @@ NavitiaSDKUI.invokeJourneyResults(journeyParams, function() {}, function(error) 
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
 };
@@ -247,7 +246,6 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
@@ -260,7 +258,6 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     forbiddenUris: ['physical_mode:Bus', ‘physical_mode:Tramway’, ‘physical_mode:Metro’]
@@ -274,7 +271,6 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     firstSectionModes: [NavitiaSDKUI.SectionMode.CAR],
@@ -286,7 +282,6 @@ var journeyParams = {
 
 ```js
 var journeyParams = {
-	coverage: 'fr-idf',
     originId: '2.3665844;48.8465337',
     destinationId: '2.2979169;48.8848719',
     firstSectionModes: [NavitiaSDKUI.SectionMode.RIDESHARING],
