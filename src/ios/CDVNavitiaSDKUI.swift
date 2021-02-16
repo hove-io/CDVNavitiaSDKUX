@@ -25,6 +25,12 @@ import Toolbox
             return
         }
 
+        guard let coverage: String = config["coverage"] as? String, !coverage.isEmpty else {
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No coverage provided")
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
+            return
+        }
+
         do {
             let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
                                                                primary: config["primaryColor"] as? String,
@@ -42,7 +48,7 @@ import Toolbox
             let modeForm = config["modeForm"] as? [Any]
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             
-            try JourneySdk.shared.initialize(token: token, colorConfiguration: colorConfiguration)
+            try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
             JourneySdk.shared.applicationBundle = Bundle.main
             JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
@@ -151,12 +157,8 @@ import Toolbox
         NavitiaSDKUserDefaultsManager.resetUserDefaults()
     }
     
-    private func getJourneysRequest(from arguments: [String: Any]) -> JourneysRequest? {
-        guard let coverage = arguments["coverage"] as? String else {
-            return nil
-        }
-        
-        let journeysRequest = JourneysRequest(coverage: coverage)
+    private func getJourneysRequest(from arguments: [String: Any]) -> JourneysRequest? {        
+        let journeysRequest = JourneysRequest()
         journeysRequest.originId = arguments["originId"] as? String
         journeysRequest.destinationId = arguments["destinationId"] as? String
         journeysRequest.originLabel = arguments["originLabel"] as? String
