@@ -108,7 +108,12 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             return;
         }
 
-        String basePath = config.optString("basePath", "");
+        String coverage = config.optString("coverage", "");
+        if (coverage.isEmpty()) {
+            callbackContext.error("No coverage specified");
+            return;
+        }
+
         String backgroundColor = config.optString("backgroundColor", "");
         JourneysColors colors = new JourneysColors(backgroundColor);
 
@@ -133,16 +138,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
         colors.setDestinationBackgroundColor(destinationBackgroundColor);
 
-        String disruptionContributor = config.optString("disruptionContributor", "");
+        JourneysUI.getInstance().setColors(colors);
 
-        if (!basePath.isEmpty()) {
-            JourneysUI.getInstance().setBasePath(basePath);
-        }
-        
-        JourneysUI.getInstance()
-          .setToken(token)
-          .disruptionContributor(disruptionContributor)
-          .setColors(colors);
+        String disruptionContributor = config.optString("disruptionContributor", "");
+        JourneysUI.getInstance().disruptionContributor(disruptionContributor);
 
         boolean multiNetwork = config.optBoolean("multiNetwork", false);
         if (multiNetwork) {
@@ -164,14 +163,21 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
+
+        JourneysUI.getInstance().init(
+            this.cordova.getActivity().getApplicationContext(),
+            token,
+            coverage,
+            null
+        );
+
         callbackContext.success();
     }
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
         try {
             final Context context = this.cordova.getActivity().getApplicationContext();
-            final JourneysRequest request = new JourneysRequest(params.getString("coverage"));
-            JourneysUI.getInstance().setCoverage(params.getString("coverage"));
+            final JourneysRequest request = new JourneysRequest();
 
             if (params.has("originId")) {
                 request.setOriginId(params.getString("originId"));
