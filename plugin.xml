@@ -31,7 +31,7 @@
 		<source url="https://github.com/CanalTP/Podspecs_snapshot"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="NavitiaSDKUI" spec="3.5.1-18-SNAPSHOT" />
+                <pod name="NavitiaSDKUI_snapshot" spec="3.5.1-18-SNAPSHOT" />
             </pods>
         </podspec>
 
