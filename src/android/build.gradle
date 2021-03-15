@@ -73,9 +73,9 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    api("com.kisio.navitia.sdk.ui:journey:3.3.0.006-7603f68a-SNAPSHOT")
+    implementation("com.kisio.navitia.sdk.ui:journey:3.3.1.001-b2d08a59-SNAPSHOT")
     implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
-    implementation("com.kisio.navitia.sdk.engine:toolbox:1.0.0")
+    implementation("com.kisio.navitia.sdk.engine:toolbox:1.1.0")
 
     implementation("androidx.multidex:multidex:2.0.1")
 
