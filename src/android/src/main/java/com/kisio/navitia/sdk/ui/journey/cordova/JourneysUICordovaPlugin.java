@@ -168,6 +168,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             this.cordova.getActivity().getApplicationContext(),
             token,
             coverage,
+            null, 
+            null, 
             null
         );
 
