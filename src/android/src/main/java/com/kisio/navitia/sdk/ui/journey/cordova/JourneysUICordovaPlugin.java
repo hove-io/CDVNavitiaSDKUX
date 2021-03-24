@@ -164,12 +164,14 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
 
+        String basePath = config.optString("basePath", "https://api.navitia.io/v1");
         JourneysUI.getInstance().init(
             this.cordova.getActivity().getApplicationContext(),
             token,
             coverage,
-            null, 
-            null, 
+            basePath,
+            null,
+            null,
             null
         );
 
