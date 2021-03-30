@@ -7,7 +7,7 @@
 import Foundation
 import NavitiaSDK
 import NavitiaSDKUI
-import Toolbox
+import ToolboxEngine
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     
@@ -19,7 +19,7 @@ import Toolbox
             return
         }
         
-        guard let token: String = config["token"] as? String, !token.isEmpty else {
+        guard let token = config["token"] as? String, !token.isEmpty else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
             return
@@ -32,6 +32,7 @@ import Toolbox
         }
 
         do {
+            let basePath = config["basePath"] as? String ?? ""
             let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
                                                                primary: config["primaryColor"] as? String,
                                                                origin: config["originColor"] as? String,
@@ -49,7 +50,10 @@ import Toolbox
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             
             try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
-            JourneySdk.shared.applicationBundle = Bundle.main
+            if !basePath.isEmpty {
+                JourneySdk.shared.basePath = basePath
+            }
+
             JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
                 JourneySdk.shared.modeForm = modes
