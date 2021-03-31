@@ -165,11 +165,12 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         this.formJourney = config.optBoolean("formJourney", false);
 
         String basePath = config.optString("basePath", "https://api.navitia.io/v1");
+        ExpertEnvironment environment = toExpertEnvironment(config.optString("environment", "PROD"));
         JourneysUI.getInstance().init(
             this.cordova.getActivity().getApplicationContext(),
             token,
             coverage,
-            basePath,
+            environment,
             null,
             null,
             null
@@ -361,6 +362,19 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 return TransportMode.TRAMWAY.getResIconId();
             default:
                 return -1;
+        }
+    }
+
+    private ExpertEnvironment toExpertEnvironment(String environment) {
+        switch (environment) {
+            case "CUSTOMER":
+                return ExpertEnvironment.CUSTOMER;
+            case "DEV":
+                return ExpertEnvironment.DEV;
+            case "INTERNAL":
+                return ExpertEnvironment.INTERNAL;
+            default:
+                return ExpertEnvironment.PROD;
         }
     }
 }
