@@ -14,6 +14,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.kisio.navitia.sdk.ui.journey.core.enums.ExpertEnvironment;
 import com.kisio.navitia.sdk.ui.journey.core.enums.TransportMode;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysColors;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysUI;
@@ -164,16 +166,16 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
         this.formJourney = config.optBoolean("formJourney", false);
 
-        String basePath = config.optString("basePath", "https://api.navitia.io/v1");
         ExpertEnvironment environment = toExpertEnvironment(config.optString("environment", "PROD"));
         JourneysUI.getInstance().init(
-            this.cordova.getActivity().getApplicationContext(),
-            token,
-            coverage,
-            environment,
-            null,
-            null,
-            null
+          this.cordova.getActivity().getApplicationContext(),
+          token,
+          coverage,
+          environment,
+          null,
+          null,
+          null,
+          null
         );
 
         callbackContext.success();
