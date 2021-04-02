@@ -7,7 +7,7 @@
 import Foundation
 import NavitiaSDK
 import NavitiaSDKUI
-import Toolbox
+import ToolboxEngine
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
     
@@ -19,7 +19,7 @@ import Toolbox
             return
         }
         
-        guard let token: String = config["token"] as? String, !token.isEmpty else {
+        guard let token = config["token"] as? String, !token.isEmpty else {
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "No token provided")
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
             return
@@ -32,6 +32,7 @@ import Toolbox
         }
 
         do {
+            let environment = toExpertEnvironment(environment: config["environment"] as? String ?? "PROD")
             let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
                                                                primary: config["primaryColor"] as? String,
                                                                origin: config["originColor"] as? String,
@@ -49,7 +50,7 @@ import Toolbox
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             
             try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
-            JourneySdk.shared.applicationBundle = Bundle.main
+            JourneySdk.shared.environment = environment
             JourneySdk.shared.formJourney = formJourney
             if let modeForm = modeForm, let modes = getModes(from: modeForm) {
                 JourneySdk.shared.modeForm = modes
@@ -236,5 +237,18 @@ import Toolbox
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
             alpha: CGFloat(1.0)
         )
+    }
+
+    private func toExpertEnvironment(environment: String) -> ExpertEnvironment {
+        switch environment {
+        case "CUSTOMER":
+            return ExpertEnvironment.customer
+        case "DEV":
+            return ExpertEnvironment.dev
+        case "INTERNAL":
+            return ExpertEnvironment.internal
+        default:
+            return ExpertEnvironment.prod
+        }
     }
 }
