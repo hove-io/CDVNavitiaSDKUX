@@ -59,6 +59,7 @@ kisio_artifactory_password=<YOUR_ARTIFACTORY_PASSWORD>
 Use this command to install the plugin `cordova plugin add cordova-plugin-navitia-sdk-ui`
 
 ## Setup for Android platform
+
 This plugin uses Google Maps and requires a Google API key in case you're targeting the Android platform with your cordova application. You can get your own API key using this link: https://developers.google.com/maps/documentation/android-api/signup
 
 You need to update your config.xml file as follows:
@@ -87,6 +88,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config | `Object` | ✓ | Configuration | ✗ |
 | config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
 | config.coverage | `String` | ✓ | Name of search area | ✗ |
+| config.environment | `String` | ✗ | Navitia environment | "PROD" |
 | config.backgroundColor | `String` | ✗ | To set the background colors the components of the application | ✗ |
 | config.primaryColor | `String` | ✗ | To set the primary colors such as the journey's duration colors | `backgroundColor` |
 | config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | ✗ |
@@ -104,10 +106,20 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
+For the supported environments, please check the table below:
+
+| Environment | Value |
+| --- | --- |
+| Prod | "PROD" |
+| Customer | "CUSTOMER" |
+| Dev | "DEV" |
+| Internal | "INTERNAL" |
+
 #### Example
 
 ```js****
 var config = {
+    environment: 'CUSTOMER',
     token: 'my-token',
     coverage: 'my-coverage',
     backgroundColor: '#e67e22',
