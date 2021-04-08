@@ -56,8 +56,9 @@ done
 		inputPaths: [
 			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/${PLUGIN_NAME}.framework"`,
 			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/NavitiaSDK.framework"`,
-			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/Toolbox.framework"`,
-			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/RouterSDK.framework"`
+			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/ToolboxEngine.framework"`,
+			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/DesignEngine.framework"`,
+			`"$(TARGET_BUILD_DIR)/$(WRAPPER_NAME)/$(BUNDLE_FRAMEWORKS_FOLDER_PATH)/RouterEngine.framework"`
 		]
 	});
 	fs.writeFileSync(projectPath, proj.writeSync());
