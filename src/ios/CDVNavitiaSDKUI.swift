@@ -164,8 +164,8 @@ import ToolboxEngine
         journeysRequest.destinationId = arguments["destinationId"] as? String
         journeysRequest.originLabel = arguments["originLabel"] as? String
         journeysRequest.destinationLabel = arguments["destinationLabel"] as? String
-        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as CoverageRegionJourneysRequestBuilder.DatetimeRepresents?
-        journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String)
+        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as CoverageRegionJourneysRequestBuilder.DatetimeRepresents? ?? .departure
+        journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String) ?? Date()
         journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String]
         journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [CoverageRegionJourneysRequestBuilder.FirstSectionMode]?
         journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [CoverageRegionJourneysRequestBuilder.LastSectionMode]?
