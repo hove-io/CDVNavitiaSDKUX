@@ -73,7 +73,7 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("com.kisio.navitia.sdk.ui:journey:3.4.0")
+    implementation("com.kisio.navitia.sdk.ui:journey:3.4.1")
     implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
     implementation("com.kisio.navitia.sdk.engine:toolbox:1.1.0")
 
