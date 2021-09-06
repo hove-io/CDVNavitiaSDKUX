@@ -1,0 +1,60 @@
+package com.kisio.navitia.sdk.ui.journey.cordova;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
+import com.kisio.navitia.sdk.ui.journey.cordova.R;
+import com.kisio.navitia.sdk.ui.journey.presentation.ui.form.FormFragment;
+import com.kisio.navitia.sdk.ui.journey.presentation.ui.journeys.JourneysFragment;
+
+public class JourneyUIActivity extends AppCompatActivity {
+
+    public final String DESTINATION = "arg:destination";
+    public final String JOURNEYS_REQUEST = "arg:JourneysRequest";
+    public final String ORIGIN = "arg:origin";
+    public final String WITH_FORM = "arg:withForm";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(null);
+
+        setContentView(R.layout.activity_journey_ui);
+        JourneyUI.Companion.getInstance().attachActivity(this);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment f;
+            String tag;
+
+            if (getIntent().getBooleanExtra(WITH_FORM, false)) {
+                FormFragment formFragment = FormFragment.Companion.newInstance(
+                    false,
+                    intent.getSerializableExtra(ORIGIN),
+                    intent.getSerializableExtra(DESTINATION)
+                );
+                f = formFragment;
+                tag = formFragment.getSimpleTag();
+            } else {
+                JourneysFragment journeysFragment = JourneysFragment.Companion.newInstance(
+                    intent.getParcelableExtra(JOURNEYS_REQUEST)
+                );
+                f = journeysFragment;
+                tag = journeysFragment.getSimpleTag();
+            }
+
+            ft.replace(R.id.activity_journey_ui_content, fragment, tag);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        JourneyUI.Companion.getInstance().getDelegate().onBackPressed();
+    }
+}

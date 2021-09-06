@@ -5,3 +5,4 @@ src/android/.gradle/
 src/android/.project
 src/android/.settings/org.eclipse.buildship.core.prefs
 .vscode
+local.properties
