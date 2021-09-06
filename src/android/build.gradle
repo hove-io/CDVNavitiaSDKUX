@@ -30,22 +30,10 @@ repositories {
     }
 }
 
-def supportLibraryVersion = "29.0.3"
-def DEFAULT_MIN_SDK_VERSION = 21
-def minSdk = Math.max(DEFAULT_MIN_SDK_VERSION, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer)
+def defaultMinSdkVersion = 21
+def minSdk = Math.max(defaultMinSdkVersion, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer)
 if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk ) {
     ext.cdvMinSdkVersion = minSdk;
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == "com.android.support") {
-            if (!requested.name.startsWith("multidex") && !requested.name.contains("support-core-ui") && !requested.name.contains("support-compat")) {
-                details.useVersion(supportLibraryVersion)
-            }
-        }
-    }
 }
 
 android {
@@ -54,6 +42,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable = true
+        }
         release {
             debuggable = false
             testCoverageEnabled = false
@@ -65,6 +56,7 @@ ext.postBuildExtras = {
     android {
         allprojects {
             compileOptions {
+            compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
@@ -73,13 +65,13 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("com.kisio.navitia.sdk.ui:journey:3.4.1")
-    implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
+    implementation("com.kisio.navitia.sdk.ui:journey:4.0.0.002-cb4452c4-SNAPSHOT")
+    //implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
     implementation("com.kisio.navitia.sdk.engine:toolbox:1.1.0")
 
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("joda-time:joda-time:2.10.6")
+    implementation("joda-time:joda-time:2.10.10")
 
     implementation("org.jacoco:org.jacoco.agent:${android.jacoco.version}:runtime")
 }
