@@ -8,6 +8,7 @@ import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -15,29 +16,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kisio.navitia.sdk.ui.journey.core.enums.ExpertEnvironment;
-import com.kisio.navitia.sdk.ui.journey.core.enums.TransportMode;
-import com.kisio.navitia.sdk.ui.journey.core.JourneysColors;
-import com.kisio.navitia.sdk.ui.journey.core.JourneysUI;
+import com.kisio.navitia.sdk.ui.journey.core.ExpertEnvironment;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyColors;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
-import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneysUIActivity;
-import com.kisio.navitia.sdk.ui.journey.presentation.model.TransportModeModel;
+import com.kisio.navitia.sdk.ui.journey.core.PhysicalMode;
+import com.kisio.navitia.sdk.ui.journey.core.TransportMode;
+import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneyUIActivity;
 import com.kisio.navitia.sdk.ui.journey.util.Constant;
-import com.kisio.navitia.sdk.ui.journey.util.NavitiaSDKPreferencesManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class JourneysUICordovaPlugin extends CordovaPlugin {
 
     private Map<String, Action> actions = new HashMap<String, Action>();
-    private ArrayList<TransportModeModel> transportModes = new ArrayList<>();
-    private boolean formJourney = false;
+    private ArrayList<TransportMode> transportModes = new ArrayList<>();
+    private boolean withJourney = false;
 
     private static final String TAG = JourneysUICordovaPlugin.class.getName();
 
@@ -116,66 +118,75 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             return;
         }
 
-        String backgroundColor = config.optString("backgroundColor", "");
-        JourneysColors colors = new JourneysColors(backgroundColor);
-
-        String primaryColor = config.optString("primaryColor", "");
-        colors.setPrimaryColor(primaryColor);
+        // Colors
+        String primaryColor = config.optString("backgroundColor", "");
+        String secondaryColor = config.optString("primaryColor", "");
+        JourneyColors colors = new JourneyColors(primaryColor, secondaryColor);
 
         String originColor = config.optString("originColor", "");
-        colors.setOriginColor(originColor);
-
+        if (originColor.isEmpty()) {
+            colors.originColor(originColor);
+        }
         String originIconColor = config.optString("originIconColor", "");
-        colors.setOriginIconColor(originIconColor);
-
+        if (originIconColor.isEmpty()) {
+            colors.originIconColor(originIconColor);
+        }
         String originBackgroundColor = config.optString("originBackgroundColor", "");
-        colors.setOriginBackgroundColor(originBackgroundColor);
-
+        if (originBackgroundColor.isEmpty()) {
+            colors.originBackgroundColor(originBackgroundColor);
+        }
         String destinationColor = config.optString("destinationColor", "");
-        colors.setDestinationColor(destinationColor);
-
+        if (destinationColor.isEmpty()) {
+            colors.destinationColor(destinationColor);
+        }
         String destinationIconColor = config.optString("destinationIconColor", "");
-        colors.setDestinationIconColor(destinationIconColor);
-
+        if (destinationIconColor.isEmpty()) {
+            colors.destinationIconColor(destinationIconColor);
+        }
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
-        colors.setDestinationBackgroundColor(destinationBackgroundColor);
+        if (TextUtils.isEmpty(destinationBackgroundColor)) {
+            colors.destinationBackgroundColor(destinationBackgroundColor);
+        }
 
-        JourneysUI.getInstance().setColors(colors);
-
+        // Options
         String disruptionContributor = config.optString("disruptionContributor", "");
-        JourneysUI.getInstance().disruptionContributor(disruptionContributor);
-
-        boolean multiNetwork = config.optBoolean("multiNetwork", false);
-        if (multiNetwork) {
-            JourneysUI.getInstance().withMultiNetwork();
-        }
-
-        boolean isEarlierLaterFeatureEnabled = config.optBoolean("isEarlierLaterFeatureEnabled", false);
-        if (isEarlierLaterFeatureEnabled) {
-            JourneysUI.getInstance().withEarlierLaterFeature();
-        }
-
-        boolean isNextDeparturesFeatureEnabled = config.optBoolean("isNextDeparturesFeatureEnabled", false);
-        if (isNextDeparturesFeatureEnabled) {
-            JourneysUI.getInstance().withNextDepartures();
-        }
+        JourneyUI.Companion.getInstance().disruptionContributor(disruptionContributor);
 
         int maxHistory = config.optInt("maxHistory", 10);
-        JourneysUI.getInstance().maxHistory(maxHistory);
+        JourneyUI.Companion.getInstance().maxHistory(maxHistory);
 
-        this.transportModes = getTransportModes(config.optJSONArray("modeForm"));
-        this.formJourney = config.optBoolean("formJourney", false);
+        List<TransportMode> transportModes = toTransportModes(config.optJSONArray("modeForm"));
+        JourneyUI.Companion.getInstance().withMultiNetwork();
 
-        ExpertEnvironment environment = toExpertEnvironment(config.optString("environment", "PROD"));
-        JourneysUI.getInstance().init(
-          this.cordova.getActivity().getApplicationContext(),
-          token,
-          coverage,
-          environment,
-          null,
-          null,
-          null,
-          null
+        boolean withEarlierLaterFeature = config.optBoolean("isEarlierLaterFeatureEnabled", false);
+        if (withEarlierLaterFeature) {
+            JourneyUI.Companion.getInstance().withEarlierLaterFeature();
+        }
+
+        boolean withMultiNetwork = config.optBoolean("multiNetwork", false);
+        if (withMultiNetwork) {
+            JourneyUI.Companion.getInstance().withMultiNetwork();
+        }
+
+        boolean withNextDepartures = config.optBoolean("isNextDeparturesFeatureEnabled", false);
+        if (withNextDepartures) {
+            JourneyUI.Companion.getInstance().withNextDepartures();
+        }
+
+        // Use form or not
+        this.withJourney = config.optBoolean("formJourney", false);
+
+        // Initialization
+        JourneyUI.Companion.getInstance().init(
+            this.cordova.getActivity().getApplicationContext(), // context
+            colors, // colors
+            coverage, // coverage
+            token,  // token
+            null, // config
+            null, // config file
+            toExpertEnvironment(config.optString("environment", "PROD")), // env
+            null, // onNavigate
+            null // onBack
         );
 
         callbackContext.success();
@@ -184,71 +195,94 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
         try {
             final Context context = this.cordova.getActivity().getApplicationContext();
-            final JourneysRequest request = new JourneysRequest();
 
+            String originId = "";
             if (params.has("originId")) {
-                request.setOriginId(params.getString("originId"));
+                originId = params.getString("originId");
             }
+            String originLabel = "";
             if (params.has("originLabel")) {
-                request.setOriginLabel(params.getString("originLabel"));
+                originLabel = params.getString("originLabel");
             }
+            String destinationId = "";
             if (params.has("destinationId")) {
                 request.setDestinationId(params.getString("destinationId"));
+                destinationId = params.getString("destinationId");
             }
+            String destinationLabel = "";
             if (params.has("destinationLabel")) {
                 request.setDestinationLabel(params.getString("destinationLabel"));
+                destinationLabel = params.getString("destinationLabel");
             }
+            DateTime datetime = DateTime.now();
             if (params.has("datetime")) {
-                request.setDatetime(getDatetimeFromString(params.getString("datetime")));
+                datetime = toDateTime(params.getString("datetime"));
             }
+            JourneysRequest.DateTimeRepresents datetimeRepresents = JourneysRequest.DateTimeRepresents.DEPARTURE;
             if (params.has("datetimeRepresents")) {
-                request.setDatetimeRepresents(params.getString("datetimeRepresents"));
+                datetimeRepresents = toDateTimeRepresents(params.getString("datetimeRepresents"));
             }
+            Set<PhysicalMode> forbiddenUris = new HashSet<PhysicalMode>();
             if (params.has("forbiddenUris")) {
-                request.setForbiddenUris(getStringListFromJsonArray(params.getJSONArray("forbiddenUris")));
+                forbiddenUris = toPhysicalModeSet(params.getJSONArray("forbiddenUris"));
             }
+            Set<String> firstSectionModes = new HashSet<String>();
             if (params.has("firstSectionModes")) {
-                request.setFirstSectionModes(getStringListFromJsonArray(params.getJSONArray("firstSectionModes")));
+                firstSectionModes = toSet(params.getJSONArray("firstSectionModes"));
             }
+            Set<String> lastSectionModes = new HashSet<String>();
             if (params.has("lastSectionModes")) {
-                request.setLastSectionModes(getStringListFromJsonArray(params.getJSONArray("lastSectionModes")));
+                lastSectionModes = toSet(params.getJSONArray("lastSectionModes"));
             }
+            int count = -1;
             if (params.has("count")) {
-                request.setCount(params.getInt("count"));
+                count = params.getInt("count");
             }
+            int minNbJourneys = -1;
             if (params.has("minNbJourneys")) {
-                request.setMinNbJourneys(params.getInt("minNbJourneys"));
+                minNbJourneys = params.getInt("minNbJourneys");
             }
+            int maxNbJourneys = -1;
             if (params.has("maxNbJourneys")) {
-                request.setMaxNbJourneys(params.getInt("maxNbJourneys"));
+                maxNbJourneys = params.getInt("maxNbJourneys");
             }
+            Set<String> addPoiInfos = new HashSet<String>();
             if (params.has("addPoiInfos")) {
-                request.setAddPoiInfos(getStringListFromJsonArray(params.getJSONArray("addPoiInfos")));
-            } else {
-                List<String> addPoiInfosList = new ArrayList<>();
-                for (TransportModeModel transportMode : transportModes) {
-                    if (transportMode.getTitle().equalsIgnoreCase("bss") && transportMode.isRealTime()) {
-                        addPoiInfosList.add("bss_stands");
-                    }
-
-                    if (transportMode.getTitle().equalsIgnoreCase("car") && transportMode.isRealTime()) {
-                        addPoiInfosList.add("car_park");
-                    }
-                }
-
-                if (addPoiInfosList.size() > 0) {
-                    request.setAddPoiInfos(addPoiInfosList);
-                }
+                addPoiInfos = toSet(params.getJSONArray("addPoiInfos"));
             }
+            Set<String> directPathMode = new HashSet<String>();
             if (params.has("directPath")) {
-                request.setDirectPath(params.getString("directPath"));
+                directPathMode.add(params.getString("directPath"));
             }
-            request.setTransportModeListRequested(this.transportModes);
 
-            final Intent intent = new Intent(context, JourneysUIActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Constant.JOURNEYS_REQUEST, request);
-            intent.putExtra(Constant.WITH_FORM, formJourney);
+            final JourneysRequest request = new JourneysRequest(
+                new ArrayList<String>(), // allowedId
+                addPoiInfos, // addPoiInfos
+                count, // count
+                JourneysRequest.DataFreshness.BASE_SCHEDULE, // dataFreshness
+                datetime, // dateTime
+                datetimeRepresents, // dateTimeRepresents
+                "", // destinationAddress
+                destinationId, // destinationId
+                destinationLabel, // destinationLabel
+                directPathMode, // directPathMode
+                firstSectionModes, // firstSectionModes
+                forbiddenUris, // forbiddenUris
+                lastSectionModes, // lastSectionModes
+                maxNbJourneys, // maxJourneys
+                minNbJourneys, // minJourneys
+                "", // originAddress
+                originId, // originId
+                originLabel, // originLabel
+                new HashSet<PhysicalMode>(), // physicalModes
+                JourneysRequest.TravelerType.STANDARD // travelerType
+            );
+
+            final Intent intent = new Intent(context, JourneyUIActivity.class);
+            intent.putExtra(JourneyUIActivity.DESTINATION, new Pair<String, String>(destinationId, destinationLabel));
+            intent.putExtra(JourneyUIActivity.JOURNEYS_REQUEST, request);
+            intent.putExtra(JourneyUIActivity.ORIGIN, new Pair<String, String>(originId, originLabel));
+            intent.putExtra(JourneyUIActivity.WITH_FORM, withJourney);
 
             context.startActivity(intent);
 
@@ -258,14 +292,56 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
     }
 
+    private int getIcon(@TransportModeIcon String value) {
+        if (value.isEmpty()) {
+            return -1;
+        }
+
+        switch (value) {
+            case TransportModeIcon.BIKE:
+                return R.drawable.ic_connection_mode_bike;
+            case TransportModeIcon.BSS:
+                return R.drawable.ic_connection_mode_bike_sharing_service;
+            case TransportModeIcon.BUS:
+                return R.drawable.ic_physical_mode_bus;
+            case TransportModeIcon.CAR:
+                return R.drawable.ic_connection_mode_car;
+            case TransportModeIcon.COACH:
+                return R.drawable.ic_physical_mode_coach;
+            case TransportModeIcon.FERRY:
+                return R.drawable.ic_physical_mode_ferry;
+            case TransportModeIcon.FUNICULAR:
+                return R.drawable.ic_physical_mode_funicular;
+            case TransportModeIcon.LOCALTRAIN:
+                return R.drawable.ic_physical_mode_train;
+            case TransportModeIcon.LONGDISTANCETRAIN:
+                return R.drawable.ic_physical_mode_train;
+            case TransportModeIcon.METRO:
+                return R.drawable.ic_physical_mode_metro;
+            case TransportModeIcon.RAPIDTRANSIT:
+                return R.drawable.ic_physical_mode_train;
+            case TransportModeIcon.RIDESHARING:
+                return R.drawable.ic_connection_mode_ridesharing;
+            case TransportModeIcon.SHUTTLE:
+                return R.drawable.ic_physical_mode_shuttle;
+            case TransportModeIcon.TAXI:
+                return R.drawable.ic_physical_mode_taxi;
+            case TransportModeIcon.TRAIN:
+                return R.drawable.ic_physical_mode_train;
+            case TransportModeIcon.TRAMWAY:
+                return R.drawable.ic_physical_mode_tramway;
+            default:
+                return -1;
+        }
+    }
+
     private void resetPreferences(CallbackContext callbackContext) {
-        final Context context = this.cordova.getActivity().getApplicationContext();
-        NavitiaSDKPreferencesManager.resetPreferences(context);
+        JourneyUI.Companion.getInstance().resetPreferences();
 
         callbackContext.success();
     }
 
-    private DateTime getDatetimeFromString(String value) {
+    private DateTime toDateTime(String value) {
         try {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             DateTime parsedDate = formatter.parseDateTime(value);
@@ -279,8 +355,36 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
     }
 
-    private List<String> getStringListFromJsonArray(JSONArray array) {
-        List<String> stringList = new ArrayList<String>();
+    private JourneysRequest.DateTimeRepresents toDateTimeRepresents(String value) {
+        JourneysRequest.DateTimeRepresents dateTimeRepresents;
+
+        switch (array.getString(i)) {
+            case "arrival":
+                dateTimeRepresents = JourneysRequest.DateTimeRepresents.ARRIVAL;
+                break;
+            case "departure":
+                dateTimeRepresents = JourneysRequest.DateTimeRepresents.DEPARTURE;
+                break;
+        }
+
+        return dateTimeRepresents;
+    }
+
+    private ExpertEnvironment toExpertEnvironment(String environment) {
+        switch (environment) {
+            case "CUSTOMER":
+                return ExpertEnvironment.CUSTOMER;
+            case "DEV":
+                return ExpertEnvironment.DEV;
+            case "INTERNAL":
+                return ExpertEnvironment.INTERNAL;
+            default:
+                return ExpertEnvironment.PROD;
+        }
+    }
+
+    private Set<String> toSet(JSONArray array) {
+        HashSet<String> stringList = new HashSet<String>();
         if (array == null || array.length() == 0) {
             return stringList;
         }
@@ -296,8 +400,96 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         return stringList;
     }
 
-    private ArrayList<TransportModeModel> getTransportModes(JSONArray array) {
-        ArrayList<TransportModeModel> transportModes = new ArrayList<>();
+    private Set<PhysicalMode> toPhysicalModeSet(JSONArray array) {
+        HashSet<PhysicalMode> physicalModeList = new HashSet<PhysicalMode>();
+        if (array == null || array.length() == 0) {
+            return physicalModeList;
+        }
+
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                PhysicalMode physicalMode;
+
+                switch (array.getString(i)) {
+                    case "physical_mode:Air":
+                        physicalMode = PhysicalMode.AIR;
+                        break;
+                    case "physical_mode:Bike":
+                        physicalMode = PhysicalMode.BIKE;
+                        break;
+                    case "physical_mode:BikeSharingService":
+                        physicalMode = PhysicalMode.BIKE_SHARING_SERVICE;
+                        break;
+                    case "physical_mode:Boat":
+                        physicalMode = PhysicalMode.BOAT;
+                        break;
+                    case "physical_mode:Bus":
+                        physicalMode = PhysicalMode.BUS;
+                        break;
+                    case "physical_mode:BusRapidTransit":
+                        physicalMode = PhysicalMode.BUS_RAPID_TRANSIT;
+                        break;
+                    case "physical_mode:Car":
+                        physicalMode = PhysicalMode.CAR;
+                        break;    
+                    case "physical_mode:CheckIn":
+                        physicalMode = PhysicalMode.CHECK_IN;
+                        break;
+                    case "physical_mode:CheckOut":
+                        physicalMode = PhysicalMode.CHECK_OUT;
+                        break;
+                    case "physical_mode:Coach":
+                        physicalMode = PhysicalMode.COACH;
+                        break;
+                    case "physical_mode:Ferry":
+                        physicalMode = PhysicalMode.FERRY;
+                        break;
+                    case "physical_mode:Funicular":
+                        physicalMode = PhysicalMode.FUNICULAR;
+                        break;
+                    case "physical_mode:LocalTrain":
+                        physicalMode = PhysicalMode.LOCAL_TRAIN;
+                        break;
+                    case "physical_mode:LongDistanceTrain":
+                        physicalMode = PhysicalMode.LONG_DISTANCE_TRAIN;
+                        break;
+                    case "physical_mode:Metro":
+                        physicalMode = PhysicalMode.METRO;
+                        break;
+                    case "physical_mode:RailShuttle":
+                        physicalMode = PhysicalMode.RAIL_SHUTTLE;
+                        break;
+                    case "physical_mode:RapidTransit":
+                        physicalMode = PhysicalMode.RAPID_TRANSIT;
+                        break;
+                    case "physical_mode:Shuttle":
+                        physicalMode = PhysicalMode.SHUTTLE;
+                        break;
+                    case "physical_mode:SuspendedCableCar":
+                        physicalMode = PhysicalMode.SUSPENDED_CABLE_CAR;
+                        break;
+                    case "physical_mode:Taxi":
+                        physicalMode = PhysicalMode.TAXI;
+                        break;
+                    case "physical_mode:Train":
+                        physicalMode = PhysicalMode.TRAIN;
+                        break;
+                    case "physical_mode:Tramway":
+                        physicalMode = PhysicalMode.TRAMWAY;
+                        break;
+                }
+
+                physicalModeList.add(physicalMode);
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return physicalModeList;
+    }
+
+    private ArrayList<TransportMode> toTransportModes(JSONArray array) {
+        ArrayList<TransportMode> transportModes = new ArrayList<>();
         if (array == null || array.length() == 0) {
             return transportModes;
         }
@@ -305,78 +497,22 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         try {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = (JSONObject) array.get(i);
-
-                TransportModeModel transportModeModel = new TransportModeModel();
-                transportModeModel.setTitle(object.optString("title"));
-                transportModeModel.setResIconId(getIcon(object.optString("icon")));
-                transportModeModel.setFirstSectionMode(getStringListFromJsonArray(object.optJSONArray("firstSectionMode")).toArray(new String[0]));
-                transportModeModel.setLastSectionMode(getStringListFromJsonArray(object.optJSONArray("lastSectionMode")).toArray(new String[0]));
-                transportModeModel.setPhysicalModes(getStringListFromJsonArray(object.optJSONArray("physicalMode")).toArray(new String[0]));
-                transportModeModel.setRealTime(object.optBoolean("realTime", false));
-                transportModeModel.setSelected(object.optBoolean("selected", false));
-
-                transportModes.add(transportModeModel);
+                transportModes.add(new TransportMode(
+                    object.optString("title"), // title
+                    -1, // titleRes
+                    getIcon(object.optString("icon")), // iconRes
+                    toSet(object.optJSONArray("firstSectionMode")).toArray(new String[0]), // firstSectionModes
+                    toSet(object.optJSONArray("lastSectionMode")).toArray(new String[0]), // lastSectionMode
+                    new HashSet<String>(), // directPathMode
+                    toSet(object.optJSONArray("physicalMode")).toArray(new String[0]), // physicalModes
+                    object.optBoolean("realTime", false), // isRealTime
+                    object.optBoolean("selected", false) // isSelected
+                ));
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
 
         return transportModes;
-    }
-
-    private int getIcon(@TransportModeIcon String value) {
-        if (TextUtils.isEmpty(value)) {
-            return -1;
-        }
-
-        switch (value) {
-            case TransportModeIcon.BIKE:
-                return TransportMode.BIKE.getResIconId();
-            case TransportModeIcon.BSS:
-                return TransportMode.BSS.getResIconId();
-            case TransportModeIcon.BUS:
-                return TransportMode.BUS.getResIconId();
-            case TransportModeIcon.CAR:
-                return TransportMode.CAR.getResIconId();
-            case TransportModeIcon.COACH:
-                return TransportMode.COACH.getResIconId();
-            case TransportModeIcon.FERRY:
-                return TransportMode.FERRY.getResIconId();
-            case TransportModeIcon.FUNICULAR:
-                return TransportMode.FUNICULAR.getResIconId();
-            case TransportModeIcon.LOCALTRAIN:
-                return TransportMode.LOCAL_TRAIN.getResIconId();
-            case TransportModeIcon.LONGDISTANCETRAIN:
-                return TransportMode.LONG_DISTANCE_TRAIN.getResIconId();
-            case TransportModeIcon.METRO:
-                return TransportMode.METRO.getResIconId();
-            case TransportModeIcon.RAPIDTRANSIT:
-                return TransportMode.RAPID_TRANSIT.getResIconId();
-            case TransportModeIcon.RIDESHARING:
-                return TransportMode.RIDESHARING.getResIconId();
-            case TransportModeIcon.SHUTTLE:
-                return TransportMode.SHUTTLE.getResIconId();
-            case TransportModeIcon.TAXI:
-                return TransportMode.TAXI.getResIconId();
-            case TransportModeIcon.TRAIN:
-                return TransportMode.TRAIN.getResIconId();
-            case TransportModeIcon.TRAMWAY:
-                return TransportMode.TRAMWAY.getResIconId();
-            default:
-                return -1;
-        }
-    }
-
-    private ExpertEnvironment toExpertEnvironment(String environment) {
-        switch (environment) {
-            case "CUSTOMER":
-                return ExpertEnvironment.CUSTOMER;
-            case "DEV":
-                return ExpertEnvironment.DEV;
-            case "INTERNAL":
-                return ExpertEnvironment.INTERNAL;
-            default:
-                return ExpertEnvironment.PROD;
-        }
     }
 }

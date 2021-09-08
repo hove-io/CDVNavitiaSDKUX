@@ -30,12 +30,6 @@ repositories {
     }
 }
 
-def defaultMinSdkVersion = 21
-def minSdk = Math.max(defaultMinSdkVersion, cdvHelpers.getConfigPreference('android-minSdkVersion', 0) as Integer)
-if (cdvMinSdkVersion == null || Integer.parseInt('' + cdvMinSdkVersion) < minSdk ) {
-    ext.cdvMinSdkVersion = minSdk;
-}
-
 android {
     defaultConfig {
         multiDexEnabled = true
@@ -56,7 +50,6 @@ ext.postBuildExtras = {
     android {
         allprojects {
             compileOptions {
-            compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
@@ -65,7 +58,7 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("com.kisio.navitia.sdk.ui:journey:4.0.0.002-cb4452c4-SNAPSHOT")
+    implementation("com.kisio.navitia.sdk.ui:journey:4.0.0.003-36cf048d-SNAPSHOT")
     //implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
     implementation("com.kisio.navitia.sdk.engine:toolbox:1.1.0")
 
