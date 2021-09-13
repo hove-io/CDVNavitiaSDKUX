@@ -8,16 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
-import com.kisio.navitia.sdk.ui.journey.cordova.R;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
 import com.kisio.navitia.sdk.ui.journey.presentation.ui.form.FormFragment;
 import com.kisio.navitia.sdk.ui.journey.presentation.ui.journeys.JourneysFragment;
 
+import kotlin.Pair;
+
 public class JourneyUIActivity extends AppCompatActivity {
 
-    public final String DESTINATION = "arg:destination";
-    public final String JOURNEYS_REQUEST = "arg:JourneysRequest";
-    public final String ORIGIN = "arg:origin";
-    public final String WITH_FORM = "arg:withForm";
+    public static final String DESTINATION = "arg:destination";
+    public static final String JOURNEYS_REQUEST = "arg:JourneysRequest";
+    public static final String ORIGIN = "arg:origin";
+    public static final String WITH_FORM = "arg:withForm";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +37,21 @@ public class JourneyUIActivity extends AppCompatActivity {
             if (getIntent().getBooleanExtra(WITH_FORM, false)) {
                 FormFragment formFragment = FormFragment.Companion.newInstance(
                     false,
-                    intent.getSerializableExtra(ORIGIN),
-                    intent.getSerializableExtra(DESTINATION)
+                    (Pair<String, String>) intent.getSerializableExtra(ORIGIN),
+                    (Pair<String, String>) intent.getSerializableExtra(DESTINATION)
                 );
                 f = formFragment;
                 tag = formFragment.getSimpleTag();
             } else {
                 JourneysFragment journeysFragment = JourneysFragment.Companion.newInstance(
-                    intent.getParcelableExtra(JOURNEYS_REQUEST)
+                    (JourneysRequest) intent.getParcelableExtra(JOURNEYS_REQUEST),
+                    false
                 );
                 f = journeysFragment;
                 tag = journeysFragment.getSimpleTag();
             }
 
-            ft.replace(R.id.activity_journey_ui_content, fragment, tag);
+            ft.replace(R.id.activity_journey_ui_content, f, tag);
             ft.commit();
         }
     }

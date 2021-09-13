@@ -5,9 +5,10 @@
 
     <application>
         <activity
-            android:name=".JourneysUIActivity"
-            android:exported="false"
+            android:name=".JourneyUIActivity"
+            android:exported="true"
             android:launchMode="singleTask"
+            android:theme="@style/Journey.Cordova.Theme"
             android:windowSoftInputMode="adjustPan" />
     </application>
 </manifest>

@@ -58,13 +58,15 @@ ext.postBuildExtras = {
 }
 
 dependencies {
-    implementation("com.kisio.navitia.sdk.ui:journey:4.0.0.003-36cf048d-SNAPSHOT")
-    //implementation("com.kisio.navitia.sdk.engine:design:1.0.0")
+    implementation("com.kisio.navitia.sdk.ui:journey:4.0.0")
     implementation("com.kisio.navitia.sdk.engine:toolbox:1.1.0")
+    
+    implementation("com.google.android.material:material:1.4.0")
 
     implementation("androidx.multidex:multidex:2.0.1")
 
     implementation("joda-time:joda-time:2.10.10")
 
     implementation("org.jacoco:org.jacoco.agent:${android.jacoco.version}:runtime")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.0.0")
 }

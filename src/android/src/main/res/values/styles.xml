@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Journey.Cordova.Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Journey.Cordova.Theme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 </resources>    

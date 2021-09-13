@@ -44,7 +44,13 @@
             </feature>
             <preference name="AndroidXEnabled" value="true" />
         </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:exported="true" android:launchMode="singleTask" android:name="com.kisio.navitia.sdk.ui.journey.cordova.JourneyUIActivity" android:theme="@style/Journey.Cordova.Theme" android:windowSoftInputMode="adjustPan" />
+        </config-file>
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
+        <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneyUIActivity.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
+        <source-file src="src/android/src/main/res/layout/activity_journey_ui.xml" target-dir="res/layout" />
+        <source-file src="src/android/src/main/res/values/styles.xml" target-dir="res/values" />
     </platform>
 </plugin>

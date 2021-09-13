@@ -6,6 +6,26 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.kisio.navitia.sdk.ui.journey.core.ExpertEnvironment;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyColors;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
+import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
+import com.kisio.navitia.sdk.ui.journey.core.PhysicalMode;
+import com.kisio.navitia.sdk.ui.journey.core.TransportMode;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import kotlin.Pair;
+import kotlin.Unit;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 
@@ -16,29 +36,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.kisio.navitia.sdk.ui.journey.core.ExpertEnvironment;
-import com.kisio.navitia.sdk.ui.journey.core.JourneyColors;
-import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
-import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
-import com.kisio.navitia.sdk.ui.journey.core.PhysicalMode;
-import com.kisio.navitia.sdk.ui.journey.core.TransportMode;
-import com.kisio.navitia.sdk.ui.journey.core.cordova.JourneyUIActivity;
-import com.kisio.navitia.sdk.ui.journey.util.Constant;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 public class JourneysUICordovaPlugin extends CordovaPlugin {
 
-    private Map<String, Action> actions = new HashMap<String, Action>();
-    private ArrayList<TransportMode> transportModes = new ArrayList<>();
+    private final Map<String, Action> actions = new HashMap<>();
     private boolean withJourney = false;
 
     private static final String TAG = JourneysUICordovaPlugin.class.getName();
@@ -52,7 +52,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         public abstract void doAction(JSONObject params, CallbackContext callbackContext);
     }
 
-    @StringDef({})
+    @StringDef()
     @Retention(RetentionPolicy.SOURCE)
     public @interface TransportModeIcon {
         String BIKE = "bike";
@@ -97,7 +97,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (actions.containsKey(action)) {
-            actions.get(action).doAction(args.getJSONObject(0), callbackContext);
+            Objects.requireNonNull(actions.get(action)).doAction(args.getJSONObject(0), callbackContext);
         } else {
             callbackContext.error("Action " + action + " not found");
         }
@@ -156,11 +156,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         JourneyUI.Companion.getInstance().maxHistory(maxHistory);
 
         List<TransportMode> transportModes = toTransportModes(config.optJSONArray("modeForm"));
-        JourneyUI.Companion.getInstance().withMultiNetwork();
+        JourneyUI.Companion.getInstance().transportModes(transportModes);
 
         boolean withEarlierLaterFeature = config.optBoolean("isEarlierLaterFeatureEnabled", false);
         if (withEarlierLaterFeature) {
-            JourneyUI.Companion.getInstance().withEarlierLaterFeature();
+            JourneyUI.Companion.getInstance().withEarlierLater();
         }
 
         boolean withMultiNetwork = config.optBoolean("multiNetwork", false);
@@ -185,8 +185,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             null, // config
             null, // config file
             toExpertEnvironment(config.optString("environment", "PROD")), // env
-            null, // onNavigate
-            null // onBack
+            (nav -> Unit.INSTANCE), // onNavigate
+            (nav -> Unit.INSTANCE) // onBack
         );
 
         callbackContext.success();
@@ -206,12 +206,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             }
             String destinationId = "";
             if (params.has("destinationId")) {
-                request.setDestinationId(params.getString("destinationId"));
                 destinationId = params.getString("destinationId");
             }
             String destinationLabel = "";
             if (params.has("destinationLabel")) {
-                request.setDestinationLabel(params.getString("destinationLabel"));
                 destinationLabel = params.getString("destinationLabel");
             }
             DateTime datetime = DateTime.now();
@@ -222,15 +220,15 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             if (params.has("datetimeRepresents")) {
                 datetimeRepresents = toDateTimeRepresents(params.getString("datetimeRepresents"));
             }
-            Set<PhysicalMode> forbiddenUris = new HashSet<PhysicalMode>();
+            Set<PhysicalMode> forbiddenUris = new HashSet<>();
             if (params.has("forbiddenUris")) {
                 forbiddenUris = toPhysicalModeSet(params.getJSONArray("forbiddenUris"));
             }
-            Set<String> firstSectionModes = new HashSet<String>();
+            Set<String> firstSectionModes = new HashSet<>();
             if (params.has("firstSectionModes")) {
                 firstSectionModes = toSet(params.getJSONArray("firstSectionModes"));
             }
-            Set<String> lastSectionModes = new HashSet<String>();
+            Set<String> lastSectionModes = new HashSet<>();
             if (params.has("lastSectionModes")) {
                 lastSectionModes = toSet(params.getJSONArray("lastSectionModes"));
             }
@@ -246,17 +244,21 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             if (params.has("maxNbJourneys")) {
                 maxNbJourneys = params.getInt("maxNbJourneys");
             }
-            Set<String> addPoiInfos = new HashSet<String>();
+            Set<String> addPoiInfos = new HashSet<>();
             if (params.has("addPoiInfos")) {
                 addPoiInfos = toSet(params.getJSONArray("addPoiInfos"));
             }
-            Set<String> directPathMode = new HashSet<String>();
+            Set<String> directPathMode = new HashSet<>();
+            /*if (params.has("directPathMode")) {
+                directPathMode.add(params.getString("directPathMode"));
+            }*/
+            String directPath = "";
             if (params.has("directPath")) {
-                directPathMode.add(params.getString("directPath"));
+                directPath = params.getString("directPath");
             }
 
             final JourneysRequest request = new JourneysRequest(
-                new ArrayList<String>(), // allowedId
+                new ArrayList<>(), // allowedId
                 addPoiInfos, // addPoiInfos
                 count, // count
                 JourneysRequest.DataFreshness.BASE_SCHEDULE, // dataFreshness
@@ -274,15 +276,16 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 "", // originAddress
                 originId, // originId
                 originLabel, // originLabel
-                new HashSet<PhysicalMode>(), // physicalModes
+                new HashSet<>(), // physicalModes
                 JourneysRequest.TravelerType.STANDARD // travelerType
             );
 
             final Intent intent = new Intent(context, JourneyUIActivity.class);
-            intent.putExtra(JourneyUIActivity.DESTINATION, new Pair<String, String>(destinationId, destinationLabel));
+            intent.putExtra(JourneyUIActivity.DESTINATION, new Pair<>(destinationId, destinationLabel));
             intent.putExtra(JourneyUIActivity.JOURNEYS_REQUEST, request);
-            intent.putExtra(JourneyUIActivity.ORIGIN, new Pair<String, String>(originId, originLabel));
+            intent.putExtra(JourneyUIActivity.ORIGIN, new Pair<>(originId, originLabel));
             intent.putExtra(JourneyUIActivity.WITH_FORM, withJourney);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             context.startActivity(intent);
 
@@ -313,21 +316,18 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             case TransportModeIcon.FUNICULAR:
                 return R.drawable.ic_physical_mode_funicular;
             case TransportModeIcon.LOCALTRAIN:
-                return R.drawable.ic_physical_mode_train;
             case TransportModeIcon.LONGDISTANCETRAIN:
+            case TransportModeIcon.RAPIDTRANSIT:
+            case TransportModeIcon.TRAIN:
                 return R.drawable.ic_physical_mode_train;
             case TransportModeIcon.METRO:
                 return R.drawable.ic_physical_mode_metro;
-            case TransportModeIcon.RAPIDTRANSIT:
-                return R.drawable.ic_physical_mode_train;
             case TransportModeIcon.RIDESHARING:
                 return R.drawable.ic_connection_mode_ridesharing;
             case TransportModeIcon.SHUTTLE:
                 return R.drawable.ic_physical_mode_shuttle;
             case TransportModeIcon.TAXI:
                 return R.drawable.ic_physical_mode_taxi;
-            case TransportModeIcon.TRAIN:
-                return R.drawable.ic_physical_mode_train;
             case TransportModeIcon.TRAMWAY:
                 return R.drawable.ic_physical_mode_tramway;
             default:
@@ -336,7 +336,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     }
 
     private void resetPreferences(CallbackContext callbackContext) {
-        JourneyUI.Companion.getInstance().resetPreferences();
+        JourneyUI.Companion.getInstance().resetUserPreferences();
 
         callbackContext.success();
     }
@@ -344,21 +344,19 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     private DateTime toDateTime(String value) {
         try {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-            DateTime parsedDate = formatter.parseDateTime(value);
 
-            return parsedDate;
+            return formatter.parseDateTime(value);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-            DateTime currentDate = new DateTime();
 
-            return currentDate;
+            return new DateTime();
         }
     }
 
     private JourneysRequest.DateTimeRepresents toDateTimeRepresents(String value) {
-        JourneysRequest.DateTimeRepresents dateTimeRepresents;
+        JourneysRequest.DateTimeRepresents dateTimeRepresents = JourneysRequest.DateTimeRepresents.DEPARTURE;
 
-        switch (array.getString(i)) {
+        switch (value) {
             case "arrival":
                 dateTimeRepresents = JourneysRequest.DateTimeRepresents.ARRIVAL;
                 break;
@@ -383,32 +381,15 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
     }
 
-    private Set<String> toSet(JSONArray array) {
-        HashSet<String> stringList = new HashSet<String>();
-        if (array == null || array.length() == 0) {
-            return stringList;
-        }
-
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                stringList.add(array.getString(i));
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        return stringList;
-    }
-
     private Set<PhysicalMode> toPhysicalModeSet(JSONArray array) {
-        HashSet<PhysicalMode> physicalModeList = new HashSet<PhysicalMode>();
+        HashSet<PhysicalMode> physicalModeList = new HashSet<>();
         if (array == null || array.length() == 0) {
             return physicalModeList;
         }
 
         try {
             for (int i = 0; i < array.length(); i++) {
-                PhysicalMode physicalMode;
+                PhysicalMode physicalMode = null;
 
                 switch (array.getString(i)) {
                     case "physical_mode:Air":
@@ -479,13 +460,32 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                         break;
                 }
 
-                physicalModeList.add(physicalMode);
+                if (physicalMode != null) {
+                    physicalModeList.add(physicalMode);
+                }
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
 
         return physicalModeList;
+    }
+
+    private Set<String> toSet(JSONArray array) {
+        HashSet<String> stringList = new HashSet<>();
+        if (array == null || array.length() == 0) {
+            return stringList;
+        }
+
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                stringList.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        return stringList;
     }
 
     private ArrayList<TransportMode> toTransportModes(JSONArray array) {
@@ -497,17 +497,21 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         try {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = (JSONObject) array.get(i);
-                transportModes.add(new TransportMode(
+                TransportMode transportMode = new TransportMode(
                     object.optString("title"), // title
                     -1, // titleRes
                     getIcon(object.optString("icon")), // iconRes
-                    toSet(object.optJSONArray("firstSectionMode")).toArray(new String[0]), // firstSectionModes
-                    toSet(object.optJSONArray("lastSectionMode")).toArray(new String[0]), // lastSectionMode
-                    new HashSet<String>(), // directPathMode
-                    toSet(object.optJSONArray("physicalMode")).toArray(new String[0]), // physicalModes
+                    //toSet(object.optJSONArray("firstSectionMode")), // firstSectionModes
+                    new HashSet<>(), // firstSectionModes
+                    //toSet(object.optJSONArray("lastSectionMode")), // lastSectionMode
+                    new HashSet<>(), // lastSectionMode
+                    new HashSet<>(), // directPathMode
+                    //toPhysicalModeSet(object.optJSONArray("physicalMode")), // physicalModes
+                    new HashSet<PhysicalMode>(), // physicalModes
                     object.optBoolean("realTime", false), // isRealTime
                     object.optBoolean("selected", false) // isSelected
-                ));
+                );
+                transportModes.add(transportMode);
             }
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
