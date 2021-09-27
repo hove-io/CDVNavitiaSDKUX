@@ -51,6 +51,6 @@
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneysUICordovaPlugin.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
         <source-file src="src/android/src/main/java/com/kisio/navitia/sdk/ui/journey/cordova/JourneyUIActivity.java" target-dir="src/com/kisio/navitia/sdk/ui/journey/cordova" />
         <source-file src="src/android/src/main/res/layout/activity_journey_ui.xml" target-dir="res/layout" />
-        <source-file src="src/android/src/main/res/values/styles.xml" target-dir="res/values" />
+        <source-file src="src/android/src/main/res/values/styles_journey_ui.xml" target-dir="res/values" />
     </platform>
 </plugin>
