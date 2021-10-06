@@ -119,8 +119,8 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         // Colors
-        String primaryColor = config.optString("backgroundColor", "");
-        String secondaryColor = config.optString("primaryColor", "");
+        String primaryColor = config.optString("primaryColor", "");
+        String secondaryColor = config.optString("secondaryColor", "");
         JourneyColors colors = new JourneyColors(primaryColor, secondaryColor);
 
         String originColor = config.optString("originColor", "");
