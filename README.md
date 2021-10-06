@@ -89,7 +89,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.token | `String` | ✓ | Navitia token (generate a token on [navitia.io](https://www.navitia.io/))| ✗ |
 | config.coverage | `String` | ✓ | Name of search area | ✗ |
 | config.environment | `String` | ✗ | Navitia environment | "PROD" |
-| config.primaryColor | `String` | ✗ | To set the main color of the application | ✗ |
+| config.primaryColor | `String` | ✗ | To set the main color of the module | ✗ |
 | config.secondaryColor | `String` | ✗ | To set the color of some components | `primaryColor` |
 | config.originColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | ✗ |
 | config.originBackgroundColor | `String` | ✗ | To set the color of the origin at the roadmap departure bloc | `originColor` |
