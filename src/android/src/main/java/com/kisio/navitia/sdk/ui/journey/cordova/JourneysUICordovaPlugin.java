@@ -119,32 +119,32 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         // Colors
-        String primaryColor = config.optString("backgroundColor", "");
-        String secondaryColor = config.optString("primaryColor", "");
+        String primaryColor = config.optString("primaryColor", "");
+        String secondaryColor = config.optString("secondaryColor", "");
         JourneyColors colors = new JourneyColors(primaryColor, secondaryColor);
 
         String originColor = config.optString("originColor", "");
-        if (originColor.isEmpty()) {
+        if (!originColor.isEmpty()) {
             colors.originColor(originColor);
         }
         String originIconColor = config.optString("originIconColor", "");
-        if (originIconColor.isEmpty()) {
+        if (!originIconColor.isEmpty()) {
             colors.originIconColor(originIconColor);
         }
         String originBackgroundColor = config.optString("originBackgroundColor", "");
-        if (originBackgroundColor.isEmpty()) {
+        if (!originBackgroundColor.isEmpty()) {
             colors.originBackgroundColor(originBackgroundColor);
         }
         String destinationColor = config.optString("destinationColor", "");
-        if (destinationColor.isEmpty()) {
+        if (!destinationColor.isEmpty()) {
             colors.destinationColor(destinationColor);
         }
         String destinationIconColor = config.optString("destinationIconColor", "");
-        if (destinationIconColor.isEmpty()) {
+        if (!destinationIconColor.isEmpty()) {
             colors.destinationIconColor(destinationIconColor);
         }
         String destinationBackgroundColor = config.optString("destinationBackgroundColor", "");
-        if (TextUtils.isEmpty(destinationBackgroundColor)) {
+        if (!destinationBackgroundColor.isEmpty()) {
             colors.destinationBackgroundColor(destinationBackgroundColor);
         }
 
