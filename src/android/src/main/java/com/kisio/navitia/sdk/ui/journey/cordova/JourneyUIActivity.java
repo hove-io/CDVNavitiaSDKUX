@@ -36,7 +36,7 @@ public class JourneyUIActivity extends AppCompatActivity {
 
             if (getIntent().getBooleanExtra(WITH_FORM, false)) {
                 FormFragment formFragment = FormFragment.Companion.newInstance(
-                    false,
+                    true,
                     (Pair<String, String>) intent.getSerializableExtra(ORIGIN),
                     (Pair<String, String>) intent.getSerializableExtra(DESTINATION)
                 );
@@ -45,7 +45,7 @@ public class JourneyUIActivity extends AppCompatActivity {
             } else {
                 JourneysFragment journeysFragment = JourneysFragment.Companion.newInstance(
                     (JourneysRequest) intent.getParcelableExtra(JOURNEYS_REQUEST),
-                    false
+                    true
                 );
                 f = journeysFragment;
                 tag = journeysFragment.getSimpleTag();
