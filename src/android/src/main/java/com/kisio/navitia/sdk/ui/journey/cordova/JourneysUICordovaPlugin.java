@@ -499,7 +499,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 JSONObject object = (JSONObject) array.get(i);
                 TransportMode transportMode = new TransportMode(
                     object.optString("title"), // title
-                    -1, // titleRes
+                    android.R.string.untitled, // titleRes
                     getIcon(object.optString("icon")), // iconRes
                     //toSet(object.optJSONArray("firstSectionMode")), // firstSectionModes
                     new HashSet<>(), // firstSectionModes
