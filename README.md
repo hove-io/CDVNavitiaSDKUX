@@ -103,6 +103,7 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.isNextDeparturesFeatureEnabled | `Boolean` | ✗ | To set the display of next departures | by default false |
 | config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
 | config.maxHistory | `Int` | ✗ | To set the maximum number of autocomplete history inputs | 10 |
+| config.disruptionContributor | `String` | ✗ | To filter traffic disruptions | ✗ |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
