@@ -6,7 +6,8 @@
 
 import Foundation
 import NavitiaSDK
-import NavitiaSDKUI
+import JourneySDK
+import DesignEngine
 import ToolboxEngine
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
@@ -33,8 +34,7 @@ import ToolboxEngine
 
         do {
             let environment = toExpertEnvironment(environment: config["environment"] as? String ?? "PROD")
-            let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
-                                                               primary: config["primaryColor"] as? String,
+            let colorsConfiguration = ColorsConfiguration(      primary: config["primaryColor"] as? String,
                                                                origin: config["originColor"] as? String,
                                                                originIcon: config["originIconColor"] as? String,
                                                                originBackground: config["originBackgroundColor"] as? String,
@@ -44,27 +44,35 @@ import ToolboxEngine
             let formJourney = config["formJourney"] as? Bool ?? false
             let multiNetwork = config["multiNetwork"] as? Bool ?? false
             let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
-            let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
+            let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let modeForm = config["modeForm"] as? [Any]
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
+            let modes = getModes(from: modeForm ?? [])
+            let withForm = !(modeForm?.isEmpty ?? true)
+            var transportConfiguration = TransportConfiguration(linesConfiguration: [],
+                                                                categoriesConfiguration: [],
+                                                                providersConfiguration: [])
+            var journeyConfiguration = try JourneyConfiguration(colorsConfiguration: colorsConfiguration,
+                                                                transportConfiguration: transportConfiguration,
+                                                                transportConfigurationJson: nil)
+                .withNextDeparturesFeature(enabled: isNextDeparturesFeatureEnabled)
+                .withEarlierLaterFeature(enabled: isNextDeparturesFeatureEnabled)
+                .withMultiNetwork(enabled: multiNetwork)
+                .withDisruptionContributor(disruptionContributor)
+                .withForm(enabled: withForm)
+                .withMaxHistory(maxHistory)
             
-            try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
-            JourneySdk.shared.environment = environment
-            JourneySdk.shared.formJourney = formJourney
-            if let modeForm = modeForm, let modes = getModes(from: modeForm) {
-                JourneySdk.shared.modeForm = modes
+            if withForm {
+                journeyConfiguration = journeyConfiguration.withFormCustomTransportModes(modes ?? [])
             }
-            JourneySdk.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
-            JourneySdk.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
-            JourneySdk.shared.multiNetwork = multiNetwork
-            JourneySdk.shared.maxHistory = maxHistory
-            JourneySdk.shared.disruptionContributor = disruptionContributor
+                
+            try JourneySdk.shared.initialize(token: token, coverage: coverage, environment: environment, journeyConfiguration: journeyConfiguration)
             
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
         } catch {
-            if let error = error as? MissingColorConfigurationError {
+            if let error = error as? MissingColorsConfigurationError {
                 let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: String(format: "Journey SDK cannot be initialized! %@", error.localizedDescription))
                 commandDelegate.send(pluginResult, callbackId: command.callbackId)
             }
@@ -100,6 +108,7 @@ import ToolboxEngine
         
         let  modeButtonModel = ModeButtonModel(title: title,
                                                type: icon,
+                                               iconRes: icon,
                                                selected: selected,
                                                firstSectionMode: firstSectionMode,
                                                lastSectionMode: lastSectionMode,
@@ -158,22 +167,22 @@ import ToolboxEngine
         NavitiaSDKUserDefaultsManager.resetUserDefaults()
     }
     
-    private func getJourneysRequest(from arguments: [String: Any]) -> JourneysRequest? {        
+    private func getJourneysRequest(from arguments: [String: Any]) -> JourneysRequest? {
         let journeysRequest = JourneysRequest()
         journeysRequest.originId = arguments["originId"] as? String
         journeysRequest.destinationId = arguments["destinationId"] as? String
         journeysRequest.originLabel = arguments["originLabel"] as? String
         journeysRequest.destinationLabel = arguments["destinationLabel"] as? String
-        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as CoverageRegionJourneysRequestBuilder.DatetimeRepresents? ?? .departure
+        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as DateTimeRepresents? ?? .departure
         journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String) ?? Date()
         journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String]
-        journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [CoverageRegionJourneysRequestBuilder.FirstSectionMode]?
-        journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [CoverageRegionJourneysRequestBuilder.LastSectionMode]?
-        journeysRequest.count = arguments["count"] as? Int32
-        journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int32
-        journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int32
-        journeysRequest.addPoiInfos = arrayToEnum(arguments["addPoiInfos"]) as [CoverageRegionJourneysRequestBuilder.AddPoiInfos]?
-        journeysRequest.directPath = anyToEnum(arguments["directPath"]) as CoverageRegionJourneysRequestBuilder.DirectPath?
+        journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [FilterMode]?
+        journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [FilterMode]?
+        journeysRequest.count = arguments["count"] as? Int
+        journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int
+        journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int
+        journeysRequest.addPoiInfos = arrayToEnum(arguments["addPoiInfos"]) as [AddPoiInfos]?
+        journeysRequest.directPath = anyToEnum(arguments["directPath"]) as DirectPath?
         
         return journeysRequest
     }
@@ -239,16 +248,16 @@ import ToolboxEngine
         )
     }
 
-    private func toExpertEnvironment(environment: String) -> ExpertEnvironment {
+    private func toExpertEnvironment(environment: String) -> NavitiaEnvironment {
         switch environment {
         case "CUSTOMER":
-            return ExpertEnvironment.customer
+            return .customer
         case "DEV":
-            return ExpertEnvironment.dev
+            return .dev
         case "INTERNAL":
-            return ExpertEnvironment.internal
+            return .internal
         default:
-            return ExpertEnvironment.prod
+            return .prod
         }
     }
 }
