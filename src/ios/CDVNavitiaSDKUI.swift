@@ -48,6 +48,20 @@ import ToolboxEngine
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let modeForm = config["modeForm"] as? [Any]
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
+
+            if let customTitles = config["customTitles"] as? [String: String] {
+                let formTitleStringId = customTitles["form"]
+                let journeysTitleStringId = customTitles["journeys"]
+                let roadmapTitleStringId = customTitles["roadmap"]
+                let ridesharingOffersTitleStringId = customTitles["ridesharing"]
+                let autocompleteTitleStringId = customTitles["autocomplete"]
+                let titlesConfiguration = TitlesConfiguration(formTitleResId: formTitleStringId,
+                                                      journeysTitleResId: journeysTitleStringId,
+                                                      roadmapTitleResId: roadmapTitleStringId,
+                                                      ridesharingOffersTitleResId: ridesharingOffersTitleStringId,
+                                                      autocompleteTitleResId: autocompleteTitleStringId)
+                JourneySdk.shared.configuration.withCustomTitles(titlesConfiguration)
+            }
             
             try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
             JourneySdk.shared.environment = environment

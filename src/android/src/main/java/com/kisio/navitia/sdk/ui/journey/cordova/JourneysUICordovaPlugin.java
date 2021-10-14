@@ -176,6 +176,35 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         // Use form or not
         this.withJourney = config.optBoolean("formJourney", false);
 
+        // Titles
+        JSONObject customTitles = config.optJSONObject("customTitles", null);
+        if (customTitles != null) {
+            // Form screen
+            String formTitleResId = customTitles.optString("form", "journeys");
+            JourneyUI.Companion.getInstance()
+              .formTitleRes(getStringResourceID(cordova.getContext(), formTitleResId, R.string.journeys));
+      
+            // Journeys screen
+            String journeysTitleResId = customTitles.optString("journeys", "journeys");
+            JourneyUI.Companion.getInstance()
+              .journeysTitleRes(getStringResourceID(cordova.getContext(), journeysTitleResId, R.string.journeys));
+      
+            // Roadmap screen
+            String roadmapTitleResId = customTitles.optString("roadmap", "roadmap");
+            JourneyUI.Companion.getInstance()
+              .roadmapTitleRes(getStringResourceID(cordova.getContext(), roadmapTitleResId, R.string.roadmap));
+      
+            // Ridesharing offers screen
+            String ridesharingTitleResId = customTitles.optString("ridesharing", "ridesharing_noun");
+            JourneyUI.Companion.getInstance()
+              .ridesharingTitleRes(getStringResourceID(cordova.getContext(), ridesharingTitleResId, R.string.ridesharing_noun));
+      
+            // Autocomplete screen
+            String autocompleteTitleResId = customTitles.optString("autocomplete", "journeys");
+            JourneyUI.Companion.getInstance()
+              .autoCompleteTitle(getStringResourceID(cordova.getContext(), autocompleteTitleResId, R.string.journeys));
+        }
+
         // Initialization
         JourneyUI.Companion.getInstance().init(
             this.cordova.getActivity().getApplicationContext(), // context
@@ -518,5 +547,11 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         return transportModes;
+    }
+
+    private int getStringResourceID(Context context, String resId, int fallbackStringId) {
+        int requestedResourceId = context.getResources()
+          .getIdentifier(resId, "string", BuildConfig.APPLICATION_ID);
+        return requestedResourceId > 0 ? requestedResourceId : fallbackStringId;
     }
 }
