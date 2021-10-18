@@ -6,7 +6,7 @@
 
 import Foundation
 import NavitiaSDK
-import NavitiaSDKUI
+import JourneySDK
 import ToolboxEngine
 
 @objc(CDVNavitiaSDKUI) public class CDVNavitiaSDKUI : CDVPlugin {
