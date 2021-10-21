@@ -47,7 +47,7 @@ import ToolboxEngine
             let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
             let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
             let maxHistory = config["maxHistory"] as? Int ?? 10
-            let transportModes = config["transportModes"] as? [Any] ?? []
+            let transportModes = config["transportModes"] as? [[String: Any]]
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
             let journeyConfiguration = try JourneyConfiguration(colorsConfiguration: colorsConfiguration,
                                                                 transportConfiguration: transportConfiguration)
@@ -57,7 +57,7 @@ import ToolboxEngine
                 .withDisruptionContributor(disruptionContributor)
                 .withMaxHistory(maxHistory)
                 .withForm(enabled: isFormEnabled)
-                .withFormCustomTransportModes(getModes(from: transportModes) ?? [])
+                .withFormCustomTransportModes(getModes(from: transportModes))
                 .withCustomTitles(getCustomTitles(customTitlesConfig: config["customTitles"] as? [String: String]))
             
             try JourneySdk.shared.initialize(token: token,
@@ -105,22 +105,8 @@ import ToolboxEngine
                                    autocompleteTitleResId: autocompleteTitleStringId)
     }
     
-    private func getModes(from arguments: [Any]) -> [ModeButtonModel]? {
-        var modeButtonModes = [ModeButtonModel]()
-        
-        for argument in arguments {
-            if let argument = argument as? [String: Any] {
-                if let mode = getMode(from: argument) {
-                    modeButtonModes.append(mode)
-                }
-            }
-        }
-        
-        if modeButtonModes.count == 0 {
-            return nil
-        }
-        
-        return modeButtonModes
+    private func getModes(from arguments: [[String: Any]]?) -> [ModeButtonModel] {
+        return arguments?.compactMap { getMode(from: $0) } ?? []
     }
     
     private func getMode(from arguments: [String: Any]) -> ModeButtonModel? {
