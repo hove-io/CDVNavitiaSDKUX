@@ -42,13 +42,14 @@ import ToolboxEngine
                                                           destinationIcon: config["destinationIconColor"] as? String,
                                                           destinationBackground: config["destinationBackgroundColor"] as? String)
             let transportConfiguration = getTransportConfiguration(configJsonString: config["transportConfiguration"] as? String)
-            let isFormEnabled = config["formJourney"] as? Bool ?? false
-            let isMultiNetworkEnabled = config["multiNetwork"] as? Bool ?? false
+            let isFormEnabled = config["isFormEnabled"] as? Bool ?? false
+            let isMultiNetworkEnabled = config["isMultiNetworkEnabled"] as? Bool ?? false
             let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
             let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
             let maxHistory = config["maxHistory"] as? Int ?? 10
             let transportModes = config["transportModes"] as? [[String: Any]]
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
+            let customTitles = getCustomTitles(customTitlesConfig: config["customTitles"] as? [String: String])
             let journeyConfiguration = try JourneyConfiguration(colorsConfiguration: colorsConfiguration,
                                                                 transportConfiguration: transportConfiguration)
                 .withNextDeparturesFeature(enabled: isNextDeparturesFeatureEnabled)
@@ -58,7 +59,7 @@ import ToolboxEngine
                 .withMaxHistory(maxHistory)
                 .withForm(enabled: isFormEnabled)
                 .withFormCustomTransportModes(getModes(from: transportModes))
-                .withCustomTitles(getCustomTitles(customTitlesConfig: config["customTitles"] as? [String: String]))
+                .withCustomTitles(customTitles)
             
             try JourneySdk.shared.initialize(token: token,
                                              coverage: coverage,
