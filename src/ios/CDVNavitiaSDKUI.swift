@@ -33,56 +33,76 @@ import ToolboxEngine
 
         do {
             let environment = toExpertEnvironment(environment: config["environment"] as? String ?? "PROD")
-            let colorConfiguration = JourneyColorConfiguration(background: config["backgroundColor"] as? String,
-                                                               primary: config["primaryColor"] as? String,
-                                                               origin: config["originColor"] as? String,
-                                                               originIcon: config["originIconColor"] as? String,
-                                                               originBackground: config["originBackgroundColor"] as? String,
-                                                               destination: config["destinationColor"] as? String,
-                                                               destinationIcon: config["destinationIconColor"] as? String,
-                                                               destinationBackground: config["destinationBackgroundColor"] as? String)
-            let formJourney = config["formJourney"] as? Bool ?? false
-            let multiNetwork = config["multiNetwork"] as? Bool ?? false
+            let colorsConfiguration = ColorsConfiguration(primary: config["primaryColor"] as? String,
+                                                          secondary: config["secondaryColor"] as? String,
+                                                          origin: config["originColor"] as? String,
+                                                          originIcon: config["originIconColor"] as? String,
+                                                          originBackground: config["originBackgroundColor"] as? String,
+                                                          destination: config["destinationColor"] as? String,
+                                                          destinationIcon: config["destinationIconColor"] as? String,
+                                                          destinationBackground: config["destinationBackgroundColor"] as? String)
+            let transportConfiguration = getTransportConfiguration(configJsonString: config["transportConfiguration"] as? String)
+            let isFormEnabled = config["formJourney"] as? Bool ?? false
+            let isMultiNetworkEnabled = config["multiNetwork"] as? Bool ?? false
             let isEarlierLaterFeatureEnabled = config["isEarlierLaterFeatureEnabled"] as? Bool ?? false
             let isNextDeparturesFeatureEnabled = config["isNextDeparturesFeatureEnabled"] as? Bool ?? false 
             let maxHistory = config["maxHistory"] as? Int ?? 10
-            let modeForm = config["modeForm"] as? [Any]
+            let transportModes = config["transportModes"] as? [Any] ?? []
             let disruptionContributor = config["disruptionContributor"] as? String ?? ""
-
-            if let customTitles = config["customTitles"] as? [String: String] {
-                let formTitleStringId = customTitles["form"]
-                let journeysTitleStringId = customTitles["journeys"]
-                let roadmapTitleStringId = customTitles["roadmap"]
-                let ridesharingOffersTitleStringId = customTitles["ridesharing"]
-                let autocompleteTitleStringId = customTitles["autocomplete"]
-                let titlesConfiguration = TitlesConfiguration(formTitleResId: formTitleStringId,
-                                                      journeysTitleResId: journeysTitleStringId,
-                                                      roadmapTitleResId: roadmapTitleStringId,
-                                                      ridesharingOffersTitleResId: ridesharingOffersTitleStringId,
-                                                      autocompleteTitleResId: autocompleteTitleStringId)
-                JourneySdk.shared.configuration.withCustomTitles(titlesConfiguration)
-            }
+            let journeyConfiguration = try JourneyConfiguration(colorsConfiguration: colorsConfiguration,
+                                                                transportConfiguration: transportConfiguration)
+                .withNextDeparturesFeature(enabled: isNextDeparturesFeatureEnabled)
+                .withEarlierLaterFeature(enabled: isEarlierLaterFeatureEnabled)
+                .withMultiNetwork(enabled: isMultiNetworkEnabled)
+                .withDisruptionContributor(disruptionContributor)
+                .withMaxHistory(maxHistory)
+                .withForm(enabled: isFormEnabled)
+                .withFormCustomTransportModes(getModes(from: transportModes) ?? [])
+                .withCustomTitles(getCustomTitles(customTitlesConfig: config["customTitles"] as? [String: String]))
             
-            try JourneySdk.shared.initialize(token: token, coverage: coverage, colorConfiguration: colorConfiguration)
-            JourneySdk.shared.environment = environment
-            JourneySdk.shared.formJourney = formJourney
-            if let modeForm = modeForm, let modes = getModes(from: modeForm) {
-                JourneySdk.shared.modeForm = modes
-            }
-            JourneySdk.shared.isEarlierLaterFeatureEnabled = isEarlierLaterFeatureEnabled
-            JourneySdk.shared.isNextDeparturesFeatureEnabled = isNextDeparturesFeatureEnabled
-            JourneySdk.shared.multiNetwork = multiNetwork
-            JourneySdk.shared.maxHistory = maxHistory
-            JourneySdk.shared.disruptionContributor = disruptionContributor
+            try JourneySdk.shared.initialize(token: token,
+                                             coverage: coverage,
+                                             environment: environment,
+                                             journeyConfiguration: journeyConfiguration)
             
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
             commandDelegate.send(pluginResult, callbackId: command.callbackId)
         } catch {
-            if let error = error as? MissingColorConfigurationError {
-                let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: String(format: "Journey SDK cannot be initialized! %@", error.localizedDescription))
-                commandDelegate.send(pluginResult, callbackId: command.callbackId)
-            }
+            let pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: String(format: "Journey SDK cannot be initialized! %@", error.localizedDescription))
+            commandDelegate.send(pluginResult, callbackId: command.callbackId)
         }
+    }
+    
+    private func getTransportConfiguration(configJsonString: String?) -> TransportConfiguration {
+        guard let configJsonString = configJsonString,
+                let configData = configJsonString.data(using: .utf8),
+              let transportConfiguration = try? JSONDecoder().decode(TransportConfiguration.self, from: configData) else {
+            return TransportConfiguration()
+        }
+        
+        return transportConfiguration
+    }
+    
+    private func getCustomTitles(customTitlesConfig: [String: String]?) -> TitlesConfiguration {
+        guard let customTitles = customTitlesConfig else {
+            return TitlesConfiguration(formTitle: nil,
+                                       journeysTitle: nil,
+                                       roadmapTitle: nil,
+                                       ridesharingOffersTitle: nil,
+                                       autocompleteTitle: nil)
+        }
+        
+        let formTitleStringId = customTitles["form"]
+        let journeysTitleStringId = customTitles["journeys"]
+        let roadmapTitleStringId = customTitles["roadmap"]
+        let ridesharingOffersTitleStringId = customTitles["ridesharing"]
+        let autocompleteTitleStringId = customTitles["autocomplete"]
+        
+        return TitlesConfiguration(formTitleResId: formTitleStringId,
+                                   journeysTitleResId: journeysTitleStringId,
+                                   roadmapTitleResId: roadmapTitleStringId,
+                                   ridesharingOffersTitleResId: ridesharingOffersTitleStringId,
+                                   autocompleteTitleResId: autocompleteTitleStringId)
     }
     
     private func getModes(from arguments: [Any]) -> [ModeButtonModel]? {
@@ -105,15 +125,17 @@ import ToolboxEngine
     
     private func getMode(from arguments: [String: Any]) -> ModeButtonModel? {
         guard let title = arguments["title"] as? String,
-            let icon = arguments["icon"] as? String,
-            let selected = arguments["selected"] as? Bool,
-            let firstSectionMode = arguments["firstSectionMode"] as? [String],
-            let lastSectionMode = arguments["lastSectionMode"] as? [String] else {
-                return nil
-        }
+              let type = arguments["type"] as? String,
+              let icon = arguments["icon"] as? String,
+              let selected = arguments["selected"] as? Bool,
+              let firstSectionMode = arguments["firstSectionMode"] as? [String],
+              let lastSectionMode = arguments["lastSectionMode"] as? [String] else {
+                  return nil
+              }
         
         let  modeButtonModel = ModeButtonModel(title: title,
-                                               type: icon,
+                                               type: type,
+                                               iconRes: icon,
                                                selected: selected,
                                                firstSectionMode: firstSectionMode,
                                                lastSectionMode: lastSectionMode,
@@ -178,16 +200,16 @@ import ToolboxEngine
         journeysRequest.destinationId = arguments["destinationId"] as? String
         journeysRequest.originLabel = arguments["originLabel"] as? String
         journeysRequest.destinationLabel = arguments["destinationLabel"] as? String
-        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as CoverageRegionJourneysRequestBuilder.DatetimeRepresents? ?? .departure
-        journeysRequest.datetime = getDatetime(from: arguments["datetime"] as? String) ?? Date()
+        journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as DateTimeRepresents? ?? .departure
+        journeysRequest.datetime = (arguments["datetime"] as? String)?.toDate(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String]
-        journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [CoverageRegionJourneysRequestBuilder.FirstSectionMode]?
-        journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [CoverageRegionJourneysRequestBuilder.LastSectionMode]?
-        journeysRequest.count = arguments["count"] as? Int32
-        journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int32
-        journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int32
-        journeysRequest.addPoiInfos = arrayToEnum(arguments["addPoiInfos"]) as [CoverageRegionJourneysRequestBuilder.AddPoiInfos]?
-        journeysRequest.directPath = anyToEnum(arguments["directPath"]) as CoverageRegionJourneysRequestBuilder.DirectPath?
+        journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [FilterMode]?
+        journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [FilterMode]?
+        journeysRequest.count = arguments["count"] as? Int
+        journeysRequest.minNbJourneys = arguments["minNbJourneys"] as? Int
+        journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int
+        journeysRequest.addPoiInfos = arrayToEnum(arguments["addPoiInfos"]) as [AddPoiInfos]?
+        journeysRequest.directPath = anyToEnum(arguments["directPath"]) as DirectPath?
         
         return journeysRequest
     }
@@ -216,53 +238,17 @@ import ToolboxEngine
         
         return values
     }
-    
-    private func getDatetime(from argument: String?) -> Date? {
-        guard let argument = argument else {
-            return nil
-        }
-        
-        let formatter: DateFormatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        
-        return formatter.date(from: argument)
-    }
-    
-    private func toUIColor(hexColor: String?) -> UIColor? {
-        guard let hexColor = hexColor else {
-            return nil
-        }
-        
-        var cString:String = hexColor.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        if (cString.hasPrefix("#")) {
-            cString.remove(at: cString.startIndex)
-        }
-        
-        if ((cString.count) != 6) {
-            return UIColor.gray
-        }
-        
-        var rgbValue:UInt32 = 0
-        Scanner(string: cString).scanHexInt32(&rgbValue)
-        
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
-    }
 
-    private func toExpertEnvironment(environment: String) -> ExpertEnvironment {
+    private func toExpertEnvironment(environment: String) -> NavitiaEnvironment {
         switch environment {
         case "CUSTOMER":
-            return ExpertEnvironment.customer
+            return NavitiaEnvironment.customer
         case "DEV":
-            return ExpertEnvironment.dev
+            return NavitiaEnvironment.dev
         case "INTERNAL":
-            return ExpertEnvironment.internal
+            return NavitiaEnvironment.internal
         default:
-            return ExpertEnvironment.prod
+            return NavitiaEnvironment.prod
         }
     }
 }
