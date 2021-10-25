@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.kisio.navitia.sdk.engine.toolbox.model.BasePhysicalMode;
 import com.kisio.navitia.sdk.ui.journey.core.ExpertEnvironment;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyColors;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyConfiguration;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyConfigurationRoot;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
 import com.kisio.navitia.sdk.ui.journey.core.PhysicalMode;
@@ -55,22 +59,22 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     @StringDef()
     @Retention(RetentionPolicy.SOURCE)
     public @interface TransportModeIcon {
-        String BIKE = "bike";
-        String BSS = "bss";
-        String BUS = "bus";
-        String CAR = "car";
-        String COACH = "coach";
-        String FERRY = "ferry";
-        String FUNICULAR = "funicular";
-        String LOCALTRAIN = "localtrain";
-        String LONGDISTANCETRAIN = "longdistancetrain";
-        String METRO = "metro";
-        String RAPIDTRANSIT = "rapidtransit";
-        String RIDESHARING = "ridesharing";
-        String SHUTTLE = "shuttle";
-        String TAXI = "taxi";
-        String TRAIN = "train";
-        String TRAMWAY = "tramway";
+        String BIKE = "physical_mode_bike";
+        String BSS = "physical_mode_bss";
+        String BUS = "physical_mode_bus";
+        String CAR = "physical_mode_car";
+        String COACH = "physical_mode_coach";
+        String FERRY = "physical_mode_ferry";
+        String FUNICULAR = "physical_mode_funicular";
+        String LOCALTRAIN = "physical_mode_localtrain";
+        String LONGDISTANCETRAIN = "physical_mode_longdistancetrain";
+        String METRO = "physical_mode_metro";
+        String RAPIDTRANSIT = "physical_mode_rapidtransit";
+        String RIDESHARING = "section_mode_ridesharing";
+        String SHUTTLE = "physical_mode_shuttle";
+        String TAXI = "physical_mode_taxi";
+        String TRAIN = "physical_mode_train";
+        String TRAMWAY = "physical_mode_tramway";
     }
 
     public JourneysUICordovaPlugin() {
@@ -148,6 +152,14 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             colors.destinationBackgroundColor(destinationBackgroundColor);
         }
 
+        // Transport configuration
+        String transportConfigurationString = config.optString("transportConfiguration", "");
+        Gson gson = new Gson();
+        JourneyConfigurationRoot journeyConfigurationRoot = gson.fromJson(transportConfigurationString,
+          JourneyConfigurationRoot.class);
+        JourneyConfiguration journeyConfiguration = new JourneyConfiguration(journeyConfigurationRoot.getLines(),
+          journeyConfigurationRoot.getModes(), journeyConfigurationRoot.getProviders());
+
         // Options
         String disruptionContributor = config.optString("disruptionContributor", "");
         JourneyUI.Companion.getInstance().disruptionContributor(disruptionContributor);
@@ -155,7 +167,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         int maxHistory = config.optInt("maxHistory", 10);
         JourneyUI.Companion.getInstance().maxHistory(maxHistory);
 
-        List<TransportMode> transportModes = toTransportModes(config.optJSONArray("modeForm"));
+        List<TransportMode> transportModes = toTransportModes(config.optJSONArray("transportModes"));
         JourneyUI.Companion.getInstance().transportModes(transportModes);
 
         boolean withEarlierLaterFeature = config.optBoolean("isEarlierLaterFeatureEnabled", false);
@@ -163,7 +175,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             JourneyUI.Companion.getInstance().withEarlierLater();
         }
 
-        boolean withMultiNetwork = config.optBoolean("multiNetwork", false);
+        boolean withMultiNetwork = config.optBoolean("isMultiNetworkEnabled", false);
         if (withMultiNetwork) {
             JourneyUI.Companion.getInstance().withMultiNetwork();
         }
@@ -174,7 +186,39 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         // Use form or not
-        this.withJourney = config.optBoolean("formJourney", false);
+        this.withJourney = config.optBoolean("isFormEnabled", false);
+
+        // Titles
+        JSONObject customTitles = config.optJSONObject("customTitles");
+        if (customTitles != null) {
+            // Form screen
+            String formTitleResId = customTitles.optString("form", "journeys");
+            JourneyUI.Companion.getInstance()
+              .formTitleRes(getStringResourceID(cordova.getContext(), formTitleResId, R.string.journeys));
+
+            // Journeys screen
+            String journeysTitleResId = customTitles.optString("journeys", "journeys");
+            JourneyUI.Companion.getInstance()
+              .journeysTitleRes(getStringResourceID(cordova.getContext(), journeysTitleResId, R.string.journeys));
+
+            // Roadmap screen
+            String roadmapTitleResId = customTitles.optString("roadmap", "roadmap");
+            JourneyUI.Companion.getInstance()
+              .roadmapTitleRes(getStringResourceID(cordova.getContext(), roadmapTitleResId, R.string.roadmap));
+
+            // Ridesharing offers screen
+            String ridesharingTitleResId = customTitles.optString("ridesharing", "ridesharing_noun");
+            JourneyUI.Companion.getInstance()
+              .ridesharingTitleRes(getStringResourceID(cordova.getContext(), ridesharingTitleResId, R.string.ridesharing_noun));
+
+            // Autocomplete screen
+            String autocompleteTitleResId = customTitles.optString("autocomplete", "journeys");
+            JourneyUI.Companion.getInstance()
+              .autoCompleteTitle(getStringResourceID(cordova.getContext(), autocompleteTitleResId, R.string.journeys));
+        }
+
+        // Environment
+        String environment = config.optString("environment", "PROD");
 
         // Initialization
         JourneyUI.Companion.getInstance().init(
@@ -182,9 +226,9 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             colors, // colors
             coverage, // coverage
             token,  // token
-            null, // config
+          journeyConfiguration, // config
             null, // config file
-            toExpertEnvironment(config.optString("environment", "PROD")), // env
+            toExpertEnvironment(environment), // env
             (nav -> Unit.INSTANCE), // onNavigate
             (nav -> Unit.INSTANCE) // onBack
         );
@@ -412,7 +456,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                         break;
                     case "physical_mode:Car":
                         physicalMode = PhysicalMode.CAR;
-                        break;    
+                        break;
                     case "physical_mode:CheckIn":
                         physicalMode = PhysicalMode.CHECK_IN;
                         break;
@@ -497,6 +541,12 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         try {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = (JSONObject) array.get(i);
+                HashSet<PhysicalMode> physicalModes = new HashSet<>();
+                JSONArray physicalModesArray = object.optJSONArray("physicalMode");
+                for (int j=0; j < physicalModesArray.length(); j++) {
+                    physicalModes.add(getPhysicalMode(physicalModesArray.getString(j)));
+                }
+
                 TransportMode transportMode = new TransportMode(
                     object.optString("title"), // title
                     android.R.string.untitled, // titleRes
@@ -507,7 +557,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                     new HashSet<>(), // lastSectionMode
                     new HashSet<>(), // directPathMode
                     //toPhysicalModeSet(object.optJSONArray("physicalMode")), // physicalModes
-                    new HashSet<PhysicalMode>(), // physicalModes
+                    physicalModes, // physicalModes
                     object.optBoolean("realTime", false), // isRealTime
                     object.optBoolean("selected", false) // isSelected
                 );
@@ -518,5 +568,21 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         return transportModes;
+    }
+
+    private int getStringResourceID(Context context, String resId, int fallbackStringId) {
+        int requestedResourceId = context.getResources()
+          .getIdentifier(resId, "string", BuildConfig.APPLICATION_ID);
+        return requestedResourceId > 0 ? requestedResourceId : fallbackStringId;
+    }
+
+    private PhysicalMode getPhysicalMode(String physicalMode) {
+        for (int i = 0; i < PhysicalMode.values().length; i++) {
+            if (PhysicalMode.values()[i].getBasePhysicalMode().equals(physicalMode)) {
+                return PhysicalMode.values()[i];
+            }
+        }
+
+        return PhysicalMode.AIR;
     }
 }
