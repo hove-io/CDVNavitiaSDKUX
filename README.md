@@ -108,6 +108,8 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
+##### Environments
+
 For the supported environments, please check the table below:
 
 | Environment | Value |
