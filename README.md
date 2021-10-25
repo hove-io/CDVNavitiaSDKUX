@@ -97,13 +97,14 @@ Note that you have to change YOUR_API_KEY with your own API key!
 | config.destinationColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | ✗ |
 | config.destinationBackgroundColor | `String` | ✗ | To set the color of the destination at the roadmap arrival bloc | `destinationColor` |
 | config.destinationIconColor | `String` | ✗ | To set the color of the destination icon | `transparent` (no color filter) |
-| config.multiNetwork | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
-| config.formJourney | `Boolean` | ✗ | To set the display of search form | false |
+| config.isFormEnabled | `Boolean` | ✗ | To set the display of search form | false |
+| config.isMultiNetworkEnabled | `Boolean` | ✗ | To set the display of the network name in the roadmap  | false |
 | config.isEarlierLaterFeatureEnabled | `Boolean` | ✗ | To set the display of "Earlier" and "Later" buttons | false |
 | config.isNextDeparturesFeatureEnabled | `Boolean` | ✗ | To set the display of next departures | by default false |
-| config.modeForm | `Object` | ✗ | To customize the search form | ✗ |
 | config.maxHistory | `Int` | ✗ | To set the maximum number of autocomplete history inputs | 10 |
+| config.transportModes | `Object` | ✗ | To customize the search form | ✗ |
 | config.disruptionContributor | `String` | ✗ | To filter traffic disruptions | ✗ |
+| config.customTitles | `Object` | ✗ | To set screen titles | ✗ |
 | success | Function | ✓ | Success callback function | function() {} |
 | failure | Function | ✓ | Failure callback function | function(error) {} |
 
@@ -137,18 +138,20 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
-| modeForm | Object | ✓ | Configuration | |
-| modeForm.title | String | ✓ | To set the button title | NavitiaSDKUI.TransportModeIcon.METRO |
-| modeForm.icon | String | ✓ | To set the button icon | 'metro' |
-| modeForm.selected | Boolean | ✓ | To set the button is selected by default | false |
-| modeForm.firstSectionMode | [String] | ✓ | To set mode to use at the begining by the button | NavitiaSDKUI.SectionMode.WALKING |
-| modeForm.lastSectionMode | [String] | ✓ | To set mode to use at the end by the button | NavitiaSDKUI.SectionMode.WALKING |
-| modeForm.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
-| modeForm.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
+| transportMode | Object | ✓ | Configuration | |
+| transportMode.title | String | ✓ | To set the button title | NavitiaSDKUI.TransportModeIcon.METRO |
+| transportMode.type | String | ✓ | To set the button type | 'metro' |
+| transportMode.icon | String | ✓ | To set the button icon | 'metro' |
+| transportMode.selected | Boolean | ✓ | To set the button is selected by default | false |
+| transportMode.firstSectionMode | [String] | ✓ | To set mode to use at the begining by the button | NavitiaSDKUI.SectionMode.WALKING |
+| transportMode.lastSectionMode | [String] | ✓ | To set mode to use at the end by the button | NavitiaSDKUI.SectionMode.WALKING |
+| transportMode.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
+| transportMode.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
 
 ```js****
-var modeForm = [{
+var transportModes = [{
       title: 'Metro',
+      type: 'metro',
       icon: NavitiaSDKUI.TransportModeIcon.METRO,
       selected: true,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
@@ -156,6 +159,7 @@ var modeForm = [{
       physicalMode: ['physical_mode:Metro'],
     },{
       title: 'Bus',
+      type: 'bus',
       icon: NavitiaSDKUI.TransportModeIcon.BUS,
       selected: true,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
@@ -163,6 +167,7 @@ var modeForm = [{
       physicalMode: ['physical_mode:Bus'],
     },{
       title: 'Train',
+      type: 'train',
       icon: NavitiaSDKUI.TransportModeIcon.TRAIN,
       selected: true,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.WALKING ],
@@ -170,6 +175,7 @@ var modeForm = [{
       physicalMode: ['physical_mode:RapidTransit', 'physical_mode:LocalTrain', 'physical_mode:Train', 'physical_mode:Shuttle'],
     },{
       title: 'Bike',
+      type: 'bike',
       icon: NavitiaSDKUI.TransportModeIcon.BIKE,
       selected: false,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.BIKE ],
@@ -177,6 +183,7 @@ var modeForm = [{
       physicalMode: ['physical_mode:Bike'],
     },{
       title: 'BSS',
+      type: 'bss',
       icon: NavitiaSDKUI.TransportModeIcon.BSS,
       selected: false,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.BSS ],
@@ -185,6 +192,7 @@ var modeForm = [{
       realTime: true,
     },{
       title: 'Car',
+      type: 'car',
       icon: NavitiaSDKUI.TransportModeIcon.CAR,
       selected: false,
       firstSectionMode: [ NavitiaSDKUI.SectionMode.CAR ],
@@ -192,13 +200,22 @@ var modeForm = [{
       physicalMode: ['physical_mode:Car'],
       realTime: true,
     }];
+    
+var customTitles = {
+     form: "form_screen_title",
+     journeys: "journeys_screen_title",
+     roadmap: "roadmap_screen_title",
+     ridesharing: "ridesharing_screen_title",
+     autocomplete: "autocomplete_screen_title"
+};
 
 var config = {
     token: 'my-token',
-    backgroundColor: '#e67e22',
-    originColor: '#2980b9',
+    primaryColor: '#e67e22',
+    secondaryColor: '#2980b9',
     destinationColor: '#d35400',
-    modeForm: modeForm,
+    transportModes: transportModes,
+    customTitles: customTitles
 };
 
 NavitiaSDKUI.init(config, function() {}, function(error) {
