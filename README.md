@@ -138,7 +138,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
-| transportMode | Object | ✓ | Configuration | |
+| Transport Mode | Object | ✓ | Configuration | |
 | transportMode.title | String | ✓ | To set the button title | NavitiaSDKUI.TransportModeIcon.METRO |
 | transportMode.type | String | ✓ | To set the button type | 'metro' |
 | transportMode.icon | String | ✓ | To set the button icon | 'metro' |
@@ -147,6 +147,15 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | transportMode.lastSectionMode | [String] | ✓ | To set mode to use at the end by the button | NavitiaSDKUI.SectionMode.WALKING |
 | transportMode.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
 | transportMode.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
+
+| Parameters | Type | Required | Description | Example |
+| --- | --- |:---:| --- | --- |
+| customTitle | Object | ✗ | Configuration | |
+| customTitle.form | String | ✗ | To set the form screen title | NavitiaSDKUI.TransportModeIcon.METRO |
+| customTitle.journeys | String | ✗ | To set the journeys list screen title | 'metro' |
+| customTitle.roadmap | String | ✗ | To set the roadmap screen title | 'metro' |
+| customTitle.ridesharing | String | ✗ | To set the ridesharing offers screen title | false |
+| customTitle.autocomplete | String | ✗ | To set the autocomplete screen title | NavitiaSDKUI.SectionMode.WALKING |
 
 ```js****
 var transportModes = [{
