@@ -117,6 +117,19 @@ For the supported environments, please check the table below:
 | Dev | "DEV" |
 | Internal | "INTERNAL" |
 
+##### Custom titles
+
+You can customize the screens titles. A string ressource ID is required and should be passed with the CustomTitles Object.
+
+| Parameters | Type | Required | Description | Example |
+| --- | --- |:---:| --- | --- |
+| customTitle | Object | ✗ | CustomTitles | |
+| customTitle.form | String | ✗ | To set the form screen title | 'form_screen_title' |
+| customTitle.journeys | String | ✗ | To set the journeys list screen title | 'journeys_screen_title' |
+| customTitle.roadmap | String | ✗ | To set the roadmap screen title | 'roadmap_screen_title' |
+| customTitle.ridesharing | String | ✗ | To set the ridesharing offers screen title | 'ridesharing_screen_title' |
+| customTitle.autocomplete | String | ✗ | To set the autocomplete screen title | 'autocomplete_screen_title' |
+
 #### Example
 
 ```js****
@@ -134,7 +147,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 });
 ```
 
-#### Example with custom form
+#### Example with custom form and custom titles
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -147,15 +160,6 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | transportMode.lastSectionMode | [String] | ✓ | To set mode to use at the end by the button | NavitiaSDKUI.SectionMode.WALKING |
 | transportMode.physicalMode | [String] | ✗ | To set physical modes use by the button | ['physical_mode:Metro'] |
 | transportMode.realTime | Boolean | ✗ | To set the display of the availability in real time | true |
-
-| Parameters | Type | Required | Description | Example |
-| --- | --- |:---:| --- | --- |
-| customTitle | Object | ✗ | Configuration | |
-| customTitle.form | String | ✗ | To set the form screen title | NavitiaSDKUI.TransportModeIcon.METRO |
-| customTitle.journeys | String | ✗ | To set the journeys list screen title | 'metro' |
-| customTitle.roadmap | String | ✗ | To set the roadmap screen title | 'metro' |
-| customTitle.ridesharing | String | ✗ | To set the ridesharing offers screen title | false |
-| customTitle.autocomplete | String | ✗ | To set the autocomplete screen title | NavitiaSDKUI.SectionMode.WALKING |
 
 ```js****
 var transportModes = [{
