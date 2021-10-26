@@ -121,7 +121,7 @@ For the supported environments, please check the table below:
 
 ##### Custom titles
 
-You can customize the screens titles. A string ressource ID is required and should be passed with the CustomTitles Object.
+You can customize the screens titles. A string ressource ID is required and should be passed within the CustomTitles Object.
 
 | Parameters | Type | Required | Description | Example |
 | --- | --- |:---:| --- | --- |
@@ -335,51 +335,100 @@ var journeyParams = {
 ```
 
 ### Colors configuration
+
 Actually, three color parameters can be customized for the SDK.
 These parameters must be added to the "config" object as indicated in the table above.
 
 ### Customize icons
-Rename your customized icon with the same resource name as the default icon.
-Simply register your custom icons in `config.xml`:
+
+Some module icons can be customized using a JSON configuration. Please note that all ressources should be added to the platform main assets/bundle folder.
+
+#### Transport
+
+##### Lines
+
+| Object | Type | Required | Description |
+| --- | --- | --- | --- |
+| code | String | ✓ | Navitia line code |
+| icon_res | String | ✓ | Icon ressource name |
+| commercial | Commercial | ✓ | Navitia commercial mode |
+
+##### Modes
+
+| Object | Type | Required | Description |
+| --- | --- | --- | --- |
+| icon_res | String | ✓ | Icon ressource name |
+| commercial | Commercial | ✓ | Navitia commercial mode |
+
+##### Commercial
+
+| Object | Type | Required | Description |
+| --- | --- | --- | --- |
+| name | String | ✓ | Commercial mode name |
+| id | String | ✓ | Commercial mode ID |
+
+##### Providers
+
+| Object | Type | Required | Description |
+| --- | --- | --- | --- |
+| id | String | ✓ | Navitia provider ID |
+| icon_res | String | ✓ | Icon ressource name |
+
+##### Example
+
+```js
+var transportConfiguration = `{
+    "lines": [
+      {
+        "code": "6",
+        "icon_res": "ic_metro_6",
+        "commercial": {
+          "name": "Métro",
+          "id": "commercial_mode:Metro"
+        }
+      }
+    ],
+    "modes": [
+      {
+        "icon_res": "ic_metro",
+        "commercial": {
+          "name": "Métro",
+          "id": "commercial_mode:Metro"
+        }
+      }
+    ],
+    "providers": [
+        {
+          "id": "ridesharing_provider",
+          "icon_res": "ic_ridesharing"
+        }
+    ]
+}`
+
+var config = {
+    token: 'my-token',
+    primaryColor: '#e67e22',
+    secondaryColor: '#2980b9',
+    destinationColor: '#d35400',
+    transportConfiguration: transportConfiguration
+};
+
+NavitiaSDKUI.init(config, function() {}, function(error) {
+    console.log(error);
+});
 ```
-<platform name="android">
-  <resource-file src="www/res/drawable/yourImage.xml" target="res/drawable/yourImage.xml" />
-</platform>
-```
-
-#### Departure Icon
-In order to customize the `departure` icon, rename your resource as `ic_departure.xml`
-
-#### Arrival Icon
-In order to customize the `arrival` icon, rename your resource as `ic_arrival.xml`
-
-#### Transport Mode Icons
-Here is the list of default icon name:
-`ic_transport_mode_air.xml`
-`ic_transport_mode_bike.xml`
-`ic_transport_mode_bss.xml`
-`ic_transport_mode_bus.xml`
-`ic_transport_mode_car.xml`
-`ic_transport_mode_coach.xml`
-`ic_transport_mode_ferry.xml`
-`ic_transport_mode_funicular.xml`
-`ic_transport_mode_metro.xml`
-`ic_transport_mode_ridesharing.xml`
-`ic_transport_mode_shuttle.xml`
-`ic_transport_mode_taxi.xml`
-`ic_transport_mode_train.xml`
-`ic_transport_mode_tramway.xml`
-`ic_transport_mode_walking.xml`
-
 
 ## Troubleshooting
+
 ### Force gradle wrapper version before build
+
 In terminal, before building :
 ```
 export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https://services.gradle.org/distributions/gradle-6.0.1-all.zip
 ```
 
 ### Specific android tools version : 29
+
 In case you are having problems building and getting this kind of problems :
 ```
 platforms/android/build/intermediates/res/merged/debug/values-v24/values-v24.xml:3: AAPT: Error retrieving parent for item: No resource found that matches the given name ...
@@ -395,6 +444,7 @@ export ORG_GRADLE_PROJECT_cdvBuildToolsVersion=29.0.0
 More information on [Cordova website](https://cordova.apache.org/docs/en/7.x/guide/platforms/android/index.html#setting-gradle-properties) 
 
 ### Manifest merger issue
+
 This usually happens if you change the API key in the config.xml file. The build fails and you're getting this kind of error:
 ```
 Element meta-data#com.google.android.geo.API_KEY at AndroidManifest.xml:xx:xx-xx duplicated with element declared at AndroidManifest.xml:xx:xx-xx
@@ -402,6 +452,7 @@ Element meta-data#com.google.android.geo.API_KEY at AndroidManifest.xml:xx:xx-xx
 You may try to remove the Android platform and add it back again.
 
 ### Android building problem : Cannot read property ‘replace’ of undefined
+
 In the file /platforms/android/cordova/lib/emulator.js, replace :
 ```
 var num = target.split(’(API level ‘)[1].replace(’)’, ‘’);
