@@ -571,8 +571,9 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     }
 
     private int getStringResourceID(Context context, String resId, int fallbackStringId) {
+        String applicationPackageName = context.getApplicationContext().getPackageName();
         int requestedResourceId = context.getResources()
-          .getIdentifier(resId, "string", BuildConfig.APPLICATION_ID);
+          .getIdentifier(resId, "id", applicationPackageName);
         return requestedResourceId > 0 ? requestedResourceId : fallbackStringId;
     }
 
