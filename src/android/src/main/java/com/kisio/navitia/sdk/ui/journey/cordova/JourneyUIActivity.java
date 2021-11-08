@@ -25,7 +25,7 @@ public class JourneyUIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
 
-        setContentView(R.layout.activity_journey_ui);
+        setContentView(com.kisio.navitia.sdk.ui.journey.cordova.R.layout.activity_journey_ui);
         JourneyUI.Companion.getInstance().attachActivity(this);
 
         Intent intent = getIntent();
@@ -51,7 +51,7 @@ public class JourneyUIActivity extends AppCompatActivity {
                 tag = journeysFragment.getSimpleTag();
             }
 
-            ft.replace(R.id.activity_journey_ui_content, f, tag);
+            ft.replace(com.kisio.navitia.sdk.ui.journey.cordova.R.id.activity_journey_ui_content, f, tag);
             ft.commit();
         }
     }
