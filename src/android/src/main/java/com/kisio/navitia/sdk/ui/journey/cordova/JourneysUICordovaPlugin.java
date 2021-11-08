@@ -194,27 +194,27 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             // Form screen
             String formTitleResId = customTitles.optString("form", "journeys");
             JourneyUI.Companion.getInstance()
-              .formTitleRes(getStringResourceID(cordova.getContext(), formTitleResId, R.string.journeys));
+              .formTitleRes(getStringResourceID(cordova.getContext(), formTitleResId, com.kisio.navitia.sdk.ui.journey.R.string.journeys));
 
             // Journeys screen
             String journeysTitleResId = customTitles.optString("journeys", "journeys");
             JourneyUI.Companion.getInstance()
-              .journeysTitleRes(getStringResourceID(cordova.getContext(), journeysTitleResId, R.string.journeys));
+              .journeysTitleRes(getStringResourceID(cordova.getContext(), journeysTitleResId, com.kisio.navitia.sdk.ui.journey.R.string.journeys));
 
             // Roadmap screen
             String roadmapTitleResId = customTitles.optString("roadmap", "roadmap");
             JourneyUI.Companion.getInstance()
-              .roadmapTitleRes(getStringResourceID(cordova.getContext(), roadmapTitleResId, R.string.roadmap));
+              .roadmapTitleRes(getStringResourceID(cordova.getContext(), roadmapTitleResId, com.kisio.navitia.sdk.ui.journey.R.string.roadmap));
 
             // Ridesharing offers screen
             String ridesharingTitleResId = customTitles.optString("ridesharing", "ridesharing_noun");
             JourneyUI.Companion.getInstance()
-              .ridesharingTitleRes(getStringResourceID(cordova.getContext(), ridesharingTitleResId, R.string.ridesharing_noun));
+              .ridesharingTitleRes(getStringResourceID(cordova.getContext(), ridesharingTitleResId, com.kisio.navitia.sdk.ui.journey.R.string.ridesharing_noun));
 
             // Autocomplete screen
             String autocompleteTitleResId = customTitles.optString("autocomplete", "journeys");
             JourneyUI.Companion.getInstance()
-              .autoCompleteTitle(getStringResourceID(cordova.getContext(), autocompleteTitleResId, R.string.journeys));
+              .autoCompleteTitle(getStringResourceID(cordova.getContext(), autocompleteTitleResId, com.kisio.navitia.sdk.ui.journey.R.string.journeys));
         }
 
         // Environment
@@ -346,34 +346,34 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         switch (value) {
             case TransportModeIcon.BIKE:
-                return R.drawable.ic_connection_mode_bike;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_connection_mode_bike;
             case TransportModeIcon.BSS:
-                return R.drawable.ic_connection_mode_bike_sharing_service;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_connection_mode_bike_sharing_service;
             case TransportModeIcon.BUS:
-                return R.drawable.ic_physical_mode_bus;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_bus;
             case TransportModeIcon.CAR:
-                return R.drawable.ic_connection_mode_car;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_connection_mode_car;
             case TransportModeIcon.COACH:
-                return R.drawable.ic_physical_mode_coach;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_coach;
             case TransportModeIcon.FERRY:
-                return R.drawable.ic_physical_mode_ferry;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_ferry;
             case TransportModeIcon.FUNICULAR:
-                return R.drawable.ic_physical_mode_funicular;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_funicular;
             case TransportModeIcon.LOCALTRAIN:
             case TransportModeIcon.LONGDISTANCETRAIN:
             case TransportModeIcon.RAPIDTRANSIT:
             case TransportModeIcon.TRAIN:
-                return R.drawable.ic_physical_mode_train;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_train;
             case TransportModeIcon.METRO:
-                return R.drawable.ic_physical_mode_metro;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_metro;
             case TransportModeIcon.RIDESHARING:
-                return R.drawable.ic_connection_mode_ridesharing;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_connection_mode_ridesharing;
             case TransportModeIcon.SHUTTLE:
-                return R.drawable.ic_physical_mode_shuttle;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_shuttle;
             case TransportModeIcon.TAXI:
-                return R.drawable.ic_physical_mode_taxi;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_taxi;
             case TransportModeIcon.TRAMWAY:
-                return R.drawable.ic_physical_mode_tramway;
+                return com.kisio.navitia.sdk.engine.design.R.drawable.ic_physical_mode_tramway;
             default:
                 return -1;
         }
