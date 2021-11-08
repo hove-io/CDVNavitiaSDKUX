@@ -25,7 +25,10 @@ public class JourneyUIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
 
-        setContentView(com.kisio.navitia.sdk.ui.journey.cordova.R.layout.activity_journey_ui);
+        String applicationPackageName = getApplicationContext().getPackageName();
+        int layoutResourceId = getApplicationContext().getResources()
+          .getIdentifier("activity_journey_ui", "layout", applicationPackageName);
+        setContentView(layoutResourceId);
         JourneyUI.Companion.getInstance().attachActivity(this);
 
         Intent intent = getIntent();
@@ -50,8 +53,10 @@ public class JourneyUIActivity extends AppCompatActivity {
                 f = journeysFragment;
                 tag = journeysFragment.getSimpleTag();
             }
-
-            ft.replace(com.kisio.navitia.sdk.ui.journey.cordova.R.id.activity_journey_ui_content, f, tag);
+            
+            int contentResourceId = getApplicationContext().getResources()
+              .getIdentifier("activity_journey_ui_content", "id", applicationPackageName);
+            ft.replace(contentResourceId, f, tag);
             ft.commit();
         }
     }
