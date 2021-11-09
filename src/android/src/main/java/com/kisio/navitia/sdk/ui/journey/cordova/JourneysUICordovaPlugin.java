@@ -124,7 +124,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         // Colors
         String primaryColor = config.optString("primaryColor", "");
-        String secondaryColor = config.optString("secondaryColor", "");
+        String secondaryColor = config.optString("secondaryColor", primaryColor);
         JourneyColors colors = new JourneyColors(primaryColor, secondaryColor);
 
         String originColor = config.optString("originColor", "");
@@ -157,8 +157,14 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         Gson gson = new Gson();
         JourneyConfigurationRoot journeyConfigurationRoot = gson.fromJson(transportConfigurationString,
           JourneyConfigurationRoot.class);
-        JourneyConfiguration journeyConfiguration = new JourneyConfiguration(journeyConfigurationRoot.getLines(),
-          journeyConfigurationRoot.getModes(), journeyConfigurationRoot.getProviders());
+        List<JourneyConfigurationLineMode> transportLinesConfiguration = journeyConfigurationRoot == null ? new ArrayList<>() : journeyConfigurationRoot.getLines();
+        List<JourneyConfigurationLineMode> transportModesConfiguration = journeyConfigurationRoot == null ? new ArrayList<>() : journeyConfigurationRoot.getModes();
+        List<JourneyConfigurationProvider> transportProvidersConfiguration = journeyConfigurationRoot == null ? new ArrayList<>() : journeyConfigurationRoot.getProviders();
+        JourneyConfiguration journeyConfiguration = new JourneyConfiguration(
+            transportLinesConfiguration,
+            transportModesConfiguration,
+            transportProvidersConfiguration
+        );
 
         // Options
         String disruptionContributor = config.optString("disruptionContributor", "");
