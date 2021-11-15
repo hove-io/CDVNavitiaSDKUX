@@ -3,14 +3,14 @@ package com.kisio.navitia.sdk.ui.journey.cordova;
 import androidx.annotation.StringDef;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.kisio.navitia.sdk.engine.toolbox.model.BasePhysicalMode;
 import com.kisio.navitia.sdk.ui.journey.core.ExpertEnvironment;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyColors;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyConfiguration;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyConfigurationLineMode;
+import com.kisio.navitia.sdk.ui.journey.core.JourneyConfigurationProvider;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyConfigurationRoot;
 import com.kisio.navitia.sdk.ui.journey.core.JourneyUI;
 import com.kisio.navitia.sdk.ui.journey.core.JourneysRequest;
