@@ -582,7 +582,6 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
     private JourneysRequest.TravelerType toTravelerType(String value) {
         JourneysRequest.TravelerType travelerType = JourneysRequest.TravelerType.STANDARD;
-
         switch (value) {
             case "fast_walker":
                 travelerType = JourneysRequest.TravelerType.FAST;
