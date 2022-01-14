@@ -270,6 +270,10 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
             if (params.has("datetimeRepresents")) {
                 datetimeRepresents = toDateTimeRepresents(params.getString("datetimeRepresents"));
             }
+            JourneysRequest.TravelerType travelerType = JourneysRequest.TravelerType.STANDARD;
+            if (params.has("travelerType")) {
+                travelerType = toTravelerType(params.getString("travelerType"));
+            }
             Set<PhysicalMode> forbiddenUris = new HashSet<>();
             if (params.has("forbiddenUris")) {
                 forbiddenUris = toPhysicalModeSet(params.getJSONArray("forbiddenUris"));
@@ -327,7 +331,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
                 originId, // originId
                 originLabel, // originLabel
                 new HashSet<>(), // physicalModes
-                JourneysRequest.TravelerType.STANDARD // travelerType
+                travelerType // travelerType
             );
 
             final Intent intent = new Intent(context, JourneyUIActivity.class);
@@ -574,6 +578,30 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
         }
 
         return transportModes;
+    }
+
+    private JourneysRequest.TravelerType toTravelerType(String value) {
+        JourneysRequest.TravelerType travelerType = JourneysRequest.TravelerType.STANDARD;
+
+        switch (value) {
+            case "fast_walker":
+                travelerType = JourneysRequest.TravelerType.FAST;
+                break;
+            case "luggage":
+                travelerType = JourneysRequest.TravelerType.LUGGAGE;
+                break;
+            case "slow_walker":
+                travelerType = JourneysRequest.TravelerType.SLOW;
+                break;
+            case "standard":
+                travelerType = JourneysRequest.TravelerType.STANDARD;
+                break;
+            case "wheelchair":
+                travelerType = JourneysRequest.TravelerType.WHEELCHAIR;
+                break;
+        }
+
+        return travelerType;
     }
 
     private int getStringResourceID(Context context, String resId, int fallbackStringId) {

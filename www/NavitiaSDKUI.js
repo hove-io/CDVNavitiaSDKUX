@@ -56,5 +56,12 @@ module.exports = {
         TAXI: "physical_mode_taxi",
         TRAIN: "physical_mode_train",
         TRAMWAY: "physical_mode_tramway",
+    },
+    TravelerType: {
+        FAST: "fast_walker",
+        LUGGAGE: "luggage",
+        SLOW: "slow_walker",
+        STANDARD: "standard",
+        WHEELCHAIR: "wheelchair"
     }
 };
