@@ -8,7 +8,6 @@ repositories {
     google()
     jcenter()
     mavenLocal()
-    mavenCentral()
 
     if (project.hasProperty("kisio_artifactory_url")) {
         maven {
