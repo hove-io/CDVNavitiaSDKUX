@@ -249,6 +249,7 @@ NavitiaSDKUI.init(config, function() {}, function(error) {
 | params.destinationLabel | String | ✗ | Destination label, if not set the address will be displayed | "Work" |
 | params.datetime | String | ✗ | Requested date and time (in UTC Timezone) for journey results | new Date().toISOString() |
 | params.datetimeRepresents | String | ✗ | Can be `NavitiaSDKUI.DatetimeRepresents.DEPARTURE` (journeys after datetime) or `NavitiaSDKUI.DatetimeRepresents.ARRIVAL` (journeys before datetime). | NavitiaSDKUI.DatetimeRepresents.DEPARTURE |
+| params.travelerType | String | ✗ | Can be `NavitiaSDKUI.TravelerType.FAST` (fast walker), `NavitiaSDKUI.TravelerType.STANDARD` (standard walker), `NavitiaSDKUI.TravelerType.SLOW` (slow walker), `NavitiaSDKUI.TravelerType.LUGGAGE` (traveler with luggage) or `NavitiaSDKUI.TravelerType.WHEELCHAIR` (traveler on wheelchair). | NavitiaSDKUI.TravelerType.STANDARD |
 | params.forbiddenUris | [String] | ✗ | Used to avoid lines, modes, networks, etc in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
 | params.allowedId | [String] | ✗ | If you want to use only a small subset of the public transport objects in the Journey search (List of navitia uris) | ['commercial_mode:Bus', 'line:1'] |
 | params.firstSectionModes | [String] | ✗ | List of modes to use at the begining of the journey | [NavitiaSDKUI.SectionMode.CAR, NavitiaSDKUI.SectionMode.RIDESHARING] |
