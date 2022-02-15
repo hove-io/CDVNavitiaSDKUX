@@ -197,6 +197,7 @@ import ToolboxEngine
         journeysRequest.maxNbJourneys = arguments["maxNbJourneys"] as? Int
         journeysRequest.addPoiInfos = arrayToEnum(arguments["addPoiInfos"]) as [AddPoiInfos]?
         journeysRequest.directPath = anyToEnum(arguments["directPath"]) as DirectPath?
+        journeysRequest.travelerType = anyToEnum(arguments["travelerType"]) as TravelerType?
         
         return journeysRequest
     }
