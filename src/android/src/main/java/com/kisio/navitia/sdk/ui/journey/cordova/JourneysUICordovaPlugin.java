@@ -228,7 +228,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
         // Initialization
         JourneyUI.Companion.getInstance().init(
-            this.cordova.getActivity().getApplicationContext(), // context
+            this.cordova.getActivity(), // context
             colors, // colors
             coverage, // coverage
             token,  // token
@@ -244,7 +244,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
 
     private void invokeJourneyResults(JSONObject params, CallbackContext callbackContext) {
         try {
-            final Context context = this.cordova.getActivity().getApplicationContext();
+            final Context context = this.cordova.getActivity();
 
             String originId = "";
             if (params.has("originId")) {
@@ -604,7 +604,7 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     }
 
     private int getStringResourceID(Context context, String resId, int fallbackStringId) {
-        String applicationPackageName = context.getApplicationContext().getPackageName();
+        String applicationPackageName = context.getPackageName();
         int requestedResourceId = context.getResources()
           .getIdentifier(resId, "string", applicationPackageName);
         return requestedResourceId > 0 ? requestedResourceId : fallbackStringId;
