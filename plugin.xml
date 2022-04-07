@@ -30,7 +30,7 @@
                 <source url="https://github.com/CanalTP/Podspecs"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="JourneySDK" spec="3.8.3" />
+                <pod name="JourneySDK" spec="3.8.4" />
             </pods>
         </podspec>
 
