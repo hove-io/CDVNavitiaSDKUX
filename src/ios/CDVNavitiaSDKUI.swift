@@ -188,7 +188,7 @@ import ToolboxEngine
         journeysRequest.originLabel = arguments["originLabel"] as? String
         journeysRequest.destinationLabel = arguments["destinationLabel"] as? String
         journeysRequest.datetimeRepresents = anyToEnum(arguments["datetimeRepresents"]) as DateTimeRepresents? ?? .departure
-        journeysRequest.datetime = (arguments["datetime"] as? String)?.toDate(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        journeysRequest.datetime = (arguments["datetime"] as? String)?.toDate(format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ") ?? Date()
         journeysRequest.forbiddenUris = arguments["forbiddenUris"] as? [String]
         journeysRequest.firstSectionModes = arrayToEnum(arguments["firstSectionModes"]) as [FilterMode]?
         journeysRequest.lastSectionModes = arrayToEnum(arguments["lastSectionModes"]) as [FilterMode]?
