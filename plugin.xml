@@ -27,10 +27,10 @@
         <podspec>
             <config>
                 <source url="https://github.com/CocoaPods/Specs.git"/>
-                <source url="https://github.com/CanalTP/Podspecs"/>
+                <source url="https://github.com/hove-io/Podspecs"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="JourneySDK" spec="3.8.4" />
+                <pod name="JourneySDK" spec="3.8.5" />
             </pods>
         </podspec>
 
