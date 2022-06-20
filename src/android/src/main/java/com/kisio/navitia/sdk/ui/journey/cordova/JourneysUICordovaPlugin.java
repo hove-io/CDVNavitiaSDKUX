@@ -1,8 +1,10 @@
 package com.kisio.navitia.sdk.ui.journey.cordova;
 
 import androidx.annotation.StringDef;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -110,7 +112,16 @@ public class JourneysUICordovaPlugin extends CordovaPlugin {
     }
 
     private void init(JSONObject config, CallbackContext callbackContext) {
-        String token = config.optString("token");
+        String rawConfig = config.toString();
+        SharedPreferences sharedPreferences = cordova.getActivity().getSharedPreferences(
+          "secret_shared_prefs",
+          Context.MODE_PRIVATE
+        );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("navitia_raw_config", rawConfig);
+        editor.apply();
+
+      String token = config.optString("token");
         if (token.isEmpty()) {
             callbackContext.error("No token specified");
             return;
